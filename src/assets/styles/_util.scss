@@ -1,0 +1,13 @@
+@mixin center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.space {
+    flex-grow: 1;
+}

@@ -1,0 +1,46 @@
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 600px;
+$breakpoint-maxwidth: 1200px;
+$breakpoint-desktop: 1024px;
+
+@mixin RWD($breakpoint) {
+    @if $breakpoint == mobile {
+        @media (min-width: 370px) and (max-width:$breakpoint-mobile){
+            @content;
+        }
+    } @else if $breakpoint == tablet {
+        @media (max-width: $breakpoint-tablet) {
+            @content;
+        }
+    } @else if $breakpoint == desktop {
+        @media (min-width: $breakpoint-desktop) {
+            @content;
+        }
+    } @else if $breakpoint == large {
+        @media (min-width: $breakpoint-maxwidth) {
+            @content;
+        }
+    }
+}
+
+.container {
+    margin: 0 auto;
+
+    @include mobile {
+        width: calc(100% - 2rem);
+        padding: 0 1rem;
+    }
+
+    @include tablet {
+        width: 90%;
+    }
+
+    @include desktop {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    @include large {
+        width: 1200px;
+    }
+}

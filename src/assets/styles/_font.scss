@@ -1,0 +1,108 @@
+@mixin fw-ex-blod {
+    font-weight: 800;
+}
+
+@mixin fw-blod {
+    font-weight: 600;
+}
+
+@mixin fw-normal {
+    font-weight: normal;
+}
+
+@mixin fw-thin {
+    font-weight: 100;
+}
+
+@mixin title-l {
+    font-size: 30px;
+    line-height: 40px;
+    @include fw-ex-blod;
+    @include mobile {
+        font-size: 26px;
+    }
+}
+
+@mixin title-m {
+    font-size: 20px;
+    line-height: 25px;
+    @include fw-ex-blod;
+    @include mobile {
+        font-size: 18px;
+    }
+}
+
+@mixin title-s {
+    font-size: 16px;
+    line-height: 20px;
+    @include fw-ex-blod;
+    @include mobile {
+        font-size: 14px;
+    }
+}
+
+@mixin text-l {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+@mixin text-m {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+@mixin text-s {
+    font-size: 12px;
+    line-height: 18px;
+}
+
+@mixin label-l {
+    font-size: 16px;
+    line-height: 16px;
+}
+
+@mixin label-m {
+    font-size: 14px;
+    line-height: 14px;
+}
+
+@mixin label-s {
+    font-size: 12px;
+    line-height: 12px;
+}
+
+.title-s {
+    @include title-s;
+}
+
+.title-m {
+    @include title-m;
+}
+
+.title-l {
+    @include title-l;
+}
+
+.text-s {
+    @include text-s;
+}
+
+.text-m {
+    @include text-m;
+}
+
+.text-l {
+    @include text-l;
+}
+
+.label-s {
+    @include label-s;
+}
+
+.label-m {
+    @include label-m;
+}
+
+.label-l {
+    @include label-l;
+}
