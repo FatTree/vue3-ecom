@@ -7,6 +7,7 @@ import { collection, getFirestore } from 'firebase/firestore';
 import { firebaseApp } from './plugins/firebase';
 
 
+
 const authUser = useAuthUser()
 // const db = useFirestore()
 const db = getFirestore(firebaseApp);
@@ -27,12 +28,15 @@ onMounted( () => {
 </script>
 
 <template>
-  <Nav />
-  <div >
-    <RouterView />
+  <div class="container">
+    <Nav :isLogin="true" />
+    <div >
+      <RouterView />
+    </div>
+    <Footer />
   </div>
-  <Footer />
 </template>
 
-<style scoped>
+<style lang="scss">
+@import "./assets/styles/main.scss";
 </style>

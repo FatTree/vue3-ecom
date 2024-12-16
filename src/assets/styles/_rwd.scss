@@ -13,11 +13,11 @@ $breakpoint-desktop: 1024px;
             @content;
         }
     } @else if $breakpoint == desktop {
-        @media (min-width: $breakpoint-desktop) {
+        @media (max-width: $breakpoint-desktop) {
             @content;
         }
     } @else if $breakpoint == large {
-        @media (min-width: $breakpoint-maxwidth) {
+        @media (max-width: $breakpoint-maxwidth) {
             @content;
         }
     }
@@ -26,21 +26,21 @@ $breakpoint-desktop: 1024px;
 .container {
     margin: 0 auto;
 
-    @include mobile {
+    @include RWD(mobile) {
         width: calc(100% - 2rem);
         padding: 0 1rem;
     }
 
-    @include tablet {
+    @include RWD(tablet) {
         width: 90%;
     }
 
-    @include desktop {
+    @include RWD(desktop) {
         width: 90%;
         margin: 0 auto;
     }
 
-    @include large {
+    @include RWD(large) {
         width: 1200px;
     }
 }
