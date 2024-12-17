@@ -7,8 +7,16 @@ export default function useApi() {
     const isLoading: Ref<boolean> = ref(false);
     const fetchData: Ref<any> = ref();
 
-    const callApi = (url: string) => {
+    const callApi = async (url: string) => {
         isLoading.value = true;
+        // try {
+        //     const response = await axios.get(url);
+        //     fetchData.value = response.data;
+        // } catch (error) {
+        //     console.log(error)
+        // } finally {
+        //     isLoading.value = false;
+        // }
         axios
             .get(url)
             .then((response: any) => {

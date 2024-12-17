@@ -9,15 +9,13 @@ const images = ref([
   'https://dummyjson.com/image/1200x400/bfc2ff/ffffff?text=Hello+World+NO+5',
 ]);
 
-// product highlight
+// Hero banner
 const currentIndex: Ref<number> = ref(0);
 const wrapper: Ref<HTMLDivElement | null> = ref(null);
 const wpWidth: Ref<number> = ref(0);
 
-// 設置定時器 ID
 let intervalId: NodeJS.Timeout | null = null;
 
-// 設置樣式，用於移動輪播內容
 const carouselStyle = computed(() => {
   return {
     transform: `translateX(-${currentIndex.value * 100}%)`,
@@ -25,14 +23,12 @@ const carouselStyle = computed(() => {
   };
 });
 
-// 設置定時器
 const startCarousel = () => {
   intervalId = setInterval(() => {
     currentIndex.value = (currentIndex.value + 1) % images.value.length;
   }, 5000);
 };
 
-// 清除定時器
 const stopCarousel = () => {
   if (intervalId) {
     clearInterval(intervalId);

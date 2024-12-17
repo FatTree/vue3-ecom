@@ -1,5 +1,12 @@
 // Product
-type ProductModel = {
+export type ProductListModel  = {
+    products: ProductModel[],
+    total: number
+    skip: number
+    limit: number
+}
+
+export type ProductModel = {
     id: number
     title: string
     description: string
@@ -46,7 +53,7 @@ type Meta = {
 }
 
 // Category
-type CategoryModel = {
+export type CategoryModel = {
     slug: string
     name: string
     url: string

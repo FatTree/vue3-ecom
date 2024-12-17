@@ -33,7 +33,7 @@ onMounted( () => {
     <div >
       <RouterView />
     </div>
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 

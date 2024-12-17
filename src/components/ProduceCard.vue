@@ -11,15 +11,17 @@ const props = withDefaults(defineProps<Props>(), {
     <div class="prodCard">
         <p>{{ product.title }}</p>
         <p>{{ product.description }}</p>
-        <p>{{ product.price }}</p>
-        <p>{{ product.discountPercentage }}</p>
-        <p>{{ product.rating }}</p>
+        <p>$ {{ product.price }}</p>
+        <p>{{ product.discountPercentage }} %</p>
+        <p>{{ product.rating }}/5</p>
         <p>{{ product.stock }}</p>
         <p>{{ product.brand }}</p>
-        <img :src="product.images[0]" alt="">
+        <img :src="product.thumbnail" alt="">
     </div>
 </template>
 
 <style>
-
+.prodCard {
+    width: 300px;
+}
 </style>

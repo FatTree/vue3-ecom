@@ -32,15 +32,13 @@ const {
 
 
 const categroy: Ref<string> = ref('');
-const goToCategory = () => {
-  router.push({ path: `/${categroy.value}`})
-}
+watch(categroy, (n) => {
+  router.push({ path: `/${n}`})
+})
 
 const searchVal: Ref<string> = ref('');
 watch(searchVal, (n) => {
-  console.log(`n.value`, n);
-  callApi(`/api/products/search?q=${n}`)
-  console.log(fetchData.value)
+  callApi(`/api/products/search?q=${n}`);
 })
 
 onMounted(() => {
@@ -69,7 +67,7 @@ onMounted(() => {
 
     <div class="nav__buttom">
       <label for="">/{{ categroy }}</label>
-      <select v-model="categroy" @change="goToCategory">
+      <select v-model="categroy">
         <option disabled>Category</option>
         <option v-for="item in categoryNameList" :value="item">{{ item }}</option>
       </select>
