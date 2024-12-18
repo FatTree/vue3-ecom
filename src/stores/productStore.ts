@@ -48,8 +48,8 @@ export const useProductStore = defineStore('product', () => {
     await callProductSortApi(`/api/products/category/${category}?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`);
   }
 
-  const getProductDetailApi = (id: number) => {
-    callProductDetailApi(`/api/products/${id}`);
+  const getProductDetailApi = async (id: string) => {
+    await callProductDetailApi(`/api/products/${id}`);
   }
 
   return { 
