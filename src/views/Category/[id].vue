@@ -4,6 +4,8 @@ import { useProductStore } from '@/stores/productStore';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import addToCartBtn from '@/components/addToCartBtn.vue'
+import { convertToCartProductModel } from '@/assets/modelFormatter'
 
 const route = useRoute();
 
@@ -43,7 +45,7 @@ onMounted(async() => {
             <p>$ {{ productDetail.price }}</p>
             <p>% {{ productDetail.discountPercentage }}</p>
             <p>{{ productDetail.stock }} left</p>
-            <button>add to cart</button>
+            <addToCartBtn :cart-product="convertToCartProductModel(productDetail, 1)" />
         </div>
         <div>
             <h3>review</h3>

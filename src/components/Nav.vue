@@ -3,8 +3,10 @@ import useApi from '@/composable/useApi';
 import { i18n } from '@/i18n';
 import { useCategoryStore } from '@/stores/categoryStore';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref, watch, type Ref } from 'vue';
+import { onBeforeMount, onMounted, ref, watch, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
+import Cart from '@/components/Cart.vue';
+import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
 
 type Props = {
   isLogin: boolean;
@@ -21,6 +23,11 @@ const {
 } = api;
 
 const categoryStore = useCategoryStore();
+const shoppingCartStore = useShoppingCartStore();
+
+const {
+    cart, 
+} = storeToRefs(shoppingCartStore);
 
 const {
   categoryNameList,
@@ -41,6 +48,11 @@ watch(searchVal, (n) => {
   callApi(`/api/products/search?q=${n}`);
 })
 
+const isShowCart = ref<boolean>(false);
+onBeforeMount(async () => {
+  await getCateProdList();
+});
+
 onMounted(() => {
   getCategoryNameList();
 })
@@ -50,6 +62,8 @@ onMounted(() => {
     <div class="nav__top">
       <RouterLink to="/">Home</RouterLink> |
       <input type="text" placeholder="search product name" v-model.lazy="searchVal">
+      <a class="cart" @click="isShowCart=!isShowCart">shopping cart: {{ isShowCart }}</a> |
+      <Cart v-show="isShowCart" :cart-list="cart" />
       <label v-if="isLogin">
         <RouterLink to="/member">member</RouterLink> |
       </label>
@@ -76,5 +90,7 @@ onMounted(() => {
 </template>
 
 <style>
-
+.cart {
+  cursor: pointer;
+}
 </style>
