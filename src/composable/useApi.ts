@@ -9,25 +9,27 @@ export default function useApi() {
 
     const callApi = async (url: string) => {
         isLoading.value = true;
-        // try {
-        //     const response = await axios.get(url);
-        //     fetchData.value = response.data;
-        // } catch (error) {
-        //     console.log(error)
-        // } finally {
-        //     isLoading.value = false;
-        // }
-        axios
-            .get(url)
-            .then((response: any) => {
-                fetchData.value = response.data;
-            })
-            .catch( (err: Error) => {
-                console.log(err)
-            })
-            .finally(() => {
-                isLoading.value = false;
-            });
+        try {
+            console.log('call: '+url);
+            const response = await axios.get(url);
+            fetchData.value = response.data;
+            console.log('assign data')
+        } catch (error) {
+            console.log(error)
+        } finally {
+            isLoading.value = false;
+        }
+        // axios
+        //     .get(url)
+        //     .then((response: any) => {
+        //         fetchData.value = response.data;
+        //     })
+        //     .catch( (err: Error) => {
+        //         console.log(err)
+        //     })
+        //     .finally(() => {
+        //         isLoading.value = false;
+        //     });
     }
 
     return {

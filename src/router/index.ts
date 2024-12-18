@@ -21,13 +21,18 @@ const router = createRouter({
       path: '/:category',
       name: 'category',
       component: () => import('../views/Category/index.vue'),
-      children: [
-        {
-          path: ':id',
-          name: ':id',
-          component: () => import('../views/Category/[id].vue'),
-        }
-      ]
+      // children: [
+      //   {
+      //     path: ':id',
+      //     name: ':id',
+      //     component: () => import('../views/Category/[id].vue'),
+      //   }
+      // ]
+    },
+    {
+      path: '/:category/:id',
+      name: ':id',
+      component: () => import('../views/Category/[id].vue'),
     },
     {
       path: '/purchase',

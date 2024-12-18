@@ -32,9 +32,9 @@ export const useProductStore = defineStore('product', () => {
     isLoading: isProductDetailLoading
   } = productDetailApi;
 
-  const getProductCategoryApi = (category: string, limit=0, skip=0) => {
+  const getProductCategoryApi = async (category: string, limit=0, skip=0) => {
     if(limit!==0) {
-      callProductCategoryApi(`/api/products/category/${category}?limit=${limit}&skip=${skip}`);
+      await callProductCategoryApi(`/api/products/category/${category}?limit=${limit}&skip=${skip}`);
     } else {
       callProductCategoryApi(`/api/products/category/${category}`);
     }
@@ -44,9 +44,8 @@ export const useProductStore = defineStore('product', () => {
     callProductFilterApi(`/api/products/search?q=${query}&limit=${limit}&skip=${skip}`);
   }
 
-  const getProductSortApi = (category: string, limit=4, skip=0, order: 'asc' | 'desc') => {
-    callProductSortApi(`/api/products/category/${category}?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`);
-    console.log(`/api/products/category/${category}?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`);
+  const getProductSortApi = async (category: string, limit=4, skip=0, order: string) => {
+    await callProductSortApi(`/api/products/category/${category}?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`);
   }
 
   const getProductDetailApi = (id: number) => {
