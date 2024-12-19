@@ -32,7 +32,6 @@ onMounted( () => {
 
 <template>
   <div class="container">
-  {{ isLogin }}
     <Nav :isLogin="isLogin" />
     <div>
       <RouterView />

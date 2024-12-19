@@ -29,10 +29,7 @@ const productList= ref<ProductModel[]>([]);
 // filter
 const brandList = computed(() => {
     const brands = productCategoryList.value.products.map( (item: ProductModel) => item.brand)
-    console.log(brands);
-    
     const list = new Set(brands)
-    console.log(list);
     return list;
 })
 

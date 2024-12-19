@@ -71,7 +71,7 @@ export const useShoppingCartStore = defineStore(storeName, () => {
 
     // 計算購物車中的總金額
     const totalAmount = computed(() => {
-        return cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
+        return Math.round(cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0));
     });
 
     return {

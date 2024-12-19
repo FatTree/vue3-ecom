@@ -2,6 +2,7 @@
 import type { CartProductViewModel } from '@/models/viewModel';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 type Props = {
   cartList?: CartProductViewModel[] | null;
@@ -9,6 +10,10 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   cartList: () => [],
 });
+
+const router = useRouter();
+
+const gotoPurchase = () => (router.push('/purchase'))
 
 const shoppingCartStore = useShoppingCartStore();
 const {
@@ -35,6 +40,7 @@ onMounted(() => {
         <button @click="removeFromCart(item.id.toString())">delete</button>
       </div>
     </div>
+    <button @click="gotoPurchase">結帳</button>
   </div>
 </template>
 

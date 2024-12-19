@@ -34,3 +34,9 @@ export type CartProductViewModel = {
     thumbnail: string
     quantity: number
 }
+
+export type ShippingInfoViewModel = {
+    name: string;
+    phone: string;
+    address: string;
+}

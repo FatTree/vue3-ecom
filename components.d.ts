@@ -20,6 +20,7 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']
     ProduceCard: typeof import('./src/components/ProduceCard.vue')['default']
+    PurchaseItem: typeof import('./src/components/PurchaseItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']

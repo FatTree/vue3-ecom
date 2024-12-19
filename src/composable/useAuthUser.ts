@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores/userStore';
 import {
         getAuth, 
         createUserWithEmailAndPassword,    
@@ -9,8 +10,15 @@ import {
         onAuthStateChanged,
         type User,
     } from 'firebase/auth'
+
+import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import { getCurrentUser, useDocument } from 'vuefire';
+import { collection, doc, getFirestore } from 'firebase/firestore';
+import { firebaseApp } from '@/plugins/firebase';
+
 
 
 export const useAuthUser = () => {
@@ -21,6 +29,9 @@ export const useAuthUser = () => {
     const isLogin = ref(false);
     const email = 'athem.lin0@test.com'
     const psw = 'aaaa123'
+
+    const db = getFirestore(firebaseApp);
+    const UserInfoCollec = collection(db, 'UserInfo');
 
     const routerAction = () => {
         const redirect = router.currentRoute.value.query.redirect as string || '/';
@@ -54,11 +65,10 @@ export const useAuthUser = () => {
     }
 
     const checkUser = () => {
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async(user) => {
             if (user) {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
-                const uid = user.uid;
                 console.log('signed in: ',user)
             } else {
                 console.log('user is signout')
