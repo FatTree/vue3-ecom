@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useAuthUser } from './composable/useAuthUser';
-import { useCollection } from 'vuefire'
+import { getCurrentUser, useCollection, useCurrentUser } from 'vuefire'
 import { collection, getFirestore } from 'firebase/firestore';
 import { firebaseApp } from './plugins/firebase';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 
@@ -20,17 +21,20 @@ const {
   signUp,
   signIn,
   checkUser,
-  userSignOut
+  userSignOut,
+  isLogin,
 } = authUser;
 
 onMounted( () => {
+  checkUser();
 })
 </script>
 
 <template>
   <div class="container">
-    <Nav :isLogin="true" />
-    <div >
+  {{ isLogin }}
+    <Nav :isLogin="isLogin" />
+    <div>
       <RouterView />
     </div>
     <!-- <Footer /> -->

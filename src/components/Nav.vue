@@ -3,23 +3,31 @@ import useApi from '@/composable/useApi';
 import { i18n } from '@/i18n';
 import { useCategoryStore } from '@/stores/categoryStore';
 import { storeToRefs } from 'pinia';
-import { onBeforeMount, onMounted, ref, watch, type Ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref, watch, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Cart from '@/components/Cart.vue';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
+import { useAuthUser } from '@/composable/useAuthUser';
+import { getCurrentUser, useCurrentUser } from 'vuefire';
 
 type Props = {
-  isLogin: boolean;
+    isLogin: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
-  isLogin: true,
+    isLogin: false
 })
+
+const authUser = useAuthUser();
+const {
+  userSignOut
+} = authUser;
+
+
 
 const router = useRouter();
 const api = useApi();
 const {
   callApi,
-  fetchData
 } = api;
 
 const categoryStore = useCategoryStore();
@@ -40,7 +48,7 @@ const {
 
 const categroy: Ref<string> = ref('');
 watch(categroy, (n) => {
-  router.push({ path: `/${n}`})
+  router.push({ path: `/${n}`});
 })
 
 const searchVal: Ref<string> = ref('');
@@ -49,12 +57,11 @@ watch(searchVal, (n) => {
 })
 
 const isShowCart = ref<boolean>(false);
-onBeforeMount(async () => {
-  await getCateProdList();
-});
 
-onMounted(() => {
-  getCategoryNameList();
+const user = computed(async () => await getCurrentUser())
+
+onMounted(async () => {
+  await getCategoryNameList();
 })
 </script>
 <template>
@@ -66,6 +73,8 @@ onMounted(() => {
       <Cart v-show="isShowCart" :cart-list="cart" />
       <label v-if="isLogin">
         <RouterLink to="/member">member</RouterLink> |
+        <RouterLink to="/purchase">Purchase</RouterLink> |
+        <button @click="userSignOut">logout</button>
       </label>
       <label v-else>
         <RouterLink to="/login">login</RouterLink> |

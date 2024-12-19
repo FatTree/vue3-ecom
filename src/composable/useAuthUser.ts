@@ -7,34 +7,49 @@ import {
         type UserCredential,
         signInWithEmailAndPassword,
         onAuthStateChanged,
+        type User,
     } from 'firebase/auth'
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 
 export const useAuthUser = () => {
     const auth = getAuth();
-    const currentUser = auth.currentUser;
-
+    const router = useRouter();
+    
+    const errorMsg = ref();
+    const isLogin = ref(false);
     const email = 'athem.lin0@test.com'
     const psw = 'aaaa123'
-    const signUp = () => {
-        createUserWithEmailAndPassword(auth, email, psw)
+
+    const routerAction = () => {
+        const redirect = router.currentRoute.value.query.redirect as string || '/';
+        router.push(redirect);
+    }
+
+    const signUp = (e: string, p: string) => {
+        createUserWithEmailAndPassword(auth, e, p)
             .then( (userCre: UserCredential) => {
                 const user = userCre.user;
                 console.log(`user`, user);
+                routerAction();
             }).catch( (err: Error) => {
                 console.log(err)
+                errorMsg.value = err;
             })
     }
 
-    const signIn = () => {
+    const signIn = (e: string, p: string) => {
         console.log('sign in')
-        signInWithEmailAndPassword(auth, email, psw)
+        signInWithEmailAndPassword(auth, e, p)
             .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user)
+                // const user = userCredential.user;
+                // currentUser.value = userCredential.user;
+                routerAction();
             })
             .catch((err) => {
                 console.log(err)
+                errorMsg.value = err;
             });
     }
 
@@ -46,23 +61,25 @@ export const useAuthUser = () => {
                 const uid = user.uid;
                 console.log('signed in: ',user)
             } else {
-              // User is signed out
-              // ...
                 console.log('user is signout')
             }
+            isLogin.value = !!user;
         });
     }
 
-    const userSignOut = () => {
-        signOut(auth)
-        console.log('signout')
+    const userSignOut = async() => {
+        await signOut(auth);
+        routerAction();
+        console.log('signout');
     }
 
     return {
         signUp,
         signIn,
         checkUser,
-        userSignOut
+        userSignOut,
+        errorMsg,
+        isLogin
     }
 
 }

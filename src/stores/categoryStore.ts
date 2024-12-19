@@ -24,9 +24,9 @@ export const useCategoryStore = defineStore('category', () => {
     isLoading: isCategoryLoading
   } = categoryListApi;
 
-  const getCategoryList = () => {
+  const getCategoryList = async () => {
     if(!categoryList.value) {
-      callApi('/api/products/categories')
+      await callApi('/api/products/categories')
     }
   }
 
