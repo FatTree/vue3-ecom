@@ -12,10 +12,7 @@ const goRegis = () => {
 const authUser = useAuthUser()
 
 const {
-  signUp,
   signIn,
-  checkUser,
-  userSignOut,
   errorMsg
 } = authUser;
 

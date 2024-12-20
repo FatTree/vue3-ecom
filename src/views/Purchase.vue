@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import type { ShippingInfoViewModel } from '@/models/viewModel';
-import { firebaseApp } from '@/plugins/firebase';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+import { getDoc, getFirestore, doc } from 'firebase/firestore';
+import { firebaseApp } from '@/plugins/firebase';
 import { getCurrentUser } from 'vuefire';
 
 const router = useRouter();
@@ -31,8 +32,6 @@ const getUserInfo = async() => {
       }
     }
 }
-
-
 
 const shoppingCartStore = useShoppingCartStore();
 const {
@@ -66,6 +65,7 @@ onMounted(async() => {
   loadCart();
   await getUserInfo();
   shoppingInfo.value = userInfo.value
+  console.log(userInfo)
 })
 
 </script>

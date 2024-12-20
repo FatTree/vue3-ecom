@@ -1,34 +1,35 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { collection, doc, getFirestore } from 'firebase/firestore';
+import { collection, getDoc, getFirestore, doc } from 'firebase/firestore';
 import { getCurrentUser, useDocument } from 'vuefire';
 import { firebaseApp } from '@/plugins/firebase';
-import type { User } from 'firebase/auth';
-import type { ShippingInfoViewModel } from '@/models/viewModel';
+
+
+
 
 export const useUserStore = defineStore('user', () => {
     const db = getFirestore(firebaseApp);
-    const userUid = ref<string>('');
-    const UserInfoCollec = collection(db, 'UserInfo');
-    const info = ref();
-    // const getInfo = async (uid: string) => {
-    //     const userInfo = await useDocument(doc(UserInfoCollec, uid))
-    //     console.log('userInfo: ');
-    //     console.log(userInfo);
-        
-    //     info.value = userInfo;
-    // }
-    // const info = computed(async () => {
-    //     const res = await useDocument(doc(UserInfoCollec, userUid.value))
-    //     if(res) {
-    //         return res;
-    //     }
-    // });
-    // hDbCAKT1a4ZZF1Kcf547nGVL1Zy2
-    
-    
-    
+    const userInfo = ref();
+
+    const getUserInfo = async() => {
+        const user = await getCurrentUser();
+            if(user) {
+                try {
+                    const userDoc = doc(db, 'UserInfo', user.uid); // 指定集合和 Document ID
+                    const userSnapshot = await getDoc(userDoc);
+
+                    if (userSnapshot.exists()) {
+                        userInfo.value = userSnapshot.data(); // 將數據存入 userInfo
+                    } else {
+                        console.error('No such document!');
+                    }
+                } catch(err) {
+                    console.log(err);
+                }
+        }
+    }
     return {
-        info
+        userInfo,
+        getUserInfo
     }
 })
