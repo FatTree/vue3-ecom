@@ -1,6 +1,19 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, onUnmounted, ref, type Ref } from 'vue';
+import ProduceCard from '@/components/ProduceCard.vue';
+import { useProductStore } from '@/stores/productStore';
+import { storeToRefs } from 'pinia';
 
+// stores
+const productStore = useProductStore();
+const {
+  getProductDetailApi
+} = productStore;
+const {
+  productDetailList,
+} = storeToRefs(productStore);
+
+// Hero banner
 const images = ref([
   'https://dummyjson.com/image/1200x400/008080/ffffff?text=Hello+World+NO+1',
   'https://dummyjson.com/image/1200x400/ff9b9b/ffffff?text=Hello+Athem+NO+2',
@@ -9,7 +22,6 @@ const images = ref([
   'https://dummyjson.com/image/1200x400/bfc2ff/ffffff?text=Hello+World+NO+5',
 ]);
 
-// Hero banner
 const currentIndex: Ref<number> = ref(0);
 const wrapper: Ref<HTMLDivElement | null> = ref(null);
 const wpWidth: Ref<number> = ref(0);
@@ -39,10 +51,13 @@ onBeforeMount(() =>{
   startCarousel();
 })
 
-onMounted(() => {
+onMounted(async() => {
+  await getProductDetailApi('1')
   if(wrapper.value) {
     wpWidth.value = wrapper.value.clientWidth ;
   }
+  console.log(productDetailList.value)
+
 })
 
 onUnmounted(() => {
@@ -62,6 +77,7 @@ onUnmounted(() => {
       </div>
     </div>
     <div class="home__content">
+      <ProduceCard :product="productDetailList" />
     </div>
   </div>
 </template>
