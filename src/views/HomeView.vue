@@ -68,20 +68,56 @@ onUnmounted(() => {
 <template>
   <div class="home">
     <div class="home__header">
-      <div class="carousel">
-        <div class="carousel__pic" :style="carouselStyle" ref="wrapper">
-          <div class="img" v-for="(image, index) in images" :key="index">
-            <img :src="image" alt="">
+      <div class="home__header__content">
+        <div class="carousel">
+          <div class="carousel__pic" :style="carouselStyle" ref="wrapper">
+            <div class="img" v-for="(image, index) in images" :key="index">
+              <img :src="image" alt="">
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="home__content">
-      <ProduceCard :product="productDetailList" />
+    <div class="home__content container">
+      <div class="home__content__block">
+        <div class="title">Category</div>
+        <div class="products">
+          <ProduceCard class="products__card" :product="productDetailList" />
+          <ProduceCard class="products__card" :product="productDetailList" />
+          <ProduceCard class="products__card" :product="productDetailList" />
+          <ProduceCard class="products__card" :product="productDetailList" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
+.home {
+  &__header {
+    background-color: $white;
+  }
+  &__content {
+    &__block {
+      overflow: hidden;
+      > .title {
+        @include title-m;
+        text-align: center;
+        line-height: 3rem;
+      }
+      > .products {
+        display: flex;
+        justify-content: space-between;
+        padding: .3rem;
+
+        > .products__card {
+          &:not(:first-child) {
+            margin-left: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
 .carousel {
   overflow: hidden;
   max-width: 1200px;
@@ -95,4 +131,5 @@ onUnmounted(() => {
     }
   }
 }
+
 </style>

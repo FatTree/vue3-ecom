@@ -28,12 +28,20 @@ const gotoProductDetail = () => {
 
 <style lang="scss" scoped>
 .prodCard {
-    width: 250px;
     background-color: $white;
     border-radius: .5rem;
     padding: 1rem;
+    width: 280px;
     cursor: pointer;
     @include shadow;
+    @include RWD(large) {
+        width: 280px;
+    }
+
+    @include RWD(desktop) {
+        width: 230px;
+    }
+
     @include RWD(tablet) {
         width: 160px;
     }
@@ -56,6 +64,9 @@ const gotoProductDetail = () => {
         display: inline-block;
         width: 100%;
         height: 15rem;
+        @include RWD(desktop) {
+            height: 13rem;
+        }
         @include RWD(tablet) {
             height: 9rem;
         }
