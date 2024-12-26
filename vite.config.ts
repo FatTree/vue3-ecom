@@ -6,6 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
 import VueRouter from 'unplugin-vue-router/vite'
 import Components from 'unplugin-vue-components/vite'
+import svgLoader from 'vite-svg-loader';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -22,6 +23,7 @@ export default defineConfig({
       imports: ["vue", "vue-router", "vue-i18n"],
       dts: "src/plugins/auto-import.js"
     }),
+    svgLoader(),
   ],
   resolve: {
     alias: {
@@ -37,4 +39,11 @@ export default defineConfig({
       },
     }
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/assets/styles/main.scss" as *;`
+      }
+    }
+  }
 })

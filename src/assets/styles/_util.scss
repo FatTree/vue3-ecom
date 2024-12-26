@@ -4,8 +4,16 @@
     align-items: center;
 }
 
+@mixin shadow {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
 .d-flex {
     display: flex;
+}
+
+.d-none {
+    display: none;
 }
 
 .space {
@@ -14,4 +22,22 @@
 
 .pointer {
     cursor: pointer;
+}
+
+.p-r-1 {
+    padding-right: 1rem;
+}
+
+.p-l-1 {
+    padding-left: 1rem;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

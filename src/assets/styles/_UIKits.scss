@@ -1,1 +1,25 @@
 // button--primary, secondary, disabled
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 50
+}
+
+.btnYellow {
+    background-color: $yellow-normal;
+    padding: .5rem;
+    text-align: center;
+    border-radius: .5rem;
+    @include label-m;
+    line-height: 1.5em;
+    cursor: pointer;
+    &:hover {
+        background-color: $yellow-normal-hover;
+        transition: background-color .3s;
+    }
+}

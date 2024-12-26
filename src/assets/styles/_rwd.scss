@@ -1,11 +1,11 @@
 $breakpoint-mobile: 480px;
-$breakpoint-tablet: 600px;
-$breakpoint-maxwidth: 1200px;
+$breakpoint-tablet: 768px;
 $breakpoint-desktop: 1024px;
+$breakpoint-maxwidth: 1200px;
 
 @mixin RWD($breakpoint) {
     @if $breakpoint == mobile {
-        @media (min-width: 370px) and (max-width:$breakpoint-mobile){
+        @media (min-width: 375px) and (max-width:$breakpoint-mobile){
             @content;
         }
     } @else if $breakpoint == tablet {
@@ -25,14 +25,11 @@ $breakpoint-desktop: 1024px;
 
 .container {
     margin: 0 auto;
+    min-width: 375px;
+    max-width: 1200px;
 
-    @include RWD(mobile) {
-        width: calc(100% - 2rem);
-        padding: 0 1rem;
-    }
-
-    @include RWD(tablet) {
-        width: 90%;
+    @include RWD(large) {
+        width: 1000px;
     }
 
     @include RWD(desktop) {
@@ -40,7 +37,26 @@ $breakpoint-desktop: 1024px;
         margin: 0 auto;
     }
 
-    @include RWD(large) {
-        width: 1200px;
+    @include RWD(tablet) {
+        width: 90%;
+    }
+
+    @include RWD(mobile) {
+        // width: calc(100% - 1rem);
+        padding: 0.5rem 1rem;
+    }
+}
+
+.mobileOnly {
+    display: none;
+    @media (min-width: 375px) and (max-width: $breakpoint-tablet) {
+        display: block;
+    }
+}
+
+.desktopOnly {
+    display: none;
+    @media (min-width: $breakpoint-tablet) {
+        display: block;
     }
 }
