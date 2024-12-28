@@ -47,21 +47,25 @@ const stopCarousel = () => {
   }
 };
 
+const setWpWidth = () => {
+  if(wrapper.value) {
+    wpWidth.value = wrapper.value.clientWidth;
+  }
+}
+
 onBeforeMount(() =>{
   startCarousel();
 })
 
 onMounted(async() => {
   await getProductDetailApi('1')
-  if(wrapper.value) {
-    wpWidth.value = wrapper.value.clientWidth ;
-  }
-  console.log(productDetailList.value)
-
+  setWpWidth()
+  window.addEventListener('resize', setWpWidth);
 })
 
 onUnmounted(() => {
   stopCarousel(); 
+  window.removeEventListener('resize', setWpWidth);
 })
 </script>
 
@@ -82,10 +86,18 @@ onUnmounted(() => {
       <div class="home__content__block">
         <div class="title">Category</div>
         <div class="products">
-          <ProduceCard class="products__card" :product="productDetailList" />
-          <ProduceCard class="products__card" :product="productDetailList" />
-          <ProduceCard class="products__card" :product="productDetailList" />
-          <ProduceCard class="products__card" :product="productDetailList" />
+          <div class="products__card">
+            <ProduceCard :product="productDetailList" />
+          </div>
+          <div class="products__card">
+            <ProduceCard :product="productDetailList" />
+          </div>
+          <div class="products__card">
+            <ProduceCard :product="productDetailList" />
+          </div>
+          <div class="products__card">
+            <ProduceCard :product="productDetailList" />
+          </div>
         </div>
       </div>
     </div>
@@ -98,36 +110,73 @@ onUnmounted(() => {
   }
   &__content {
     &__block {
-      overflow: hidden;
       > .title {
-        @include title-m;
+        margin-top: 1rem;
+        @include title-l;
         text-align: center;
-        line-height: 3rem;
+        line-height: 2em;
       }
       > .products {
         display: flex;
         justify-content: space-between;
         padding: .3rem;
 
+        @include RWD(tablet) {
+          flex-wrap: wrap;    
+          justify-content: space-between;
+          margin-top: -1.5rem;
+        }
+
         > .products__card {
+          width: calc(25% - 1rem);
           &:not(:first-child) {
             margin-left: 1rem;
           }
+          
+          @include RWD(tablet) {
+            width: calc(50% - 1rem);
+            margin-top: 1.5rem;
+            &:not(:first-child) {
+              margin-left: 0;
+            }
+          }
         }
+
       }
     }
   }
 }
 .carousel {
+  position: relative;
   overflow: hidden;
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 
   &__pic {
     display: flex;
+    width: 100%;
 
     > .img {
       width: 100vw;
+      height: 100%;
+      flex: 0 0 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+
+      @include RWD(tablet) {
+        height: 15rem;
+      }
+
+      > img {
+        width: 100wh;
+        max-height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
     }
   }
 }

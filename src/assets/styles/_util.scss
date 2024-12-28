@@ -8,22 +8,33 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
+// flex
 .d-flex {
     display: flex;
 }
 
-.d-none {
-    display: none;
+.space-between {
+    justify-content: space-between;
 }
 
 .space {
     flex-grow: 1;
 }
 
-.pointer {
-    cursor: pointer;
+
+// display
+.d-none {
+    display: none;
 }
 
+
+// border
+.bd-radius {
+    border-radius: .5rem;
+}
+
+
+// padding
 .p-r-1 {
     padding-right: 1rem;
 }
@@ -32,12 +43,23 @@
     padding-left: 1rem;
 }
 
-.space-between {
-    justify-content: space-between;
-}
 
+// text
 .ellipsis {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-lh-3rem {
+    line-height: 3rem;
+}
+
+// 
+.pointer {
+    cursor: pointer;
 }

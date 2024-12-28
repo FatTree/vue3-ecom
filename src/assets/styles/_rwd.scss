@@ -42,7 +42,6 @@ $breakpoint-maxwidth: 1200px;
     }
 
     @include RWD(mobile) {
-        // width: calc(100% - 1rem);
         padding: 0.5rem 1rem;
     }
 }

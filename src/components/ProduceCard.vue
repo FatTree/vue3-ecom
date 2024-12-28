@@ -18,11 +18,15 @@ const gotoProductDetail = () => {
 </script>
 <template>
     <div class="prodCard" :class="product.stock ? '' : 'prodCard--soldout'" @click="gotoProductDetail">
+        <div class="prodCard__content">
+        </div>
         <p>{{ product.brand }}</p>
-        <h3 class="prodCard__title ellipsis" @click="gotoProductDetail">{{ product.title }}</h3>
+        <h3 class="prodCard__content__title ellipsis" @click="gotoProductDetail">{{ product.title }}</h3>
         <RatingStars :rating="product.rating" />
         <p>TWD {{ product.price }}</p>
-        <div class="prodCard__img" :style="`background-image: url(${product.thumbnail});`"></div>
+        <div class="prodCard__content__img">
+            <img :src="product.thumbnail" alt="">
+        </div>
     </div>
 </template>
 
@@ -31,20 +35,9 @@ const gotoProductDetail = () => {
     background-color: $white;
     border-radius: .5rem;
     padding: 1rem;
-    width: 280px;
+    max-width: 350px;
     cursor: pointer;
     @include shadow;
-    @include RWD(large) {
-        width: 280px;
-    }
-
-    @include RWD(desktop) {
-        width: 230px;
-    }
-
-    @include RWD(tablet) {
-        width: 160px;
-    }
 
     &--soldout {
         background-color: $white-light;
@@ -54,21 +47,16 @@ const gotoProductDetail = () => {
         }
     }
 
-    &__title {
-        @include title-s;
-    }
+    &__content {
 
-    &__img {
-        background-size: contain;
-        background-position: 50% 50%;
-        display: inline-block;
-        width: 100%;
-        height: 15rem;
-        @include RWD(desktop) {
-            height: 13rem;
+        &__title {
+            @include title-s;
         }
-        @include RWD(tablet) {
-            height: 9rem;
+    
+        &__img {
+            > img {
+                width: 100%;
+            }
         }
     }
 }
