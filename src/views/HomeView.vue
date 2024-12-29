@@ -129,6 +129,7 @@ onUnmounted(() => {
 
         > .products__card {
           width: calc(25% - 1rem);
+          
           &:not(:first-child) {
             margin-left: 1rem;
           }

@@ -1,0 +1,30 @@
+$width: ("100": 100%, "75": 75%, "65": 65%, "50": 50%, "35": 35%, "25": 25%);
+@each $k, $v in $width {
+    .width-#{$k}{
+        width: $v;
+    }
+
+    .width-tablet-#{$k}{
+        @include RWD(tablet) {
+            width: $v;
+        }
+    }
+
+    .width-desktop-#{$k}{
+        @include RWD(desktop) {
+            width: $v;
+        }
+    }
+
+    .width-large-#{$k}{
+        @include RWD(large) {
+            width: $v;
+        }
+    }
+
+    .width-mobile-#{$k}{
+        @include RWD(mobile) {
+            width: $v;
+        }
+    }
+}

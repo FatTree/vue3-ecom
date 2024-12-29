@@ -23,3 +23,70 @@
         transition: background-color .3s;
     }
 }
+
+@mixin btn() {
+    
+}
+
+
+.checkbox {
+    display: block;
+    position: relative;
+    padding-left: 2rem;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+
+    &:hover input ~ .checkmark {
+        background-color: $white-hover;
+    }
+
+    > .checkbox__span {
+        @include text-m;
+    }
+
+    > input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+
+        &:checked ~ .checkbox__style {
+            background-color: $violet-normal;
+            &::after {
+                display: block;
+            }
+        }
+    }
+
+    .checkbox__style {
+        position: absolute;
+        top: 6px;
+        left: 0;
+        height: 1.5rem;
+        width: 1.5rem;
+        background-color: $white-light;
+        border: 2px solid $white-dark;
+        border-radius: .2rem;
+    
+        &:hover {
+            background-color: $white-hover;
+        }
+    
+        &::after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid $white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+    }
+}
+
+
