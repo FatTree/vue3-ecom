@@ -24,9 +24,27 @@
     }
 }
 
-@mixin btn() {
-    
+$colors: 
+    "yellow" $yellow-normal $yellow-normal-hover $black,
+    "violet" $violet-normal $violet-normal-hover $white;
+
+@each $k, $n, $h, $f in $colors {
+    .btn-#{$k}{
+        background-color: $n;
+        padding: .5rem;
+        text-align: center;
+        border-radius: .5rem;
+        @include label-m;
+        line-height: 1.5em;
+        color: $f;
+        cursor: pointer;
+        &:hover {
+            background-color: $h;
+            transition: background-color .3s;
+        }
+    }
 }
+
 
 
 .checkbox {
@@ -62,10 +80,10 @@
 
     .checkbox__style {
         position: absolute;
-        top: 6px;
+        top: 7px;
         left: 0;
-        height: 1.5rem;
-        width: 1.5rem;
+        height: 1rem;
+        width: 1rem;
         background-color: $white-light;
         border: 2px solid $white-dark;
         border-radius: .2rem;

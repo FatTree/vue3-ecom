@@ -2,7 +2,7 @@
 import type { ProductListModel, ProductModel } from '@/models/dataModel';
 import { useProductStore } from '@/stores/productStore';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, type ComputedRef, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ProductCard from  '@/components/ProduceCard.vue'
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
@@ -43,7 +43,9 @@ const brandList = computed(() => {
 
 const selectedBrands = ref<string[]>([]);
 const clearSelectedBrands = () => {
-    selectedBrands.value = [];
+    if (selectedBrands.value.length) {
+        selectedBrands.value = [];
+    }
 }
 
 watch(selectedBrands, (n) => {
@@ -98,13 +100,43 @@ watch(sortVal,  async (n) => {
 
 // ui
 const isFilterOpen = ref<boolean>(false);
+const isSortOpen = ref(false);
+const sortDOM = ref<HTMLDivElement | null>(null);
+const sortDisplay = ref('排序')
 const clickFilter = () => {
     isFilterOpen.value = !isFilterOpen.value;
 }
-const brandHeight = computed(() => (2 * brandList.value.size +4.5)+'rem')
+const clickSort = () => {
+    isSortOpen.value = !isSortOpen.value;
+}
+
+const blurSort = () => {
+    isSortOpen.value = false;
+}
+
+const selectSort = (val: string, showVal: string) => {
+    sortVal.value = val;
+    isSortOpen.value = false;
+    sortDisplay.value = showVal;
+}
+
+const brandHeight = computed(() => (2 * brandList.value.size + 3)+'rem')
 
 onMounted( async () => {
     await getProductCategoryApi(cate.value, range, 0);
+    if(sortDOM.value) {
+        sortDOM.value.addEventListener('blur', () => {
+            blurSort();
+        })
+    }
+});
+
+onUnmounted(() => {
+    if(sortDOM.value) {
+        sortDOM.value.removeEventListener('blur', () => {
+            blurSort();
+        });
+    }
 })
 
 </script>
@@ -127,14 +159,21 @@ onMounted( async () => {
                 </div>
             </div>
             <div class="product">
-                <div class="product__title d-flex space-between align-item-center">
+                <div class="product__title title-m d-flex space-between align-item-center mb-1">
                     <h1>{{ cate }} page</h1>
-                    <div class="sort">
-                        <select class="sort__select" v-model="sortVal">
+                    <div class="sort" ref="sortDOM" tabindex="0">
+                        <div class="sort__select" @click="clickSort">
+                            {{ sortDisplay }}
+                        </div>
+                        <div class="sort__option" v-show="isSortOpen">
+                            <div @click="selectSort('asc', '價格由低到高')">價格由低到高</div>
+                            <div @click="selectSort('desc', '價格由高到低')">價格由高到低</div>
+                        </div>
+                        <!-- <select class="sort__select" v-model="sortVal">
                             <option disabled default>價格排序</option>
                             <option value="asc">價格由低到高</option>
                             <option value="desc">價格由高到低</option>
-                        </select>
+                        </select> -->
                     </div>
                 </div>
                 <div class="filter" v-if="isMobile">
@@ -154,7 +193,7 @@ onMounted( async () => {
                                     <div class="checkbox__style"></div>
                                 </label>
                             </div>
-                            <div class="btnYellow mt-1" @click="clearSelectedBrands">clear conditions</div>
+                            <div class="btn-yellow mt-1" @click="clearSelectedBrands">clear conditions</div>
                         </div>
                     </div>
                 </div>
@@ -196,11 +235,35 @@ onMounted( async () => {
 }
 
 .sort {
+    @include text-m;
+    height: 2.5rem;
+    width: 7.5rem;
+    cursor: pointer;
+
     &__select {
         background-color: $white-light;
-        padding: .5rem;
+        padding: .5rem 1rem;
         border-radius: .5rem;
         border: 1px solid $white-hover-active;
+        position: relative;
+    }
+
+    &__option {
+        background-color: $white;
+        border-radius: .5rem;
+        border: 1px solid $white-hover-active;
+        position: relative;
+        z-index: 80;
+        overflow: hidden;
+        @include shadow;
+
+        > div {
+            padding: .5rem 1rem;
+
+            &:hover {
+                background-color: $white-light;
+            }
+        }
     }
 }
 
@@ -209,14 +272,15 @@ onMounted( async () => {
     flex-wrap: wrap;
     justify-content: space-between;
     margin-left: -1rem;
+    margin-top: -1rem;
 
     &__card {
-        max-width: 25%;
+        max-width: calc(25% - 1rem);
         padding-left: 1rem;
         padding-top: 1rem;
 
-        @include RWD(desktop) {
-            max-width: 50%;
+        @include RWD(tablet) {
+            max-width: calc(50% - 1rem);
         }
     }
 }
@@ -230,6 +294,7 @@ onMounted( async () => {
     }
     @include RWD(mobile) {
         min-width: 100%;
+        margin-bottom: 1rem;
     }
 
     &__content {
@@ -241,7 +306,7 @@ onMounted( async () => {
             justify-content: space-between;
 
             > .icon {
-                width: 1rem;
+                height: 1rem;
             }
         }
         &__list {

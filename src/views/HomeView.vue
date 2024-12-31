@@ -116,6 +116,7 @@ onUnmounted(() => {
         text-align: center;
         line-height: 2em;
       }
+
       > .products {
         display: flex;
         justify-content: space-between;
@@ -140,6 +141,10 @@ onUnmounted(() => {
             &:not(:first-child) {
               margin-left: 0;
             }
+          }
+
+          @include RWD(mobile) {
+            width: calc(50% - .75rem);
           }
         }
 
