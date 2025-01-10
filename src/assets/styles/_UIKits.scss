@@ -25,10 +25,10 @@
 }
 
 $colors: 
-    "yellow" $yellow-normal $yellow-normal-hover $black,
-    "violet" $violet-normal $violet-normal-hover $white;
+    "yellow" $yellow-normal $yellow-normal-hover $yellow-light-active $black,
+    "violet" $violet-normal $violet-normal-hover $violet-light-hover $white;
 
-@each $k, $n, $h, $f in $colors {
+@each $k, $n, $d, $h, $f in $colors {
     .btn-#{$k}{
         background-color: $n;
         padding: .5rem;
@@ -41,6 +41,14 @@ $colors:
         &:hover {
             background-color: $h;
             transition: background-color .3s;
+        }
+        &.disabled {
+            background-color: $d;
+            cursor: not-allowed;
+        }
+        &:disabled {
+            background-color: $d;
+            cursor: not-allowed;
         }
     }
 }
@@ -107,4 +115,24 @@ $colors:
     }
 }
 
+@mixin link {
+    color: $violet-normal;
+    text-decoration: underline;
+    cursor: pointer;
 
+    &:hover {
+        color: $violet-normal-hover;
+    }
+}
+
+.link {
+    @include link;
+}
+
+input.input {
+    padding: .5rem 1rem;
+    border: 1px solid $white-hover-active;
+    border-radius: .3rem;
+    font-size: 16px;
+    letter-spacing: 1px;
+}

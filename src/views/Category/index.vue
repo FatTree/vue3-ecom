@@ -169,11 +169,6 @@ onUnmounted(() => {
                             <div @click="selectSort('asc', '價格由低到高')">價格由低到高</div>
                             <div @click="selectSort('desc', '價格由高到低')">價格由高到低</div>
                         </div>
-                        <!-- <select class="sort__select" v-model="sortVal">
-                            <option disabled default>價格排序</option>
-                            <option value="asc">價格由低到高</option>
-                            <option value="desc">價格由高到低</option>
-                        </select> -->
                     </div>
                 </div>
                 <div class="filter" v-if="isMobile">
