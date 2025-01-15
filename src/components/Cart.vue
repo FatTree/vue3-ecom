@@ -2,7 +2,7 @@
 import type { CartProductViewModel } from '@/models/viewModel';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
 import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import deleteIcon from '@/assets/icons/trash-can-solid.svg';
 
 type Props = {
@@ -13,8 +13,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const router = useRouter();
+const route = useRoute();
 
-const gotoPurchase = () => (router.push('/purchase'))
+const emit = defineEmits(['clickPurchase']);
+
+const gotoPurchase = () => {
+  router.push(`/${route.params.locale}/purchase`)
+  emit('clickPurchase');
+}
 
 const shoppingCartStore = useShoppingCartStore();
 const {
@@ -29,10 +35,10 @@ onMounted(() => {
 <template>
   <div class="shoppingCart">
     <div class="shoppingCart__title">
-      <span>Cart Component</span>
+      <span class="title-m">{{ $t('cart.title') }}</span>
     </div>
     <div v-if="cartList?.length===0">
-      <p>no item</p>
+      <p>{{ $t('cart.noItem') }}</p>
     </div>
     <div v-else class="shoppingCart__list">
       <div class="item" v-for="item in cartList">
@@ -53,7 +59,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="btnYellow" @click="gotoPurchase">結帳</div>
+    <div class="btnYellow" @click="gotoPurchase">{{ $t('cart.pay') }}</div>
   </div>
 </template>
 

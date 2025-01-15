@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, onUnmounted, ref, type Ref } from 'vue';
-import ProduceCard from '@/components/ProduceCard.vue';
+import ProductCard from '@/components/ProductCard.vue';
 import { useProductStore } from '@/stores/productStore';
 import { storeToRefs } from 'pinia';
 
 // stores
 const productStore = useProductStore();
 const {
-  getProductDetailApi
+  getProductDetailApi,
+  getProductCategoryApi
 } = productStore;
 const {
   productDetailList,
+  productCategoryList,
+  isProductCategoryLoading,
 } = storeToRefs(productStore);
 
 // Hero banner
@@ -58,7 +61,8 @@ onBeforeMount(() =>{
 })
 
 onMounted(async() => {
-  await getProductDetailApi('1')
+  // await getProductDetailApi('1');
+  await getProductCategoryApi('beauty', 4, 0);
   setWpWidth()
   window.addEventListener('resize', setWpWidth);
 })
@@ -85,18 +89,15 @@ onUnmounted(() => {
     <div class="home__content container">
       <div class="home__content__block">
         <div class="title">Category</div>
-        <div class="products">
-          <div class="products__card">
-            <ProduceCard :product="productDetailList" />
+        {{ isProductCategoryLoading }}:HomeView.vue?t=1736934588198:187 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'products')
+        <div class="products" v-if="productCategoryList">
+          <div class="products__card" v-for="prod in productCategoryList.products">
+            <ProductCard :product="prod" />
           </div>
-          <div class="products__card">
-            <ProduceCard :product="productDetailList" />
-          </div>
-          <div class="products__card">
-            <ProduceCard :product="productDetailList" />
-          </div>
-          <div class="products__card">
-            <ProduceCard :product="productDetailList" />
+        </div>
+        <div class="products" v-else>
+          <div class="products__card" v-for="i in 4">
+            <ProductCard :product="null" />
           </div>
         </div>
       </div>

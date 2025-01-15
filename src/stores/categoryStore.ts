@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import useApi from '@/composable/useApi';
+import type { CategoryModel } from '@/models/dataModel';
 
 export const useCategoryStore = defineStore('category', () => {
   const categoryNameListApi = useApi();
@@ -14,7 +15,7 @@ export const useCategoryStore = defineStore('category', () => {
 
   const getCategoryNameList = () => {
     if(!categoryNameList.value) {
-      callNameApi('/api/products/category-list')
+      callNameApi('/products/category-list')
     }
   }
 
@@ -26,7 +27,7 @@ export const useCategoryStore = defineStore('category', () => {
 
   const getCategoryList = async () => {
     if(!categoryList.value) {
-      await callApi('/api/products/categories')
+      await callApi<CategoryModel[]>('/products/categories')
     }
   }
 

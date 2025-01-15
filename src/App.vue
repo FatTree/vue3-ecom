@@ -3,9 +3,7 @@ import { RouterView } from 'vue-router'
 import { onMounted } from 'vue';
 import { useAuthUser } from './composable/useAuthUser';
 
-
-
-const authUser = useAuthUser()
+const authUser = useAuthUser();
 
 const {
   checkUser,
@@ -20,7 +18,7 @@ onMounted( () => {
 <template>
   <div class="app">
     <Nav :isLogin="isLogin" />
-    <div>
+    <div class="content">
       <RouterView />
     </div>
     <Footer />
@@ -31,4 +29,10 @@ onMounted( () => {
 #app {
   background-color: $bgc;
 }
+.app {
+  >.content {
+    min-height: calc(100vh - 375px);
+  }
+}
+
 </style>

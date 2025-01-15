@@ -95,7 +95,7 @@ onMounted(async() => {
           <div class="step__icon">
             <shoppingIcon class="icon" />
           </div>
-          <span>購買清單</span>
+          <span>{{ $t('purchase.step1') }}</span>
         </div>
         <div class="arrow">
         </div>
@@ -103,7 +103,7 @@ onMounted(async() => {
           <div class="step__icon">
             <fileIcon class="icon" />
           </div>
-          <span>運送資訊</span>
+          <span>{{ $t('purchase.step2') }}</span>
         </div>
         <div class="arrow">
         </div>
@@ -111,14 +111,14 @@ onMounted(async() => {
           <div class="step__icon">
             <paymentIcon class="icon" />
           </div>
-          <span>確認付款</span>
+          <span>{{ $t('purchase.step3') }}</span>
         </div>
       </div>
     </div>
     <div class="purchase__content" v-if="cart.length">
       <div class="purchase__content__step">
         <div v-show="step===1" class="purchaseStep">
-          <p class="title-m pb-1 pt-1 text-center ">檢視購物清單</p>
+          <p class="title-m pb-1 pt-1 text-center ">{{ $t('purchase.list') }}</p>
           <div class="purchaseItem" v-for="cartItem in cart">
             <div class="purchaseItem__img">
               <img :src="cartItem.thumbnail" alt="">
@@ -128,7 +128,7 @@ onMounted(async() => {
                 <h3 class="detailTitle">{{ cartItem.title }}</h3>
                 <div class="detailGroup">
                   <div class="detailGroup__item">
-                    <div class="title">單價</div>
+                    <div class="title">{{ $t('purchase.price') }}</div>
                     <div class="value"> ${{ cartItem.price.toLocaleString()  }}</div>
                   </div>
                   <div class="detailGroup__item">
@@ -136,7 +136,7 @@ onMounted(async() => {
                       <Amount :max="cartItem.stock" :defaultAmount="cartItem.quantity" @updateAmountValue="getAmount" />
                     </div>
                     <div class="total ml-1">
-                      <div class="title">小計</div>
+                      <div class="title">{{ $t('purchase.Subtotal') }}</div>
                       <div class="totalValue">$ {{ (cartItem.price * cartItem.quantity).toLocaleString() }}</div>
                     </div>
                   </div>
@@ -152,69 +152,69 @@ onMounted(async() => {
         </div>
         <div v-show="step===2" class="purchaseStep">
           <div class="purchaseStep__container">
-            <p class="title-m pb-1 text-center ">填寫運送資訊</p>
-            <input type="text" class="input" placeholder="姓名" v-model="shoppingInfo.name"><br>
-            <input type="text" class="input mt-1" placeholder="地址" v-model="shoppingInfo.address"><br>
-            <input type="text" class="input mt-1" placeholder="電話" v-model="shoppingInfo.phone">
+            <p class="title-m pb-1 text-center ">{{ $t('purchase.fill') }}</p>
+            <input type="text" class="input" :placeholder="$t('purchase.name')" v-model="shoppingInfo.name"><br>
+            <input type="text" class="input mt-1" :placeholder="$t('purchase.address')" v-model="shoppingInfo.address"><br>
+            <input type="text" class="input mt-1" :placeholder="$t('purchase.phone')" v-model="shoppingInfo.phone">
           </div>
         </div>
         <div v-show="step===3" class="purchaseStep">
           <div class="purchaseStep__container">
-            <p class="title-m pb-1 text-center ">確認付款</p>
-            <p>訂單金額： {{ totalAmount }} </p>
-            <p>商品總和({{ totalQuantity }}件)</p>
-            <p>運費：{{ shippingFee }}</p>
-            <h3>結帳金額 ${{ totalPay }}</h3>
+            <p class="title-m pb-1 text-center ">{{ $t('purchase.pay') }}</p>
+            <p>{{ $t('purchase.total') }}: {{ totalAmount }} </p>
+            <p>{{ $t('purchase.amount') }}({{ totalQuantity }}{{ $t('purchase.piece') }})</p>
+            <p>{{ $t('purchase.shipping') }}{{ shippingFee }}</p>
+            <h3>{{ $t('purchase.all') }} ${{ totalPay }}</h3>
             <div class="btn-yellow">
-              付款
+              {{ $t('purchase.purchase') }}
             </div>
           </div>
         </div>
       </div>
       <div class="purchase__content__summary" v-if="!isMobile">
         <div class="summary__content">
-          <p class="title-s text-center mb-1">價格詳情</p>
+          <p class="title-s text-center mb-1">{{ $t('purchase.summary') }}</p>
           <div class="row space-between lh-2">
-            <span>訂單金額</span>
+            <span>{{ $t('purchase.total') }}</span>
             <span>TWD {{ totalAmount.toLocaleString() }}</span>
           </div>
           <div class="row space-between lh-2">
-            <span>商品總和</span>
-            <span>{{ totalQuantity }} 件</span>
+            <span>{{ $t('purchase.amount') }}</span>
+            <span>{{ totalQuantity }} {{ $t('purchase.piece') }}</span>
           </div>
           <div class="row space-between lh-2 mb-1">
-            <span>運費</span>
+            <span>{{ $t('purchase.shipping') }}</span>
             <span>TWD {{ shippingFee.toLocaleString() }}</span>
           </div>
           <div class="row space-between lh-3 summary__content__total">
-            <span>結帳金額</span>
+            <span>{{ $t('purchase.all') }}</span>
             <span class="total fw-blod">TWD {{ totalPay.toLocaleString() }}</span>
           </div>
         </div>
       </div>
     </div>
     <div v-else>
-      <h2>購物車沒有項目</h2>
+      <h2>{{ $t('purchase.summary') }}</h2>
     </div>
     <div class="summary--mobile" v-if="isMobile">
       <transition>
         <div class="summary__content" v-show="isShow">
-          <p>訂單金額： {{ totalAmount }} </p>
-          <p>商品總和({{ totalQuantity }}件)</p>
-          <p>運費：{{ shippingFee }}</p>
+          <p>{{ $t('purchase.total') }}: {{ totalAmount }} </p>
+          <p>{{ $t('purchase.amount') }}({{ totalQuantity }}{{ $t('purchase.piece') }})</p>
+          <p>{{ $t('purchase.shipping') }}{{ shippingFee }}</p>
         </div>
       </transition>
       <div class="summary__title" @click="isShow = !isShow">
         <div class="arrow">
           <arrowIcon />
         </div>
-        <h3>結帳金額 ${{ totalPay }}</h3>
+        <h3>{{ $t('purchase.all') }} ${{ totalPay }}</h3>
       </div>
     </div>
     <div class="purchase__controller d-flex mt-1">
-      <div class="btn-yellow mr-1" :class="step===1 ? 'disabled' : ''" @click="gotoStepPage(1, step===1)">檢視購買清單</div>
-      <div class="btn-yellow mr-1" :class="step===2 && !isInfoOk ? 'disabled' : ''" @click="gotoStepPage(2, step===2 && !isInfoOk)">填寫運送資訊</div>
-      <div class="btn-yellow" :class="!isInfoOk ? 'disabled' : ''" @click="gotoStepPage(3, !isInfoOk)">結帳</div>
+      <div class="btn-yellow mr-1" :class="step===1 ? 'disabled' : ''" @click="gotoStepPage(1, step===1)">{{ $t('purchase.review') }}</div>
+      <div class="btn-yellow mr-1" :class="step===2 && !isInfoOk ? 'disabled' : ''" @click="gotoStepPage(2, step===2 && !isInfoOk)">{{ $t('purchase.fill') }}</div>
+      <div class="btn-yellow" :class="!isInfoOk ? 'disabled' : ''" @click="gotoStepPage(3, !isInfoOk)">{{ $t('purchase.purchase') }}</div>
     </div>
   </div>
 </template>

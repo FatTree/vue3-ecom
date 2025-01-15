@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import useApi from '@/composable/useApi'
+import type { ProductDetailViewModel } from '@/models/viewModel';
+import type { ProductModel } from '@/models/dataModel';
 
 export const useProductStore = defineStore('product', () => {
   const productCategoryApi = useApi();
@@ -34,22 +36,22 @@ export const useProductStore = defineStore('product', () => {
 
   const getProductCategoryApi = async (category: string, limit=0, skip=0) => {
     if(limit!==0) {
-      await callProductCategoryApi(`/api/products/category/${category}?limit=${limit}&skip=${skip}`);
+      await callProductCategoryApi<ProductModel[]>(`/products/category/${category}?limit=${limit}&skip=${skip}`);
     } else {
-      callProductCategoryApi(`/api/products/category/${category}`);
+      callProductCategoryApi(`/products/category/${category}`);
     }
   }
 
   const getProductFilterApi = (query: string, limit=4, skip=0) => {
-    callProductFilterApi(`/api/products/search?q=${query}&limit=${limit}&skip=${skip}`);
+    callProductFilterApi(`/products/search?q=${query}&limit=${limit}&skip=${skip}`);
   }
 
   const getProductSortApi = async (category: string, limit=4, skip=0, order: string) => {
-    await callProductSortApi(`/api/products/category/${category}?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`);
+    await callProductSortApi(`/products/category/${category}?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`);
   }
 
   const getProductDetailApi = async (id: string) => {
-    await callProductDetailApi(`/api/products/${id}`);
+    await callProductDetailApi(`/products/${id}`);
   }
 
   return { 

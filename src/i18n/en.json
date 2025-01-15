@@ -1,3 +1,67 @@
 {
-    "name": "Athem"
+    "name": "Shin Fang",
+    "uikit": {
+        "addToCart": "Add to Cart",
+        "amount": "Quantity"
+    },
+    "nav": {
+        "category": "Product Categories",
+        "search": "Search Product Name"
+    },
+    "category": {
+        "brand": "Filter by Brand",
+        "clean": "Clear Filters",
+        "sorting": "Sort",
+        "noItem": "No brand"
+    },
+    "product": {
+        "price": "Discounted Price",
+        "left": "Remaining",
+        "review": "Reviews"
+    },
+    "cart": {
+        "title": "Shopping Cart",
+        "pay": "Checkout",
+        "noItem": "No items in the cart yet"
+    },
+    "purchase": {
+        "step1": "Purchase List",
+        "step2": "Shipping Information",
+        "step3": "Confirm Payment",
+        "list": "View Purchase List",
+        "price": "Unit Price",
+        "Subtotal": "Subtotal",
+        "pay": "Confirm Payment",
+        "summary": "Price Details",
+        "total": "Order Total",
+        "amount": "Total Items",
+        "piece": "Piece(s)",
+        "shipping": "Shipping Fee",
+        "all": "Total Amount",
+        "review": "Review Purchase List",
+        "fill": "Fill Shipping Information",
+        "name": "Name",
+        "phone": "Phone",
+        "address": "Address",
+        "purchase": "Checkout",
+        "noItem": "No items in the cart yet"
+    },
+    "member": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "reacent": "Last 5 Orders...",
+        "date": "Date",
+        "status": "Status",
+        "no": "Order no.",
+        "total": "Amount",
+        "sent": "Shipped",
+        "list": "Purchase List",
+        "pname": "Product Name",
+        "price": "Unit Price",
+        "amount": "Quantity",
+        "all": "Total Amount",
+        "more": "More Orders..."
+    }
 }

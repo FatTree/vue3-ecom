@@ -27,6 +27,7 @@ $breakpoint-maxwidth: 1200px;
     margin: 0 auto;
     min-width: calc(375px - 2rem);
     max-width: 1200px;
+    padding-bottom: 1rem;
 
     @include RWD(large) {
         width: 1000px;

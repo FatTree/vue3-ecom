@@ -4,6 +4,7 @@ import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { computed, onMounted, ref } from 'vue';
 import { getCurrentUser } from 'vuefire';
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
+import { useI18n } from 'vue-i18n';
 
 const db = getFirestore(firebaseApp);
 const userInfo = ref();
@@ -89,6 +90,8 @@ const orderList = [
   }
 ];
 
+const { t } = useI18n();
+
 
 // UI
 const expandedIndex = ref<null | number>(null);
@@ -110,23 +113,23 @@ onMounted(async() => {
             <img src="../assets/icons/face-smile-wink-solid.svg" alt="">
           </div>
           <div class="info__member">
-            <p>name: {{ userInfo.name }}</p>
-            <p>email: {{ userInfo.email }}</p>
+            <p>{{ t('member.name') }}: {{ userInfo.name }}</p>
+            <p>{{ t('member.email') }}: {{ userInfo.email }}</p>
           </div>
           <div class="info__member">
-            <p>phone: {{ userInfo.phone }}</p>
-            <p>address: {{ userInfo.address }}</p>
+            <p>{{ t('member.phone') }}: {{ userInfo.phone }}</p>
+            <p>{{ t('member.address') }}: {{ userInfo.address }}</p>
           </div>
         </div>
       </div>
       <div class="member__content__order pt-1">
         <div class="orderList">
-          <p class="more">近５筆訂單...</p>
+          <p class="more">{{ t('member.reacent') }}</p>
           <div class="orderTitle">
-            <p class="w-7rem">訂單日期</p>
-            <p class="w-6rem">訂單狀態</p>
-            <p class="w-7rem">訂單編號</p>
-            <p class="flex-auto ellipsis">金額</p>
+            <p class="w-7rem">{{ t('member.date') }}</p>
+            <p class="w-6rem">{{ t('member.status') }}</p>
+            <p class="w-7rem">{{ t('member.no') }}</p>
+            <p class="flex-auto ellipsis">{{ t('member.total') }}</p>
           </div>
           <div class="order" v-for="(order, index) in orderList" ref="order">
             <div class="order__info">
@@ -137,15 +140,15 @@ onMounted(async() => {
                 <p class="flex-auto">${{ order.total }}</p>
               </div>
               <div class="order__info__more" @click="clickMore(index)">
-                <p class="mr-1">購買清單</p>
+                <p class="mr-1">{{ t('member.list') }}</p>
                 <arrowIcon class="icon" :class="{ expanded: expandedIndex === index }" />
               </div>
               <div class="order__info__content" :class="expandedIndex === index ? '' : 'close'" :style="{maxHeight: expandedIndex === index ? (order.detail.length * 3) + 3 + 'em' : 0}">
                 <div class="order__info__content__title">
-                  <p class="name">產品名</p>
-                  <p class="price">單價</p>
-                  <p class="quantity">數量</p>
-                  <p class="quantity">總金額</p>
+                  <p class="name">{{ t('member.pname') }}</p>
+                  <p class="price">{{ t('member.price') }}</p>
+                  <p class="quantity">{{ t('member.amount') }}</p>
+                  <p class="quantity">{{ t('member.all') }}</p>
                 </div>
                 <div class="order__info__content__detail" v-for="detail in order.detail" :key="detail.id">
                   <p class="name">{{ detail.name }}</p>
@@ -156,7 +159,7 @@ onMounted(async() => {
               </div>
             </div>
           </div>
-          <p class="more pt-1 link">更多訂單...</p>
+          <p class="more pt-1 link">{{ t('member.more') }}</p>
         </div>
       </div>
     </div>

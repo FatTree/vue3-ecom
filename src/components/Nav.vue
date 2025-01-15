@@ -4,9 +4,10 @@ import { useI18n } from 'vue-i18n';
 import { useCategoryStore } from '@/stores/categoryStore';
 import { storeToRefs } from 'pinia';
 import { computed, nextTick, onBeforeMount, onMounted, onUnmounted, reactive, ref, watch, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import Cart from '@/components/Cart.vue';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
+import { useErrorStore } from '@/stores/errorStore';
 import { useAuthUser } from '@/composable/useAuthUser';
 import searchIcon from '@/assets/icons/magnifying-glass-solid.svg';
 import cartIcon from '@/assets/icons/cart-shopping-solid.svg';
@@ -17,6 +18,7 @@ import MenuIcon from '@/assets/icons/bars-solid.svg';
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
 import useRwd from '@/composable/useRwd';
 import { debounce } from '@/assets/util';
+import AdminPanel from './adminPanel.vue';
 
 // props
 type Props = {
@@ -28,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // composables
 const router = useRouter();
+const route = useRoute();
 const api = useApi();
 const {
   callApi,
@@ -42,30 +45,37 @@ const {
 // stores
 const categoryStore = useCategoryStore();
 const shoppingCartStore = useShoppingCartStore();
+const errorStore = useErrorStore();
 
 const {
-    cart, 
+  cart, 
 } = storeToRefs(shoppingCartStore);
 
 const {
   categoryNameList,
+  categoryList
 } = storeToRefs(categoryStore)
 
 const {
   getCategoryNameList,
+  getCategoryList
 } = useCategoryStore();
 
-
+const {
+  errorList
+} = storeToRefs(errorStore);
 
 const categroy: Ref<string> = ref('');
 watch(categroy, (n) => {
-  router.push({ path: `/${n}`});
+  router.push({ path: `/${locale}/${n}`});
 })
 
 const searchVal: Ref<string> = ref('');
-watch(searchVal, (n) => {
-  callApi(`/api/products/search?q=${n}`);
-})
+watch(searchVal, async(n) => {
+  await callApi(`/api/products/search?q=${n}`);
+});
+
+
 
 // UI Controller
 const { isMobile } = useRwd();
@@ -83,6 +93,8 @@ const languageNavIcon = ref<HTMLDivElement | null>(null);
 
 const shoppingCartPosition = reactive({top: 0, right: 0});
 const languagePosition = reactive({top: 0, right: 0});
+// i18n
+const lang = computed(() => route.params.locale as string);
 
 const updateCartPosition = () => {
   if(shoppingcartIcon.value) {
@@ -152,26 +164,36 @@ const selectategory = (cate: string) => {
   isShowCategory.value = false;
   isShowMenu.value = false;
   isShowOverLay.value = false;
-  router.push(`/${cate}`)
+  router.push(`/${lang.value}/${cate}`)
 }
 
 const selectLanguage = (language: string) => {
+  const newPath = route.fullPath.replace(`${lang.value}`, `${language}`);
+  
   locale.value = language;
   isShowLanguage.value = false;
   isShowOverLay.value = false;
+  router.push(newPath);
 }
 
 onMounted(async () => {
   await getCategoryNameList();
+  await getCategoryList();
   window.addEventListener('resize', debounce(updateCartPosition, 1000));
 })
 
 onUnmounted(() => {
     window.removeEventListener('resize', debounce(updateCartPosition, 1000));
 });
+
 </script>
 <template>
   <div class="nav">
+    <AdminPanel />
+    <div class="error">
+      <ErrorCard v-for="error in errorList" :key="error.id" :errorObj="error" />
+    </div>
+    
     <div class="overlay" @click="clickOverLay" v-show="isShowOverLay"></div>
     <div class="container desktopOnly" v-if="!isMobile">
       <div class="nav__row">
@@ -192,7 +214,7 @@ onUnmounted(() => {
             <div class="search">
               <searchIcon class="search__icon" />
             </div>
-            <input type="text" placeholder="search product name" 
+            <input type="text" :placeholder="t('nav.search')" 
               ref="searchInput"
               @blur="blurSearchInput"
               v-model.lazy="searchVal">
@@ -203,39 +225,38 @@ onUnmounted(() => {
             </div>
           </div>
           <div class="item" v-if="isLogin">
-            <RouterLink to="/member">
+            <RouterLink :to="`/${lang}/member`">
               <div class="icon">
                 <memberIcon class="icon__svg" />
               </div>
             </RouterLink>
           </div>
           <div class="item" v-if="isLogin">
-            <RouterLink to="/purchase">
+            <RouterLink :to="`/${lang}/purchase`">
               <div class="icon">
                 <purchaseIcon class="icon__svg" />
               </div>
             </RouterLink>
           </div>
           <div class="item" v-if="!isLogin">
-            <RouterLink to="/login">login</RouterLink>
+            <RouterLink :to="`/${lang}/login`">login</RouterLink>
           </div>
           <div class="item" ref="languageNavIcon" @click="clickLanguage">
             <div class="icon iconLan">
               <languageIcon class="icon__svg" />
             </div>
           </div>
-            {{ $t('name') }}
         </div>
       </div>
       <div class="nav__row">
         <div class="nav__row__item">
-          <span @click="clickCategory" class="navTitle">商品分類</span>
+          <span @click="clickCategory" class="navTitle">{{ t('nav.category') }}</span>
         </div>
         <div v-show="isShowCategory" class="dropdown">
-          <div v-for="item in categoryNameList"
-            @click="selectategory(`${item}`)"
+          <div v-for="item in categoryList"
+            @click="selectategory(`${item.slug}`)"
             class="dropContent">
-            <span class="dropContent__text">{{ item }}</span>
+            <span class="dropContent__text">{{ item.name }}</span>
           </div>
         </div>
       </div>
@@ -250,9 +271,10 @@ onUnmounted(() => {
         </div>
       </div>
       <Cart v-show="isShowCart"
+        @clickPurchase="isShowCart = !isShowCart"
         class="nav__cart" 
         :cart-list="cart"
-        :style="`top: ${shoppingCartPosition.top}px; left: ${shoppingCartPosition.right}px; min-width: 390px; max-width: 400px`" />
+        :style="`top: ${shoppingCartPosition.top}px; left: ${shoppingCartPosition.right}px; max-width: 370px`" />
     </div>
     <div class="container mobileOnly" v-if="isMobile">
       <div class="menu" v-show="isShowMenu">
@@ -330,11 +352,20 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+
 .nav {
   background-color: $white;
   padding-top: 1rem;
   @include RWD(tablet) {
     padding-top: .5rem;
+  }
+
+  > .error {
+    position: fixed;
+    z-index: 100;
+    bottom: 3rem;
+    left: 50%;
+    margin-left: -10rem;
   }
 
   &__cart {

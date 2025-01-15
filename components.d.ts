@@ -8,10 +8,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddToCartBtn: typeof import('./src/components/addToCartBtn.vue')['default']
+    AdminPanel: typeof import('./src/components/adminPanel.vue')['default']
     Amount: typeof import('./src/components/Amount.vue')['default']
     Cart: typeof import('./src/components/Cart.vue')['default']
     ComponentSample: typeof import('./src/components/ComponentSample.vue')['default']
     copy: typeof import('./src/components/Sample copy.vue')['default']
+    ErrorCard: typeof import('./src/components/ErrorCard.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Icon: typeof import('./src/components/Icon.vue')['default']
@@ -23,6 +25,7 @@ declare module 'vue' {
     Nav: typeof import('./src/components/Nav.vue')['default']
     PageNav: typeof import('./src/components/PageNav.vue')['default']
     ProduceCard: typeof import('./src/components/ProduceCard.vue')['default']
+    ProductCard: typeof import('./src/components/ProductCard.vue')['default']
     PurchaseItem: typeof import('./src/components/PurchaseItem.vue')['default']
     RatingStars: typeof import('./src/components/RatingStars.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

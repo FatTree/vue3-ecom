@@ -61,17 +61,18 @@ onMounted(async() => {
                         <h3>{{ productDetail.title }}</h3>
                         <RatingStars class="detail__content__rating" :rating="productDetail.rating" />
                         <p>{{ productDetail.description }}</p>
-                        <p class="detail__content__price">優惠價 $ {{ productDetail.price }}</p>
-                        <p>{{ productDetail.stock }} left</p>
+                        <p class="detail__content__price">{{ $t('product.price') }} $ {{ productDetail.price }}</p>
+                        <p>{{ productDetail.stock }} {{ $t('product.left') }}</p>
                     </div>
-                    <addToCartBtn :cart-product="convertToCartProductModel(productDetail, 1)"
+                    <addToCartBtn 
+                        :cart-product="convertToCartProductModel(productDetail, 1)"
                         color="yellow" />
                 </div>
             </div>
         </div>
         <div class="review mt-1">
             <div class="review__content">
-                <h3 class="title-m mt-1">Reviews</h3>
+                <h3 class="title-m mt-1">{{ $t('product.review') }}</h3>
                 <div class="mt-1" v-for="review in productDetail.reviews">
                     <RatingStars class="rating" :rating="review.rating" />
                     <div class="title__top d-flex">

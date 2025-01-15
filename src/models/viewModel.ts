@@ -40,3 +40,9 @@ export type ShippingInfoViewModel = {
     phone: string;
     address: string;
 }
+
+export type ErrorViewModel = {
+    id: string;
+    message: string;
+    code?: string;
+}

@@ -1,3 +1,67 @@
 {
-    "name": "欣芳"
+    "name": "欣芳",
+    "uikit": {
+        "addToCart": "加入購物車",
+        "amount": "數量"
+    },
+    "nav": {
+        "category": "商品分類",
+        "search": "搜尋產品名"
+    },
+    "category": {
+        "brand": "品牌篩選",
+        "clean": "清除篩選",
+        "sorting": "排序",
+        "noItem": "沒有品牌"
+    },
+    "product": {
+        "price": "優惠價",
+        "left": "剩",
+        "review": "評論"
+    },
+    "cart": {
+        "title": "購物車",
+        "pay": "結帳",
+        "noItem": "購物車尚未有商品"
+    },
+    "purchase": {
+        "step1": "購買清單",
+        "step2": "運送資訊",
+        "step3": "確認付款",
+        "list": "檢視購物清單",
+        "price": "單價",
+        "Subtotal": "小計",
+        "pay": "確認付款",
+        "summary": "價格詳情",
+        "total": "訂單金額",
+        "amount": "商品總和",
+        "piece": "件",
+        "shipping": "運費",
+        "all": "結帳金額",
+        "review": "檢視購買清單",
+        "fill": "填寫運送資訊",
+        "name": "姓名",
+        "phone": "電話",
+        "address": "地址",
+        "purchase": "結帳",
+        "noItem": "購物車尚未有商品"
+    },
+    "member": {
+        "name": "姓名",
+        "email": "電子信箱",
+        "phone": "電話",
+        "address": "地址",
+        "reacent": "近５筆訂單...",
+        "date": "訂單日期",
+        "status": "訂單狀態",
+        "no": "訂單編號",
+        "total": "金額",
+        "sent": "已出貨",
+        "list": "購買清單",
+        "pname": "產品名",
+        "price": "單價",
+        "amount": "數量",
+        "all": "總金額",
+        "more": "更多訂單..."
+    }
 }

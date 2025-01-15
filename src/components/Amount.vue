@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import addIcon from '@/assets/icons/plus-solid.svg';
+import addIcon from '@/assets/icons/plus-solid.svg';2
 import decreaseIcon from '@/assets/icons/minus-solid.svg';
 import { computed, onMounted, ref, watch } from 'vue';
 
