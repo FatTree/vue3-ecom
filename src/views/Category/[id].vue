@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import addToCartBtn from '@/components/addToCartBtn.vue'
-import { convertToCartProductModel } from '@/assets/modelFormatter'
+import { convertToCartProductModel } from '@/utils/modelFormatter'
 
 const route = useRoute();
 const cate = ref('');
@@ -18,6 +18,12 @@ const {
     productDetailList,
     isProductDetailLoading
 } = storeToRefs(productStore);
+
+const amount = ref(1);
+
+const getAmount = (am: number) => {
+    amount.value = am;
+}
 
 // ui
 const productDetail = ref<ProductModel>({} as ProductModel);
@@ -64,8 +70,10 @@ onMounted(async() => {
                         <p class="detail__content__price">{{ $t('product.price') }} $ {{ productDetail.price }}</p>
                         <p>{{ productDetail.stock }} {{ $t('product.left') }}</p>
                     </div>
+                    <input type="number" v-model="amount">
+                    <AmountUI :max="productDetail.stock" @updateAmount="getAmount" />
                     <addToCartBtn 
-                        :cart-product="convertToCartProductModel(productDetail, 1)"
+                        :cart-product="convertToCartProductModel(productDetail, amount)"
                         color="yellow" />
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { throttle } from "@/assets/util";
+import { throttle } from "@/utils/util";
 import { nextTick, onMounted, onUnmounted } from "vue";
 
 export const useProdHL = (func: Function) => {

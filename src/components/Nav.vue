@@ -17,7 +17,7 @@ import languageIcon from '@/assets/icons/language-solid.svg';
 import MenuIcon from '@/assets/icons/bars-solid.svg';
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
 import useRwd from '@/composable/useRwd';
-import { debounce } from '@/assets/util';
+import { debounce } from '@/utils/util';
 import AdminPanel from './adminPanel.vue';
 
 // props

@@ -1,13 +1,13 @@
-export function throttle (callback: Function, delay=3000) {
-    let timer: NodeJS.Timeout | null = null;
-    
+export function throttle(callback: Function, delay: number) {
+    let lastTime = 0;
+
     return function (...args: any[]) {
-        if(timer) return;
-        timer = setTimeout(() => {
-            callback.apply(this, args);
-            timer = null;
-        }, delay);
-    }
+        const now = Date.now();
+        if (now - lastTime >= delay) {
+            callback(...args);
+            lastTime = now;
+        }
+    };
 }
 
 

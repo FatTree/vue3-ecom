@@ -1,41 +1,39 @@
 <script lang="ts" setup>
 import addIcon from '@/assets/icons/plus-solid.svg';2
 import decreaseIcon from '@/assets/icons/minus-solid.svg';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
 import type { CartProductViewModel } from '@/models/viewModel';
 
 type Props = {
-  cartItem: CartProductViewModel;
+  max: number;
   isDisabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  id: '',
+  max: 1,
   isDisabled: false,
 });
 
-const shoppingCartStore = useShoppingCartStore();
-const {
-    updateQuantity
-} = shoppingCartStore;
-
-
 const amount= ref(1);
-const id = ref('');
-const max = ref(1);
+const maxRef = ref(1);
 
-const isAdd = computed(() => (amount.value === max.value))
+const emits = defineEmits(['updateAmount']);
+
+const emitUpdateAmount = () => {
+  emits('updateAmount', amount.value)
+}
+
+const isAdd = computed(() => (amount.value === maxRef.value))
 const isMinus = computed(() => (amount.value === 1));
 
 watch(amount, () => {
-    if(amount.value > max.value) {
-        amount.value = max.value;
+    if(amount.value > maxRef.value) {
+        amount.value = maxRef.value;
     } else if (amount.value < 1 || typeof amount.value !== 'number') {
         amount.value = 1;
-    } else {
-        return;
     }
+    emitUpdateAmount();
 });
 
 const increaseAmount = () => {
@@ -54,14 +52,10 @@ const decreaseAmount = () => {
     }
 }
 
-watch(amount, (n) => {
-  updateQuantity(id.value, amount.value)
-})
-
 onMounted(() => {
-    amount.value = props.cartItem.quantity;
-    id.value = props.cartItem.id.toString();
-    max.value = props.cartItem.stock;
+  nextTick(() => {
+    maxRef.value = props.max;
+  })
 })
 </script>
 <template>
@@ -77,8 +71,8 @@ onMounted(() => {
     </div>
     <div class="amount-title">數量</div>
     <div class="remains">
-      庫存 {{ max }} 
-      <span class="remains__limit" v-show="amount === max">已到達購買上限</span>
+      庫存 {{ maxRef }}
+      <span class="remains__limit" v-show="amount === maxRef">已到達購買上限 !!!這邊無法更新??</span>
     </div>
   </div>
 </template>

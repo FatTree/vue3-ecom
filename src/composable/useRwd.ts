@@ -1,4 +1,4 @@
-import { debounce } from '@/assets/util';
+import { debounce } from '@/utils/util';
 import { ref, onMounted, onUnmounted } from 'vue';
 
 export default function useApi() {

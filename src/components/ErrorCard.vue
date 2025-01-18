@@ -23,7 +23,6 @@ onMounted(() => {
     setTimeout(() => {
         if (progress.value!==null) {
             progress.value.style.width = '0%';
-            console.log('progress', progress.value);
         }
     }, 10)
     setTimeout(() => {

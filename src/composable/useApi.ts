@@ -13,19 +13,19 @@ export default function useApi() {
     const isLoading: Ref<boolean> = ref(false);
     const fetchData: Ref<any> = ref();
 
-    const callApi2 = async <T>(url: string) => {
-        isLoading.value = true;
-        try {
-            const response = await api.get<T>(url);
-            fetchData.value = response;
-        } catch (error) {
-            console.log(error)
-            const AErr = error as AxiosError;
-            addToErrorList(AErr.message, AErr.status?.toString());
-        } finally {
-            isLoading.value = false;
-        }
-    }
+    // const callApi2 = async <T>(url: string) => {
+    //     isLoading.value = true;
+    //     try {
+    //         const response = await api.get<T>(url);
+    //         fetchData.value = response;
+    //     } catch (error) {
+    //         console.log(error)
+    //         const AErr = error as AxiosError;
+    //         addToErrorList(AErr.message, AErr.status?.toString());
+    //     } finally {
+    //         isLoading.value = false;
+    //     }
+    // }
 
     const callApi = async <T>(
         url: string,

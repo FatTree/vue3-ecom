@@ -41,7 +41,8 @@ const getUserInfo = async() => {
 const shoppingCartStore = useShoppingCartStore();
 const {
     loadCart,
-    removeFromCart
+    removeFromCart,
+    updateQuantity
 } = shoppingCartStore;
 
 const {
@@ -59,26 +60,20 @@ const shoppingInfo = ref<ShippingInfoViewModel>({
   address: '',
 });
 
-
 // UI
 const isInfoOk = computed(() => shoppingInfo.value.address.trim() !== '' && shoppingInfo.value.name.trim() !== '' && shoppingInfo.value.phone.trim() !== '')
 const isShow = ref(false)
 
 const step = ref<number>(1);
 const gotoStepPage = (s: number, isReturn: boolean) => {
-  if (isReturn) {
-    console.log('return')
-    return;
-  }
+  if (isReturn) return;
+
   step.value = s;
   router.push({query: {...route.query, step: s.toString()}})
 }
 
 const { isMobile } = useRwd();
 
-const getAmount = (v: number) => {
-  console.log(v)
-}
 
 onMounted(async() => {
   loadCart();
@@ -133,7 +128,7 @@ onMounted(async() => {
                   </div>
                   <div class="detailGroup__item">
                     <div class="quantity">
-                      <Amount :max="cartItem.stock" :defaultAmount="cartItem.quantity" @updateAmountValue="getAmount" />
+                      <Amount :cartItem="cartItem" />
                     </div>
                     <div class="total ml-1">
                       <div class="title">{{ $t('purchase.Subtotal') }}</div>
@@ -176,7 +171,7 @@ onMounted(async() => {
           <p class="title-s text-center mb-1">{{ $t('purchase.summary') }}</p>
           <div class="row space-between lh-2">
             <span>{{ $t('purchase.total') }}</span>
-            <span>TWD {{ totalAmount.toLocaleString() }}</span>
+            <span>$ {{ totalAmount.toLocaleString() }}</span>
           </div>
           <div class="row space-between lh-2">
             <span>{{ $t('purchase.amount') }}</span>
@@ -184,11 +179,11 @@ onMounted(async() => {
           </div>
           <div class="row space-between lh-2 mb-1">
             <span>{{ $t('purchase.shipping') }}</span>
-            <span>TWD {{ shippingFee.toLocaleString() }}</span>
+            <span>$ {{ shippingFee.toLocaleString() }}</span>
           </div>
           <div class="row space-between lh-3 summary__content__total">
             <span>{{ $t('purchase.all') }}</span>
-            <span class="total fw-blod">TWD {{ totalPay.toLocaleString() }}</span>
+            <span class="total fw-blod">$ {{ totalPay.toLocaleString() }}</span>
           </div>
         </div>
       </div>

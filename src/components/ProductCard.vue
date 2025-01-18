@@ -28,7 +28,7 @@ const gotoProductDetail = () => {
             <p class="ellipsis">{{ product.brand }}</p>
             <h3 class="prodCard__content__title ellipsis" @click="gotoProductDetail">{{ product.title }}</h3>
             <RatingStars :rating="product.rating" />
-            <p>TWD {{ product.price }}</p>
+            <p>$ {{ product.price }}</p>
             <div class="prodCard__content__img">
                 <img :src="product.thumbnail" alt="">
             </div>

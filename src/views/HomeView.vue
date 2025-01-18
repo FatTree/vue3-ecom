@@ -89,7 +89,7 @@ onUnmounted(() => {
     <div class="home__content container">
       <div class="home__content__block">
         <div class="title">Category</div>
-        {{ isProductCategoryLoading }}:HomeView.vue?t=1736934588198:187 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'products')
+        {{ isProductCategoryLoading }}:HomeView.vue: 不能用“isProductCategoryLoading”會: Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'products')
         <div class="products" v-if="productCategoryList">
           <div class="products__card" v-for="prod in productCategoryList.products">
             <ProductCard :product="prod" />

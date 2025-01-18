@@ -136,3 +136,77 @@ input.input {
     font-size: 16px;
     letter-spacing: 1px;
 }
+
+.amountGroup {
+    margin-top: .5rem;
+    .amount {
+        display: flex;
+        justify-content: space-between;
+        padding: 1em;
+        border-radius: 0.5em;
+        border: 1px solid #7B1FC7;
+        width: 6em;
+        user-select: none;  /* 禁用選取 */
+        -webkit-user-select: none;  /* 對於 Safari 和 Chrome */
+        -moz-user-select: none;  /* 對於 Firefox */
+        -ms-user-select: none;  /* 對於 Internet Explorer/Edge */
+        position: relative;
+        @include text-m;
+        color: $black;
+        @include RWD(tablet) {
+            padding: .5rem;
+            width: 5em;
+        }
+        
+        &__symbol {
+            cursor: pointer;
+            width: 1rem;
+            > svg {
+            fill: $violet-normal;
+            }
+        
+            &.disabled {
+            color: $white-hover-active;
+            }
+        }
+        
+        &__add {
+        
+        }
+        &__input {
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            all: unset;
+            width: 1em;
+        }
+        &__decrease {
+        
+        }
+    }
+    .amount-title {
+        position: relative;
+        top: -65px;
+        left: 7px;
+        display: inline-block;
+        background-color: white;
+        color: #999999;
+        font-size: 12px;
+        line-height: 18px;
+        padding: 0 .3em;
+    
+        @include RWD(tablet) {
+            top: -53px;
+        }
+    }
+    .remains {
+        color: $white-hover-active;
+        @include text-s;
+        
+        margin-top: -1.5em;
+        > .remains__limit {
+            height: 1em;;
+            color: $red;
+        }
+    }
+}

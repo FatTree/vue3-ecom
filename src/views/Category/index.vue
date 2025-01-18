@@ -33,10 +33,13 @@ const cate = computed(() => {
 const productList= ref<ProductModel[]>([]);
 
 // filter
-const brandList = computed(():Set<string> => {
-    const brands = productCategoryList.value.products.map( (item: ProductModel) => item.brand)
-    const list = new Set(brands)
-    return list as Set<string>;
+const brandList = computed(():Set<string> | undefined => {
+    if(productCategoryList.value) {
+        console.log('這樣可以嗎?:if(productCategoryList.value.products)....為什麼會跑2次?')
+        const brands = productCategoryList.value.products.map( (item: ProductModel) => item.brand)
+        const list = new Set(brands)
+        return list as Set<string>;
+    }
 })
 
 const selectedBrands = ref<string[]>([]);
@@ -118,9 +121,16 @@ const selectSort = (val: string, showVal: string) => {
     sortDisplay.value = showVal;
 }
 
-const brandHeight = computed(() => (2 * brandList.value.size + 3)+'rem')
+const brandHeight = computed(() => {
+    if (brandList.value) {
+        return (2 * brandList.value.size + 3)+'rem';
+    } else {
+        return 0;
+    }
+})
 
 onMounted( async () => {
+    console.log('product,filter那邊亂七八糟')
     await getProductCategoryApi(cate.value, range, 0);
     
     if(sortDOM.value) {
@@ -144,7 +154,8 @@ onUnmounted(() => {
         <PageNav :layer1="cate" />
         <div class="category__content">
             <div class="filter">
-                <div class="filter__content" v-if="brandList.size===1">
+                沒有品牌這樣寫是不是很怪? v-if="!brandList?.size || brandList?.size===1"
+                <div class="filter__content" v-if="!brandList?.size || brandList?.size===1">
                     <span class="title-s">{{ $t('category.brand') }}</span>
                     <div>
                         沒有品牌
@@ -155,7 +166,7 @@ onUnmounted(() => {
                     <div v-for="brand in brandList">
                         <label class="checkbox">
                             <span class="checkbox__span">{{ brand }}</span>
-                            <input type="checkbox" :value="brand" v-model="selectedBrands" :id="brand" />
+                            <input type="checkbox" :value="brand" v-model="selectedBrands" :key="brand" />
                             <div class="checkbox__style"></div>
                         </label>
                     </div>
@@ -179,7 +190,7 @@ onUnmounted(() => {
                     </div>
                 </div>
                 <div class="filter--mobile">
-                    <div class="filter__content" v-if="brandList.size===1">
+                    <div class="filter__content" v-if="!brandList?.size || brandList?.size===1">
                         <span class="title-s">{{ $t('category.brand') }} 沒有品牌</span>
                     </div>
                     <div class="filter__content" v-else>
@@ -193,7 +204,7 @@ onUnmounted(() => {
                             <div v-for="brand in brandList">
                                 <label class="checkbox">
                                     <span class="checkbox__span">{{ brand }}</span>
-                                    <input type="checkbox" :value="brand" v-model="selectedBrands" :id="brand" />
+                                    <input type="checkbox" :value="brand" v-model="selectedBrands" :key="brand" />
                                     <div class="checkbox__style"></div>
                                 </label>
                             </div>
