@@ -18,7 +18,7 @@ export function debounce(callback: Function, delay=3000) {
         clearTimeout(timer);
 
         timer = setTimeout(() => {
-            callback.apply(this, args)
+            callback.apply(undefined, args)
         }, delay);
     }
 }
