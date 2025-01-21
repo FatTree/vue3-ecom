@@ -1,4 +1,12 @@
 /// <reference types="vite/client" />
+import { ComponentCustomProperties } from "vue"
+
+declare module '@vue/runtime-core' {
+    interface ComponentCustomProperties {
+        $t: I18n['global']['t'];
+    }
+}
+
 interface ImportMetaEnv {
     readonly VITE_API_KEY: string
     readonly VITE_AUTH_DOMAIN: string
