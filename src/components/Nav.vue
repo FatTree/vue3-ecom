@@ -72,7 +72,7 @@ watch(categroy, (n) => {
 
 const searchVal: Ref<string> = ref('');
 watch(searchVal, async(n) => {
-  await callApi(`/api/products/search?q=${n}`);
+  await callApi(`/products/search?q=${n}`);
 });
 
 
