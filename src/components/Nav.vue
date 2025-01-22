@@ -175,7 +175,6 @@ onMounted(async () => {
   await getCategoryNameList();
   await getCategoryList();
   window.addEventListener('resize', debounce(updateCartPosition, 1000));
-  console.log(navigator.language);
   const lang = navigator.language;
   if(lang === 'zh-TW') {
     locale.value = 'ch';

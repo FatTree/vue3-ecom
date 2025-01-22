@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
     layer2: ''
 })
 
-const baseUrl = import.meta.env.VITE_BASE_URL;
+const baseUrl: string = import.meta.env.VITE_BASE_URL;
 
 const clickLayer1 = () => {
     router.push(`/category/${props.layer1}`)
@@ -25,7 +25,7 @@ const clickLayer1 = () => {
 <template>
     <div class="pageNav">
         <div class="pageNav__head">
-            <a class="link ellipsis" :href="baseUrl">首頁</a>
+            <a class="link ellipsis" :href="baseUrl">首頁{{ baseUrl }}</a>
         </div>
         <arrowIcon class="icon" />
         <div class="pageNav__item" @click="clickLayer1">
