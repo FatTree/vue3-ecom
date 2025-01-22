@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const amount= ref(1);
-const maxRef = ref(1);
 
 const emits = defineEmits(['updateAmount']);
 
@@ -24,12 +23,12 @@ const emitUpdateAmount = () => {
   emits('updateAmount', amount.value)
 }
 
-const isAdd = computed(() => (amount.value === maxRef.value))
+const isAdd = computed(() => (amount.value === props.max))
 const isMinus = computed(() => (amount.value === 1));
 
 watch(amount, () => {
-    if(amount.value > maxRef.value) {
-        amount.value = maxRef.value;
+    if(amount.value > props.max) {
+        amount.value = props.max;
     } else if (amount.value < 1 || typeof amount.value !== 'number') {
         amount.value = 1;
     }
@@ -52,11 +51,6 @@ const decreaseAmount = () => {
     }
 }
 
-onMounted(() => {
-  nextTick(() => {
-    maxRef.value = props.max;
-  })
-})
 </script>
 <template>
   <div class="amountGroup">
@@ -71,8 +65,8 @@ onMounted(() => {
     </div>
     <div class="amount-title">數量</div>
     <div class="remains">
-      庫存 {{ maxRef }}
-      <span class="remains__limit" v-show="amount === maxRef">已到達購買上限 !!!這邊無法更新??</span>
+      庫存 {{ props.max }}
+      <span class="remains__limit" v-show="amount === props.max">已到達購買上限 !!!這邊無法更新??</span>
     </div>
   </div>
 </template>
