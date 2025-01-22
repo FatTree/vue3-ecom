@@ -164,7 +164,7 @@ const selectategory = (cate: string) => {
   isShowCategory.value = false;
   isShowMenu.value = false;
   isShowOverLay.value = false;
-  router.push(`/${lang.value}/${cate}`)
+  router.push(`/${lang.value}/category/${cate}`)
 }
 
 const selectLanguage = (language: string) => {

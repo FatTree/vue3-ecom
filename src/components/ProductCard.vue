@@ -17,7 +17,7 @@ const lang = computed(() => route.params.locale )
 
 const gotoProductDetail = () => {
     if(props.product && props.product.stock) {
-        router.push(`/${lang.value}/${props.product.category}/${props.product.id}`)
+        router.push(`/${lang.value}/category/${props.product.category}/${props.product.id}`)
     }
 }
 

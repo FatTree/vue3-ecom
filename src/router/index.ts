@@ -21,12 +21,12 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
     {
-      path: '/:locale/:category',
+      path: '/:locale/category/:category',
       name: 'category',
       component: () => import('../views/Category/index.vue'),
     },
     {
-      path: '/:locale/:category/:id',
+      path: '/:locale/category/:category/:id',
       name: ':id',
       component: () => import('../views/Category/[id].vue'),
     },
