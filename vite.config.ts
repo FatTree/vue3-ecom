@@ -33,7 +33,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: isDev ? 'http://localhost:5173/' : 'https://dummyjson.com/',
+        target: 'https://dummyjson.com/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
