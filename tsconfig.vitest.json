@@ -8,5 +8,5 @@
     "lib": [],
     "types": ["node", "jsdom", "vitest"]
   },
-  "include": ["**/*.test.ts", "**/*.spec.ts"]
+  "include": ["**/*.test.ts", "**/*.spec.ts", "**/*.vue", "**/*.ts"]
 }
