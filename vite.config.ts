@@ -10,6 +10,7 @@ import svgLoader from 'vite-svg-loader';
 const isDev = loadEnv('development', process.cwd(), '').DEV;
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/vue3-ecom/',
   plugins: [
     VueRouter(),
     vue(),
