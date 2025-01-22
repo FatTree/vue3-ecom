@@ -12,7 +12,6 @@ const {
 
 onMounted( () => {
   checkUser();
-  console.log(import.meta.env);
 })
 </script>
 

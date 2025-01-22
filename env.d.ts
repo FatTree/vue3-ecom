@@ -8,6 +8,7 @@ declare module '@vue/runtime-core' {
 }
 
 interface ImportMetaEnv {
+    readonly DEV: boolean
     readonly VITE_API_KEY: string
     readonly VITE_AUTH_DOMAIN: string
     readonly VITE_PROJECT_ID: string
