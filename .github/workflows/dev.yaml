@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     env: 
-      BASE_URL: /EComDev/
+      BASE_URL: /vue3-ecom/
       VITE_SOME_KEY: ${{ secrets.SuperSecret }}
       VITE_API_KEY: ${{ secrets.SuperSecret }}
       VITE_AUTH_DOMAIN: ${{ secrets.SuperSecret }}
