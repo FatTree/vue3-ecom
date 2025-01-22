@@ -35,7 +35,6 @@ const productList= ref<ProductModel[]>([]);
 // filter
 const brandList = computed(():Set<string> | undefined => {
     if(productCategoryList.value) {
-        console.log('這樣可以嗎?:if(productCategoryList.value.products)....為什麼會跑2次?')
         const brands = productCategoryList.value.products.map( (item: ProductModel) => item.brand)
         const list = new Set(brands)
         return list as Set<string>;
@@ -154,7 +153,6 @@ onUnmounted(() => {
         <PageNav :layer1="cate" />
         <div class="category__content">
             <div class="filter">
-                沒有品牌這樣寫是不是很怪? v-if="!brandList?.size || brandList?.size===1"
                 <div class="filter__content" v-if="!brandList?.size || brandList?.size===1">
                     <span class="title-s">{{ $t('category.brand') }}</span>
                     <div>
