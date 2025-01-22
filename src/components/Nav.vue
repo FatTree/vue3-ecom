@@ -67,7 +67,7 @@ const {
 
 const categroy: Ref<string> = ref('');
 watch(categroy, (n) => {
-  router.push({ path: `/${locale}/${n}`});
+  router.push({ path: `/${n}`});
 })
 
 const searchVal: Ref<string> = ref('');
@@ -93,8 +93,6 @@ const languageNavIcon = ref<HTMLDivElement | null>(null);
 
 const shoppingCartPosition = reactive({top: 0, right: 0});
 const languagePosition = reactive({top: 0, right: 0});
-// i18n
-const lang = computed(() => route.params.locale as string);
 
 const updateCartPosition = () => {
   if(shoppingcartIcon.value) {
@@ -164,22 +162,26 @@ const selectategory = (cate: string) => {
   isShowCategory.value = false;
   isShowMenu.value = false;
   isShowOverLay.value = false;
-  router.push(`/${lang.value}/category/${cate}`)
+  router.push(`/category/${cate}`)
 }
 
 const selectLanguage = (language: string) => {
-  const newPath = route.fullPath.replace(`${lang.value}`, `${language}`);
-  
   locale.value = language;
   isShowLanguage.value = false;
   isShowOverLay.value = false;
-  router.push(newPath);
 }
 
 onMounted(async () => {
   await getCategoryNameList();
   await getCategoryList();
   window.addEventListener('resize', debounce(updateCartPosition, 1000));
+  console.log(navigator.language);
+  const lang = navigator.language;
+  if(lang === 'zh-TW') {
+    locale.value = 'ch';
+  } else {
+    locale.value = 'en';
+  }
 })
 
 onUnmounted(() => {
@@ -225,21 +227,21 @@ onUnmounted(() => {
             </div>
           </div>
           <div class="item" v-if="isLogin">
-            <RouterLink :to="`/${lang}/member`">
+            <RouterLink :to="`/member`">
               <div class="icon">
                 <memberIcon class="icon__svg" />
               </div>
             </RouterLink>
           </div>
           <div class="item" v-if="isLogin">
-            <RouterLink :to="`/${lang}/purchase`">
+            <RouterLink :to="`/purchase`">
               <div class="icon">
                 <purchaseIcon class="icon__svg" />
               </div>
             </RouterLink>
           </div>
           <div class="item" v-if="!isLogin">
-            <RouterLink :to="`/${lang}/login`">login</RouterLink>
+            <RouterLink :to="`/login`">login</RouterLink>
           </div>
           <div class="item" ref="languageNavIcon" @click="clickLanguage">
             <div class="icon iconLan">

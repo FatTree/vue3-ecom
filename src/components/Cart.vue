@@ -18,7 +18,7 @@ const route = useRoute();
 const emit = defineEmits(['clickPurchase']);
 
 const gotoPurchase = () => {
-  router.push(`/${route.params.locale}/purchase`)
+  router.push(`/purchase`)
   emit('clickPurchase');
 }
 

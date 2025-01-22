@@ -5,9 +5,6 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
-const route = useRoute();
-
-const locale = ref('');
 
 type Props = {
     layer1?: string;
@@ -19,13 +16,10 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const clickLayer1 = () => {
-    router.push(`/${locale.value}/${props.layer1}`)
-    console.log(`/${locale.value}/${props.layer1}`)
+    router.push(`/${props.layer1}`)
+    console.log(`/${props.layer1}`)
 }
 
-onMounted(() => {
-    locale.value = route.params.locale as string;
-})
 </script>
 <template>
     <div class="pageNav">

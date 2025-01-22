@@ -13,11 +13,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const router = useRouter();
 const route = useRoute();
-const lang = computed(() => route.params.locale )
 
 const gotoProductDetail = () => {
     if(props.product && props.product.stock) {
-        router.push(`/${lang.value}/category/${props.product.category}/${props.product.id}`)
+        router.push(`/category/${props.product.category}/${props.product.id}`)
     }
 }
 
