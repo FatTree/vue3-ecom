@@ -6,7 +6,7 @@ export type ProductListModel  = {
     limit: number
 }
 
-export type ProductModel = {
+export type ProductModel = Partial<{
     id: number
     title: string
     description: string
@@ -29,32 +29,32 @@ export type ProductModel = {
     meta: Meta
     thumbnail: string
     images: string[]
-}
+}>
 
-type Dimensions = {
+type Dimensions = Partial<{
     width: number
     height: number
     depth: number
-}
+}>
 
-type Review = {
+type Review = Partial<{
     rating: number
     comment: string
     date: string
     reviewerName: string
     reviewerEmail: string
-}
+}>
 
-type Meta = {
+type Meta = Partial<{
     createdAt: string
     updatedAt: string
     barcode: string
     qrCode: string
-}
+}>
 
 // Category
-export type CategoryModel = {
+export type CategoryModel = Partial<{
     slug: string
     name: string
     url: string
-}
+}>
