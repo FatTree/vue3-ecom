@@ -13,7 +13,13 @@ export const formatProductDetailToViewModel = (model: ProductModel): ProductDeta
         category: model.category ?? '',
         stock: model.stock ?? 0,
         sku: model.sku ?? '',
-        reviews: model.reviews ?? [],
+        reviews:(model.reviews ?? []).map(review => ({
+            rating: review?.rating ?? 0,
+            comment: review?.comment ?? '',
+            date: review?.date ?? '',
+            reviewerName: review?.reviewerName ?? '',
+            reviewerEmail: review?.reviewerEmail ?? ''
+        })),
         thumbnail: model.thumbnail ?? '',
     }
     return viewModel;
