@@ -1,14 +1,13 @@
 <script lang="ts" setup>
-import type { ProductModel } from '@/models/dataModel'
+import type { ProductCardViewModel } from '@/models/viewModel';
 import { useRoute, useRouter } from 'vue-router';
 import RatingStars from './RatingStars.vue';
-import { computed } from 'vue';
 import ImgIcon from '@/assets/icons/image-solid.svg';
 type Props = {
-    product: ProductModel | null;
+    product: ProductCardViewModel | null;
 }
 const props = withDefaults(defineProps<Props>(), {
-    product: () => ({} as ProductModel)
+    product: () => ({} as ProductCardViewModel)
 })
 
 const router = useRouter();

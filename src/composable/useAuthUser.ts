@@ -35,7 +35,6 @@ export const useAuthUser = () => {
         createUserWithEmailAndPassword(auth, e, p)
             .then( (userCre: UserCredential) => {
                 const user = userCre.user;
-                console.log(`user`, user);
                 routerAction();
             }).catch( (err: Error) => {
                 console.log(err)
@@ -66,7 +65,6 @@ export const useAuthUser = () => {
             if (user) {
                 // User is signed in, see docs for a list of available properties
                 // https://firebase.google.com/docs/reference/js/auth.user
-                console.log('signed in: ',user)
                 // try {
                 //     const userDoc = doc(db, 'UserInfo', user.uid); // 指定集合和 Document ID
                 //     const userSnapshot = await getDoc(userDoc);
