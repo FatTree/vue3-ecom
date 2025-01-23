@@ -43,7 +43,6 @@ export const useAuthUser = () => {
     }
 
     const signIn = (e: string, p: string) => {
-        console.log('sign in')
         signInWithEmailAndPassword(auth, e, p)
             .then((userCredential) => {
                 // const user = userCredential.user;
@@ -60,7 +59,6 @@ export const useAuthUser = () => {
     // const userInfo = ref();
 
     const checkUser = () => {
-        console.log('checkUser()')
         onAuthStateChanged(auth, async(user) => {
             if (user) {
                 // User is signed in, see docs for a list of available properties

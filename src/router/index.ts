@@ -60,7 +60,6 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth) {
     onAuthStateChanged(auth, (user) => {
-      console.log(user)
       if (user) {
         next();
       } else {
