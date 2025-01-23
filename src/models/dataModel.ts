@@ -7,7 +7,6 @@ export type ProductListModel  = {
 }
 
 export type ProductModel = Partial<{
-    id: number
     title: string
     description: string
     category: string
@@ -29,7 +28,9 @@ export type ProductModel = Partial<{
     meta: Meta
     thumbnail: string
     images: string[]
-}>
+}>&{
+    id: number
+}
 
 type Dimensions = Partial<{
     width: number
@@ -37,7 +38,7 @@ type Dimensions = Partial<{
     depth: number
 }>
 
-type Review = Partial<{
+export type Review = Partial<{
     rating: number
     comment: string
     date: string

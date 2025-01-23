@@ -1,4 +1,4 @@
-import type { ProductModel, Review } from "./dataModel"
+import type { Review } from "./dataModel"
 
 export type ProductDetailViewModel = {
     id: number
@@ -12,6 +12,7 @@ export type ProductDetailViewModel = {
     sku: string
     reviews: Review[]
     images: string[]
+    thumbnail: string
 }
 
 export type ProductCardViewModel = Pick<ProductDetailViewModel, 'id' | 'brand' | 'title' | 'price' | 'rating'> & {
@@ -60,4 +61,10 @@ export type ErrorViewModel = {
     id: string;
     message: string;
     code?: string;
+}
+
+export type CategoryViewModel ={
+    slug: string
+    name: string
+    url: string
 }
