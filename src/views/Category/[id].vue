@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { ProductModel } from '@/models/dataModel';
 import { useProductStore } from '@/stores/productStore';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import addToCartBtn from '@/components/addToCartBtn.vue'
 import { formatCartProductToViewModel } from '@/utils/modelFormatter'
+import type { ProductDetailViewModel } from '@/models/viewModel';
 
 const route = useRoute();
 const cate = ref('');
@@ -26,7 +26,7 @@ const getAmount = (am: number) => {
 }
 
 // ui
-const productDetail = ref<ProductModel>({} as ProductModel);
+const productDetail = ref<ProductDetailViewModel>({} as ProductDetailViewModel);
 const productName = ref('');
 const imgsrc = ref('');
 const imgIdx = ref(0);

@@ -25,16 +25,15 @@ describe('ShoppingCart Store', () => {
         setActivePinia(createPinia());
         localStorage.clear();
     });
-
     const createProduct = (overrides?: Partial<CartProductViewModel>): CartProductViewModel => ({
         id: 1,
         title: 'Test Product',
         price: 100,
-        discountPercentage: 10,
         stock: 50,
         sku: 'SKU12345',
         thumbnail: 'test-thumbnail.jpg',
         quantity: 1,
+        brand: 'Test Brand',
         ...overrides,
     });
 
