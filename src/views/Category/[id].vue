@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import addToCartBtn from '@/components/addToCartBtn.vue'
-import { convertToCartProductModel } from '@/utils/modelFormatter'
+import { formatCartProductToViewModel } from '@/utils/modelFormatter'
 
 const route = useRoute();
 const cate = ref('');
@@ -41,7 +41,7 @@ onMounted(async() => {
     cate.value = route.params.category as string;
     productDetail.value = productDetailList.value;
     imgsrc.value = productDetailList.value.images[0];
-    productName.value = productDetail.value.title;
+    productName.value = productDetail.value.title ?? '';
 })
 
 </script>
@@ -73,7 +73,7 @@ onMounted(async() => {
                     <input type="number" v-model="amount">
                     <AmountUI :max="productDetail.stock" @updateAmount="getAmount" />
                     <addToCartBtn 
-                        :cart-product="convertToCartProductModel(productDetail, amount)"
+                        :cart-product="formatCartProductToViewModel(productDetail, amount)"
                         color="yellow" />
                 </div>
             </div>

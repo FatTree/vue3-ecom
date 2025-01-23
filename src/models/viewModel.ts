@@ -1,5 +1,12 @@
 import type { Review } from "./dataModel"
 
+export type ProductDetailListModel = {
+    products: ProductDetailViewModel[],
+    total: number
+    skip: number
+    limit: number
+}
+
 export type ProductDetailViewModel = {
     id: number
     title: string
@@ -15,13 +22,12 @@ export type ProductDetailViewModel = {
     thumbnail: string
 }
 
-export type ProductCardViewModel = Pick<ProductDetailViewModel, 'id' | 'brand' | 'title' | 'price' | 'rating'> & {
+export type ProductCardViewModel = Pick<ProductDetailViewModel, 'id' | 'brand' | 'title' | 'price' | 'rating' | 'category' | 'stock'> & {
     thumbnail: string
 }
 
-export type ProductBrandListViewModel = ProductBrand[];
-
-type ProductBrand = {
+export type ProductBrand = {
+    id: number;
     brand: string;
 }
 

@@ -1,5 +1,5 @@
-import type { CategoryModel, ProductModel } from "@/models/dataModel";
-import type { CartProductViewModel, CategoryViewModel, ProductCardViewModel, ProductDetailViewModel, PurchasSummaryViewModel } from "@/models/viewModel";
+import type { CategoryModel, ProductListModel, ProductModel } from "@/models/dataModel";
+import type { CartProductViewModel, CategoryViewModel, ProductCardViewModel, ProductDetailListModel, ProductDetailViewModel, PurchasSummaryViewModel } from "@/models/viewModel";
 
 export const formatProductDetailToViewModel = (model: ProductModel): ProductDetailViewModel => {
     const viewModel: ProductDetailViewModel = {
@@ -19,6 +19,14 @@ export const formatProductDetailToViewModel = (model: ProductModel): ProductDeta
     return viewModel;
 }
 
+export const formatProductDetailListToViewModel = (model: ProductListModel): ProductDetailListModel => {
+    const viewModel: ProductDetailListModel = {
+        ...model,
+        products: model.products.map( (item: ProductModel) => formatProductDetailToViewModel(item))
+    }
+    return viewModel;
+}
+
 export const formatProductCardToViewModel = (model: ProductModel): ProductCardViewModel => {
     const viewModel: ProductCardViewModel = {
         id: model.id,
@@ -26,6 +34,8 @@ export const formatProductCardToViewModel = (model: ProductModel): ProductCardVi
         title: model.title ?? '',
         price: model.price ?? 0,
         rating: model.rating ?? 0,
+        category: model.category ?? '',
+        stock: model.stock ?? 0,
         thumbnail: model.thumbnail ?? ''
     }
     return viewModel;

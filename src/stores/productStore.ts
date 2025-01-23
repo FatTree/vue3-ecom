@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 import useApi from '@/composable/useApi'
 import type { ProductDetailViewModel } from '@/models/viewModel';
 import type { ProductModel } from '@/models/dataModel';
+import { formatProductCardToViewModel, formatProductDetailListToViewModel, formatProductDetailToViewModel } from '@/utils/modelFormatter';
+import { formatCategoryToViewModel } from '@/utils/modelFormatter';
 
 export const useProductStore = defineStore('product', () => {
   const productCategoryApi = useApi();
@@ -40,18 +42,26 @@ export const useProductStore = defineStore('product', () => {
     } else {
       callProductCategoryApi(`/products/category/${category}`);
     }
+    productCategoryList.value = formatProductDetailListToViewModel(productCategoryList.value);
   }
 
-  const getProductFilterApi = (query: string, limit=4, skip=0) => {
-    callProductFilterApi(`/products/search?q=${query}&limit=${limit}&skip=${skip}`);
+  const getProductFilterApi = async (query: string, limit=4, skip=0) => {
+    await callProductFilterApi(`/products/search?q=${query}&limit=${limit}&skip=${skip}`);
+    productFilterList.value = {
+      total: productFilterList.value.total,
+      skip: productFilterList.value.skip,
+      limit: productFilterList.value.limit,
+      products: productFilterList.value.products.map( (item: ProductModel) => formatProductCardToViewModel(item))};
   }
 
   const getProductSortApi = async (category: string, limit=4, skip=0, order: string) => {
     await callProductSortApi(`/products/category/${category}?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`);
+    productSortList.value = formatProductDetailListToViewModel(productSortList.value);
   }
 
   const getProductDetailApi = async (id: string) => {
     await callProductDetailApi(`/products/${id}`);
+    productDetailList.value = formatProductDetailToViewModel(productDetailList.value);
   }
 
   return { 

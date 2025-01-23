@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-import type { ProductListModel, ProductModel } from '@/models/dataModel';
+import type { ProductCardViewModel } from '@/models/viewModel';
 import { useProductStore } from '@/stores/productStore';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, onUnmounted, ref, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ProductCard from  '@/components/ProductCard.vue'
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
 import filterIcon from '@/assets/icons/filter-solid.svg';
 import { useI18n } from 'vue-i18n';
+import { formatProductCardToViewModel } from '@/utils/modelFormatter';
 
 const route = useRoute();
 const router = useRouter();
@@ -30,16 +31,17 @@ const cate = computed(() => {
     return category.replace(/^./, category[0].toUpperCase());
 });
 
-const productList= ref<ProductModel[]>([]);
+const productList= ref<ProductCardViewModel[]>([]);
 
 // filter
 const brandList = computed(():Set<string> | undefined => {
     if(productCategoryList.value) {
-        const brands = productCategoryList.value.products.map( (item: ProductModel) => item.brand)
+        const brands = productCategoryList.value.products.map( (item: ProductCardViewModel) => item.brand ?? '')
         const list = new Set(brands)
         return list as Set<string>;
     }
 })
+
 
 const selectedBrands = ref<string[]>([]);
 const clearSelectedBrands = () => {
@@ -54,8 +56,7 @@ watch(selectedBrands, (n) => {
         return;
     }
     const targetNamesSet = new Set(selectedBrands.value);
-    const filteredData = productCategoryList.value.products.filter((item: ProductModel) => targetNamesSet.has(item.brand));
-    console.log(filteredData);
+    const filteredData = productCategoryList.value.products.filter((item: ProductCardViewModel) => targetNamesSet.has(item.brand ?? ''));
     productList.value = filteredData;
 })
 
@@ -64,7 +65,7 @@ const range = 8;
 watch(cate, async(n) => {
     await getProductCategoryApi(n, range, 0);
     productList.value = productCategoryList.value.products;
-}, {immediate: true});
+});
 
 // Pagination
 const currentPage: Ref<number> = ref(parseInt(route.query.page as string) || 1);
@@ -76,7 +77,7 @@ watch(
 )
 
 const totalPages = computed(() => {
-    if (productCategoryList.value.total !== undefined) {
+    if (productCategoryList.value) {
         return Math.ceil(productCategoryList.value.total / range )
     }
 });
@@ -93,7 +94,7 @@ const getPageList = async (page: number) => {
 const sortVal: Ref<string> = ref('');
 watch(sortVal,  async (n) => {
     await getProductSortApi(cate.value, range, 0, n);
-    productList.value = productSortList.value.products;
+    productList.value = productSortList.value.products.map( (item: ProductCardViewModel) => formatProductCardToViewModel(item));
 });
 
 // ui
@@ -129,9 +130,8 @@ const brandHeight = computed(() => {
 })
 
 onMounted( async () => {
-    console.log('product,filter那邊亂七八糟')
     await getProductCategoryApi(cate.value, range, 0);
-    
+    productList.value = productCategoryList.value.products;
     if(sortDOM.value) {
         sortDOM.value.addEventListener('blur', () => {
             blurSort();
