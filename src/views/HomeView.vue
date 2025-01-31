@@ -11,7 +11,6 @@ const {
 } = productStore;
 const {
   productCardList,
-  // isProductCategoryLoading,
 } = storeToRefs(productStore);
 
 // Hero banner
