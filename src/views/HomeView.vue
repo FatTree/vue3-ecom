@@ -7,13 +7,11 @@ import { storeToRefs } from 'pinia';
 // stores
 const productStore = useProductStore();
 const {
-  getProductDetailApi,
-  getProductCategoryApi
+  getProductObg,
 } = productStore;
 const {
-  productDetailList,
-  productCategoryList,
-  isProductCategoryLoading,
+  productCardList,
+  // isProductCategoryLoading,
 } = storeToRefs(productStore);
 
 // Hero banner
@@ -61,8 +59,8 @@ onBeforeMount(() =>{
 })
 
 onMounted(async() => {
+  await getProductObg('beauty', 4, 0);
   // await getProductDetailApi('1');
-  await getProductCategoryApi('beauty', 4, 0);
   setWpWidth()
   window.addEventListener('resize', setWpWidth);
 })
@@ -71,6 +69,7 @@ onUnmounted(() => {
   stopCarousel(); 
   window.removeEventListener('resize', setWpWidth);
 })
+
 </script>
 
 <template>
@@ -89,9 +88,9 @@ onUnmounted(() => {
     <div class="home__content container">
       <div class="home__content__block">
         <div class="title">Category</div>
-        {{ isProductCategoryLoading }}:HomeView.vue: 不能用“isProductCategoryLoading”會: Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'products')
-        <div class="products" v-if="productCategoryList">
-          <div class="products__card" v-for="prod in productCategoryList.products">
+        <!-- {{ isProductCategoryLoading }}:HomeView.vue: 不能用“isProductCategoryLoading”會: Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'products') -->
+        <div class="products" v-if="productCardList">
+          <div class="products__card" v-for="prod in productCardList.products">
             <ProductCard :product="prod" />
           </div>
         </div>

@@ -10,7 +10,8 @@ const {
   isLogin,
 } = authUser;
 
-onMounted( () => {
+
+onMounted( async () => {
   checkUser();
 })
 </script>
