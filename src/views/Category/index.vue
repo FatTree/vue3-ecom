@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { ProductCardViewModel } from '@/models/viewModel';
 import { useProductStore } from '@/stores/productStore';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
@@ -8,63 +7,36 @@ import ProductCard from  '@/components/ProductCard.vue'
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
 import filterIcon from '@/assets/icons/filter-solid.svg';
 import { useI18n } from 'vue-i18n';
-import { formatProductCardToViewModel } from '@/utils/modelFormatter';
-
+import { OrderByEnum } from '@/models/viewModel';
 const route = useRoute();
 const router = useRouter();
 const productStore = useProductStore();
 
 const {
-    getProductCategoryApi,
-    getProductSortApi
+    getProductObg,
+    filterProduct,
+    sortProduct,
+    clearSelectedBrands,
 } = productStore;
 
 const {
-    productCategoryList,
-    isProductCategoryLoading,
-    productSortList,
-    isProductSortLoading,
+    productCardList,
+    brandList,
+    selectedBrands,
+    isDone,
+    isError
 } = storeToRefs(productStore);
 
+
 const cate = computed(() => {
-    const category = route.params.category as string;
-    return category.replace(/^./, category[0].toUpperCase());
+    const _category = route.params.category as string;
+    return _category.replace(/^./, _category[0].toUpperCase());
 });
 
-const productList= ref<ProductCardViewModel[]>([]);
-
-// filter
-const brandList = computed(():Set<string> | undefined => {
-    if(productCategoryList.value) {
-        const brands = productCategoryList.value.products.map( (item: ProductCardViewModel) => item.brand ?? '')
-        const list = new Set(brands)
-        return list as Set<string>;
-    }
-})
-
-
-const selectedBrands = ref<string[]>([]);
-const clearSelectedBrands = () => {
-    if (selectedBrands.value.length) {
-        selectedBrands.value = [];
-    }
-}
-
-watch(selectedBrands, (n) => {
-    if (selectedBrands.value.length === 0) {
-        productList.value = productCategoryList.value.products;
-        return;
-    }
-    const targetNamesSet = new Set(selectedBrands.value);
-    const filteredData = productCategoryList.value.products.filter((item: ProductCardViewModel) => targetNamesSet.has(item.brand ?? ''));
-    productList.value = filteredData;
-})
-
+// list
 const range = 8;
-
 watch(cate, async(n) => {
-    await getProductCategoryApi(n, range, 0);
-    productList.value = productCategoryList.value.products;
+    await getProductObg(cate.value, range, 0);
 });
 
 // Pagination
@@ -77,25 +49,17 @@ watch(
 )
 
 const totalPages = computed(() => {
-    if (productCategoryList.value) {
-        return Math.ceil(productCategoryList.value.total / range )
+    if (productCardList.value) {
+        return Math.ceil(productCardList.value.total / range )
     }
 });
 
 const getPageList = async (page: number) => {
     let skip = page===1 ? 0 : range*(page-1)
-    await getProductCategoryApi(cate.value, range, skip);
+    await getProductObg(cate.value, range, skip);
     currentPage.value = page;
-    productList.value = productCategoryList.value.products;
     router.push({query: {...route.query, currentPage: page}})
 }
-
-// sort
-const sortVal: Ref<string> = ref('');
-watch(sortVal,  async (n) => {
-    await getProductSortApi(cate.value, range, 0, n);
-    productList.value = productSortList.value.products.map( (item: ProductCardViewModel) => formatProductCardToViewModel(item));
-});
 
 // ui
 const { t } = useI18n(); 
@@ -104,37 +68,20 @@ const isSortOpen = ref(false);
 const sortDOM = ref<HTMLDivElement | null>(null);
 const sortDisplay = ref(t('category.sorting'))
 
-const clickFilter = () => {
-    isFilterOpen.value = !isFilterOpen.value;
-}
-const clickSort = () => {
-    isSortOpen.value = !isSortOpen.value;
-}
-
-const blurSort = () => {
-    isSortOpen.value = false;
-}
-
-const selectSort = (val: string, showVal: string) => {
-    sortVal.value = val;
-    isSortOpen.value = false;
-    sortDisplay.value = showVal;
-}
-
 const brandHeight = computed(() => {
     if (brandList.value) {
-        return (2 * brandList.value.size + 3)+'rem';
+        return (2 * brandList.value.length + 3)+'rem';
     } else {
         return 0;
     }
 })
 
 onMounted( async () => {
-    await getProductCategoryApi(cate.value, range, 0);
-    productList.value = productCategoryList.value.products;
+    await getProductObg(cate.value, range, 0);
+
     if(sortDOM.value) {
         sortDOM.value.addEventListener('blur', () => {
-            blurSort();
+            isSortOpen.value = false;
         })
     }
 });
@@ -142,18 +89,17 @@ onMounted( async () => {
 onUnmounted(() => {
     if(sortDOM.value) {
         sortDOM.value.removeEventListener('blur', () => {
-            blurSort();
+            isSortOpen.value = false;
         });
     }
 })
-
 </script>
 <template>
     <div class="category container">
         <PageNav :layer1="cate" />
         <div class="category__content">
             <div class="filter">
-                <div class="filter__content" v-if="!brandList?.size || brandList?.size===1">
+                <div class="filter__content" v-if="!brandList?.length || brandList?.length===1">
                     <span class="title-s">{{ $t('category.brand') }}</span>
                     <div>
                         沒有品牌
@@ -164,7 +110,7 @@ onUnmounted(() => {
                     <div v-for="brand in brandList">
                         <label class="checkbox">
                             <span class="checkbox__span">{{ brand }}</span>
-                            <input type="checkbox" :value="brand" v-model="selectedBrands" :key="brand" />
+                            <input type="checkbox" :value="brand" v-model="selectedBrands" @change="filterProduct(selectedBrands)" :key="brand" />
                             <div class="checkbox__style"></div>
                         </label>
                     </div>
@@ -174,26 +120,26 @@ onUnmounted(() => {
             <div class="product">
                 <div class="product__title title-m d-flex space-between align-item-center mb-1">
                     <h1>{{ cate }}</h1>
-                    <div class="sort" ref="sortDOM" tabindex="0">
-                        <div class="sort__select" @click="clickSort">
+                    <div class="sort" ref="sortDOM" tabindex="0" @click="isSortOpen = !isSortOpen">
+                        <div class="sort__select">
                             {{ sortDisplay }}
                             <div class="icon">
                                 <filterIcon />
                             </div>
                         </div>
                         <div class="sort__option" v-show="isSortOpen">
-                            <div @click="selectSort('asc', '價格由低到高')">價格由低到高</div>
-                            <div @click="selectSort('desc', '價格由高到低')">價格由高到低</div>
+                            <div @click="sortProduct(OrderByEnum.ASC)">價格由低到高</div>
+                            <div @click="sortProduct(OrderByEnum.DESC)">價格由高到低</div>
                         </div>
                     </div>
                 </div>
                 <div class="filter--mobile">
-                    <div class="filter__content" v-if="!brandList?.size || brandList?.size===1">
+                    <div class="filter__content" v-if="!brandList?.length || brandList?.length===1">
                         <span class="title-s">{{ $t('category.brand') }} 沒有品牌</span>
                     </div>
                     <div class="filter__content" v-else>
                         <div class="filter__content__top"
-                            @click="clickFilter">
+                            @click="isFilterOpen = !isFilterOpen">
                             <span class="title-s">品牌</span>
                             <arrowIcon class="icon" />
                         </div>
@@ -210,16 +156,9 @@ onUnmounted(() => {
                         </div>
                     </div>
                 </div>
-                <div v-if="isProductCategoryLoading">
+                <div v-if="productCardList">
                     <div class="productList">
-                        <div class="productList__card" v-for="i in 4">
-                            <ProductCard :product="null" />
-                        </div>
-                    </div>
-                </div>
-                <div v-else>
-                    <div class="productList">
-                        <div class="productList__card" v-for="product in productList">
+                        <div class="productList__card" v-for="product in productCardList.products">
                             <ProductCard :product="product" />
                         </div>
                     </div>
@@ -229,7 +168,13 @@ onUnmounted(() => {
                         </button>
                     </div>
                 </div>
-                
+                <div v-else>
+                    <div class="productList">
+                        <div class="productList__card" v-for="i in 4">
+                            <ProductCard :product="null" />
+                        </div>
+                    </div>
+                </div> 
             </div>
         </div>
     </div>
@@ -394,5 +339,4 @@ onUnmounted(() => {
         }
     }
 }
-
 </style>

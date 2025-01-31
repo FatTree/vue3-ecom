@@ -1,5 +1,6 @@
 // Product
-export type ProductListModel  = {
+export type ProductObjModel  = {
+    formatProductDetailListToViewModel: any
     products: ProductModel[],
     total: number
     skip: number

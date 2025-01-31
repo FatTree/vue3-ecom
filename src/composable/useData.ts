@@ -4,50 +4,60 @@ import type { Ref } from 'vue';
 import { useErrorStore } from '@/stores/errorStore';
 import { type AxiosError, type AxiosRequestConfig } from 'axios';
 
-enum HttpMethod {
+export enum HttpMethod {
     GET = 'GET',
     POST = 'POST',
     PUT = 'PUT',
     DELETE = 'DELETE'
 }
 
-export default function useApi() {
-    // type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
-    const axios: any = inject('axios')  // inject axios
+type ResponseModel<T> = {
+    data: T
+    isError: boolean
+}
+
+export default function useData<T>() {
     const errorStore = useErrorStore();
     const { addToErrorList } = errorStore;
-    const isDone: Ref<boolean> = ref(false);
+    const isDone: Ref<boolean> = ref(true);
     const isLoading: Ref<boolean> = ref(false);
-    const fetchData: Ref<any> = ref();
+    const isError: Ref<boolean> = ref(false);
+    const data: Ref<T | undefined> = ref();
 
-    const callApi = async <T>(
+    const fetchedData = async(
         url: string,
         method: HttpMethod = HttpMethod.GET,
         data: Record<string, any> = {},
         config: AxiosRequestConfig = {}
-    ) => {
+    ): Promise<T> => {
         isLoading.value = true;
+        isDone.value = false;
         try {
             const response = await api.request<T>({
                 url,
                 method,
-                data: method !== 'GET' ? data : undefined,
-                params: method === 'GET' ? data : undefined,
+                data: method !== HttpMethod.GET ? data : undefined,
+                params: method === HttpMethod.GET ? data : undefined,
                 ...config,
             });
-            fetchData.value = response;
+            data.value = response;
         } catch (error) {
             console.error('API Error:', (error as AxiosError).message);console.log(error)
             const AErr = error as AxiosError;
             addToErrorList(AErr.message, AErr.status?.toString());
+            isError.value = true;
         } finally {
             isLoading.value = false;
+            isDone.value = true;
+            return data.value;
         }
     };
 
     return {
-        fetchData,
+        fetchedData,
+        data,
+        isDone,
         isLoading,
-        callApi,
+        isError
     }
 }

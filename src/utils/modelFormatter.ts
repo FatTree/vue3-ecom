@@ -1,6 +1,12 @@
-import type { CategoryModel, ProductListModel, ProductModel } from "@/models/dataModel";
-import type { CartProductViewModel, CategoryViewModel, ProductCardViewModel, ProductDetailListModel, ProductDetailViewModel, PurchasSummaryViewModel } from "@/models/viewModel";
+import type { CategoryModel, ProductObjModel, ProductModel } from "@/models/dataModel";
+import type { CartProductViewModel, CategoryViewModel, ProductCardListViewModel, ProductCardViewModel, ProductDetailListViewModel, ProductDetailViewModel, PurchasSummaryViewModel } from "@/models/viewModel";
 
+
+/**
+ * Product Detail
+ * @param model ProductModel
+ * @returns ProductDetailViewModel
+ */
 export const formatProductDetailToViewModel = (model: ProductModel): ProductDetailViewModel => {
     const viewModel: ProductDetailViewModel = {
         id: model.id,
@@ -25,29 +31,50 @@ export const formatProductDetailToViewModel = (model: ProductModel): ProductDeta
     return viewModel;
 }
 
-export const formatProductDetailListToViewModel = (model: ProductListModel): ProductDetailListModel => {
-    const viewModel: ProductDetailListModel = {
-        ...model,
-        products: model.products.map( (item: ProductModel) => formatProductDetailToViewModel(item))
-    }
-    return viewModel;
-}
-
+/**
+ * Product Card
+ * @param model ProductModel
+ * @returns ProductCardViewModel
+ */
 export const formatProductCardToViewModel = (model: ProductModel): ProductCardViewModel => {
     const viewModel: ProductCardViewModel = {
-        id: model.id,
-        brand: model.brand ?? '',
         title: model.title ?? '',
+        category: model.category ?? '',
         price: model.price ?? 0,
         rating: model.rating ?? 0,
-        category: model.category ?? '',
         stock: model.stock ?? 0,
-        thumbnail: model.thumbnail ?? ''
+        thumbnail: model.thumbnail ?? '',
+        brand: model.brand ?? '',
+        id: model.id ?? 0
     }
     return viewModel;
 }
 
-export const formatCartProductToViewModel = (model: ProductModel | ProductDetailViewModel, quantity: number): CartProductViewModel => {
+
+/**
+ * Product Card List
+ * @param model ProductObjModel
+ * @returns ProductCardListModel
+ */
+export const formatProductCardListToViewModel = (model: ProductObjModel): ProductCardListViewModel => {
+    const viewModel: ProductCardListViewModel = {
+        ...model,
+        products: model.products.map( (item: ProductModel) => formatProductCardToViewModel(item))
+    }
+    return viewModel;
+}
+
+/**
+ * Brand List
+ * @param model ProductCardListViewModel
+ * @returns string[]
+ */
+export const formateBrandListToViewModel = (model: ProductObjModel): string[] => {
+    return [...new Set(model.products.map(p => (p.brand ?? '')))];
+}
+
+//cart product
+export const formatCartProductToViewModel = (model: ProductDetailViewModel, quantity: number): CartProductViewModel => {
     const viewModel: CartProductViewModel = {
         id: model.id,
         brand: model.brand ?? '',
@@ -61,6 +88,7 @@ export const formatCartProductToViewModel = (model: ProductModel | ProductDetail
     return viewModel;
 }
 
+//category
 export const formatCategoryToViewModel = (model: CategoryModel): CategoryViewModel => {
     const viewModel: CategoryViewModel = {
         slug: model.slug ?? '',
@@ -69,3 +97,17 @@ export const formatCategoryToViewModel = (model: CategoryModel): CategoryViewMod
     }
     return viewModel;
 }
+
+//purchase summary
+
+
+
+
+
+
+
+
+
+
+
+

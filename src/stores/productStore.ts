@@ -1,81 +1,117 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import useApi from '@/composable/useApi'
-import type { ProductDetailViewModel } from '@/models/viewModel';
-import type { ProductModel } from '@/models/dataModel';
-import { formatProductCardToViewModel, formatProductDetailListToViewModel, formatProductDetailToViewModel } from '@/utils/modelFormatter';
-import { formatCategoryToViewModel } from '@/utils/modelFormatter';
+import { OrderByEnum, type ProductCardListViewModel, type ProductCardViewModel, type ProductDetailViewModel } from '@/models/viewModel';
+import type { ProductModel, ProductObjModel } from '@/models/dataModel';
+import { formateBrandListToViewModel, formatProductCardListToViewModel, formatProductCardToViewModel, formatProductDetailToViewModel } from '@/utils/modelFormatter';
+import useData from '@/composable/useData';
 
 export const useProductStore = defineStore('product', () => {
-  const productCategoryApi = useApi();
-  const productFilterApi = useApi();
-  const productSortApi = useApi();
-  const productDetailApi = useApi();
+  const productObj = useData<ProductObjModel>();
+  const productDetailComp = useData<ProductModel>();
 
-  const {
-    callApi: callProductCategoryApi,
-    fetchData: productCategoryList,
-    isLoading: isProductCategoryLoading
-  } = productCategoryApi;
+  const _productData = ref<ProductObjModel>();
+  const _productCardList = ref<ProductCardListViewModel>();
+  const productCardList = ref<ProductCardListViewModel>();
+  const productDetail = ref<ProductDetailViewModel>();
 
-  const {
-    callApi: callProductFilterApi,
-    fetchData: productFilterList,
-    isLoading: isProductFilterLoading
-  } = productFilterApi;
-
-  const {
-    callApi: callProductSortApi,
-    fetchData: productSortList,
-    isLoading: isProductSortLoading
-  } = productSortApi;
-
-  const {
-    callApi: callProductDetailApi,
-    fetchData: productDetailList,
-    isLoading: isProductDetailLoading
-  } = productDetailApi;
-
-  const getProductCategoryApi = async (category: string, limit=0, skip=0) => {
-    if(limit!==0) {
-      await callProductCategoryApi<ProductModel[]>(`/products/category/${category}?limit=${limit}&skip=${skip}`);
-    } else {
-      callProductCategoryApi(`/products/category/${category}`);
+  const brandList = computed<string[]>(() => {
+    if(_productData.value) {
+      return formateBrandListToViewModel(_productData.value);
     }
-    productCategoryList.value = formatProductDetailListToViewModel(productCategoryList.value);
+    return [];
+  });
+
+  const isDone = ref<boolean>(true);
+  const isError = ref<boolean>(false);
+
+  const initProduct = () => {
+    if(_productData.value) {
+      productCardList.value = JSON.parse(JSON.stringify(_productCardList.value));
+    }
   }
 
-  const getProductFilterApi = async (query: string, limit=4, skip=0) => {
-    await callProductFilterApi(`/products/search?q=${query}&limit=${limit}&skip=${skip}`);
-    productFilterList.value = {
-      total: productFilterList.value.total,
-      skip: productFilterList.value.skip,
-      limit: productFilterList.value.limit,
-      products: productFilterList.value.products.map( (item: ProductModel) => formatProductCardToViewModel(item))};
+  const getProductObg = async (category: string, limit=0, skip=0) => {
+    isDone.value = false;
+    const _dataModel: ProductObjModel = await productObj.fetchedData(`/products/category/${category}?limit=${limit}&skip=${skip}`);
+    _productData.value = _dataModel;
+    if(!productObj.isError.value) {
+      _productCardList.value = formatProductCardListToViewModel(_dataModel);
+      productCardList.value = JSON.parse(JSON.stringify(_productCardList.value));
+    }
+    isDone.value = true;
   }
 
-  const getProductSortApi = async (category: string, limit=4, skip=0, order: string) => {
-    await callProductSortApi(`/products/category/${category}?limit=${limit}&skip=${skip}&sortBy=price&order=${order}`);
-    productSortList.value = formatProductDetailListToViewModel(productSortList.value);
+  const getProductDetail = async (id: string) => {
+    const _dataModel: ProductModel = await productDetailComp.fetchedData(`/products/${id}`);
+    productDetail.value = formatProductDetailToViewModel(_dataModel);
   }
 
-  const getProductDetailApi = async (id: string) => {
-    await callProductDetailApi(`/products/${id}`);
-    productDetailList.value = formatProductDetailToViewModel(productDetailList.value);
+  const filterProduct = (query: string[]) => {
+    try {
+      isDone.value = false;
+      const _list = JSON.parse(JSON.stringify(_productCardList.value));
+      if(query.length > 0 && _productCardList.value && productCardList.value) {
+        productCardList.value = {
+          ...productCardList.value,
+          products: _list.products.filter((product: ProductCardViewModel) => query.includes(product.brand))
+        }
+      } else {
+        productCardList.value = _list;
+      }
+    } catch (error) {
+      isError.value = true;
+      console.error(error);
+    } finally {
+      isDone.value = true;
+    }
+  }
+
+  const selectedBrands = ref<string[]>([]);
+
+  const clearSelectedBrands = () => {
+      if (selectedBrands.value.length) {
+          selectedBrands.value = [];
+          initProduct();
+      }
+  }
+
+  const sortProduct = (order: OrderByEnum) => {
+    try {
+      isDone.value = false;
+      if(productCardList.value) {
+        let result = JSON.parse(JSON.stringify(_productCardList.value));
+        if(order === OrderByEnum.ASC) {
+          result.products = productCardList.value.products.sort((a: ProductCardViewModel, b: ProductCardViewModel) => a.price - b.price);
+          return result;
+        } else if(order === OrderByEnum.DESC) {
+          result.products = productCardList.value.products.sort((a: ProductCardViewModel, b: ProductCardViewModel) => b.price - a.price);
+          return result;
+        } else {
+          return productCardList.value.products;
+        }
+        productCardList.value = result;
+      }
+    } catch (error) {
+      isError.value = true;
+      console.error(error);
+    } finally {
+      isDone.value = true;
+    }
   }
 
   return { 
-    getProductCategoryApi,
-    productCategoryList,
-    isProductCategoryLoading,
-    getProductFilterApi,
-    productFilterList,
-    isProductFilterLoading,
-    getProductSortApi,
-    productSortList,
-    isProductSortLoading,
-    getProductDetailApi,
-    productDetailList,
-    isProductDetailLoading
+    getProductObg,
+    getProductDetail,
+    filterProduct,
+    sortProduct,
+    initProduct,
+    clearSelectedBrands,
+    productObj,
+    productDetail,
+    selectedBrands,
+    brandList,
+    productCardList,
+    isDone,
+    isError
   }
 })

@@ -1,3 +1,5 @@
+import type { Ref } from "vue"
+
 type Review = {
     rating: number
     comment: string
@@ -6,7 +8,7 @@ type Review = {
     reviewerEmail: string
 }
 
-export type ProductDetailListModel = {
+export type ProductDetailListViewModel = {
     products: ProductDetailViewModel[],
     total: number
     skip: number
@@ -28,13 +30,14 @@ export type ProductDetailViewModel = {
     thumbnail: string
 }
 
-export type ProductCardViewModel = Pick<ProductDetailViewModel, 'id' | 'brand' | 'title' | 'price' | 'rating' | 'category' | 'stock'> & {
-    thumbnail: string
-}
+export type ProductCardViewModel = Pick<ProductDetailViewModel, 'id' | 'brand' | 'title' | 'price' | 'rating' | 'category' | 'stock' | 'thumbnail'>;
 
-export type ProductBrand = {
-    id: number;
-    brand: string;
+
+export type ProductCardListViewModel = {
+    products: ProductCardViewModel[],
+    total: number
+    skip: number
+    limit: number
 }
 
 export type CartProductViewModel = Pick<ProductDetailViewModel, 'id' | 'brand' | 'title' | 'price' | 'stock' | 'sku'> & {
@@ -75,8 +78,20 @@ export type ErrorViewModel = {
     code?: string;
 }
 
-export type CategoryViewModel ={
+export type CategoryViewModel = {
     slug: string
     name: string
     url: string
+}
+
+export type UseDataViewModel<T> = {
+    fetchedData: T
+    isLoading: Ref<boolean>
+    isDone: Ref<boolean>
+    isError: Ref<boolean>
+}
+
+export enum OrderByEnum {
+    ASC = 'asc',
+    DESC = 'desc'
 }
