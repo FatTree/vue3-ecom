@@ -13,30 +13,17 @@ import fileIcon from '@/assets/icons/file-lines-solid.svg';
 import paymentIcon from '@/assets/icons/cash-register-solid copy.svg';
 import deleteIcon from '@/assets/icons/trash-can-solid.svg';
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
+import { useAuthUser } from '@/composable/useAuthUser';
 
 const router = useRouter();
 const route = useRoute();
 
-const db = getFirestore(firebaseApp);
-const userInfo = ref();
+const authUser = useAuthUser()
 
-const getUserInfo = async() => {
-  const user = await getCurrentUser();
-    if(user) {
-      try {
-        const userDoc = doc(db, 'UserInfo', user.uid); // 指定集合和 Document ID
-        const userSnapshot = await getDoc(userDoc);
-
-        if (userSnapshot.exists()) {
-          userInfo.value = userSnapshot.data(); // 將數據存入 userInfo
-        } else {
-          console.error('No such document!');
-        }
-      } catch(err) {
-        console.log(err);
-      }
-    }
-}
+const {
+  userInfo,
+  getUserInfo
+} = authUser;
 
 const shoppingCartStore = useShoppingCartStore();
 const {

@@ -1,31 +1,15 @@
 <script lang="ts" setup>
-import { firebaseApp } from '@/plugins/firebase';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import { computed, onMounted, ref } from 'vue';
-import { getCurrentUser } from 'vuefire';
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
 import { useI18n } from 'vue-i18n';
+import { useAuthUser } from '@/composable/useAuthUser';
+import { onMounted, ref } from 'vue';
 
-const db = getFirestore(firebaseApp);
-const userInfo = ref();
+const authUser = useAuthUser()
 
-const getUserInfo = async() => {
-  const user = await getCurrentUser();
-    if(user) {
-      try {
-        const userDoc = doc(db, 'UserInfo', user.uid); // 指定集合和 Document ID
-        const userSnapshot = await getDoc(userDoc);
-
-        if (userSnapshot.exists()) {
-          userInfo.value = userSnapshot.data(); // 將數據存入 userInfo
-        } else {
-          console.error('No such document!');
-        }
-      } catch(err) {
-        console.log(err);
-      }
-    }
-}
+const {
+  userInfo,
+  getUserInfo
+} = authUser;
 
 const orderList = [
   {
