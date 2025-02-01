@@ -5,18 +5,16 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import addToCartBtn from '@/components/addToCartBtn.vue'
 import { formatCartProductToViewModel } from '@/utils/modelFormatter'
-import type { ProductDetailViewModel } from '@/models/viewModel';
 
 const route = useRoute();
 const cate = ref('');
 
 const productStore = useProductStore();
 const {
-    getProductDetailApi
+    getProductDetail
 } = productStore;
 const {
-    productDetailList,
-    isProductDetailLoading
+    productDetail,
 } = storeToRefs(productStore);
 
 const amount = ref(1);
@@ -26,38 +24,27 @@ const getAmount = (am: number) => {
 }
 
 // ui
-const productDetail = ref<ProductDetailViewModel>({} as ProductDetailViewModel);
-const productName = ref('');
-const imgsrc = ref('');
 const imgIdx = ref(0);
-const clickImg = (idx: number) => {
-    imgsrc.value = productDetailList.value.images[idx];
-    imgIdx.value = idx;
-}
-
 
 onMounted(async() => {
-    await getProductDetailApi(route.params.id as string);
+    await getProductDetail(route.params.id as string);
     cate.value = route.params.category as string;
-    productDetail.value = productDetailList.value;
-    imgsrc.value = productDetailList.value.images[0];
-    productName.value = productDetail.value.title ?? '';
 })
 
 </script>
 <template>
     <div class="productDetail container">
-        <PageNav :layer1="cate" :layer2="productName" />
-        <div class="productDetail__container">
+        <PageNav :layer1="cate" :layer2="productDetail?.title" />
+        <div class="productDetail__container" v-if="productDetail">
             <div class="productDetail__container__content">
                 <div class="imgGroup">
                     <div class="bigImg">
-                        <img :src="imgsrc" alt="">
+                        <img :src="productDetail.images[imgIdx]" alt="">
                     </div>
                     <div class="smallImgs">
                         <div class="img" :class="i === imgIdx ? 'selected' : ''"
                             v-for="(img, i) in productDetail.images" :key="img">
-                            <img :src="img" alt="" @click="clickImg(i)">
+                            <img :src="img" alt="" @click="imgIdx=i">
                         </div>
                     </div>
                 </div>
@@ -70,7 +57,6 @@ onMounted(async() => {
                         <p class="detail__content__price">{{ $t('product.price') }} $ {{ productDetail.price }}</p>
                         <p>{{ productDetail.stock }} {{ $t('product.left') }}</p>
                     </div>
-                    <input type="number" v-model="amount">
                     <AmountUI :max="productDetail.stock" @updateAmount="getAmount" />
                     <addToCartBtn 
                         :cart-product="formatCartProductToViewModel(productDetail, amount)"
@@ -81,7 +67,7 @@ onMounted(async() => {
         <div class="review mt-1">
             <div class="review__content">
                 <h3 class="title-m mt-1">{{ $t('product.review') }}</h3>
-                <div class="mt-1" v-for="review in productDetail.reviews">
+                <div class="mt-1" v-for="review in productDetail?.reviews">
                     <RatingStars class="rating" :rating="review.rating" />
                     <div class="title__top d-flex">
                         <p class="title-s">{{ review.reviewerName }}</p>
