@@ -16,6 +16,12 @@ app.use(router)
 app.use(VueAxios, axios)
 app.provide('axios', app.config.globalProperties.axios)
 
+app.directive('focus', {
+  mounted(el) {
+    el.focus()
+  }
+})
+
 app.use(VueFire, {
     firebaseApp,
     modules: [

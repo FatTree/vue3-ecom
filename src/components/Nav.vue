@@ -19,6 +19,7 @@ import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
 import useRwd from '@/composable/useRwd';
 import { debounce } from '@/utils/util';
 import AdminPanel from './adminPanel.vue';
+import usePosition from '@/composable/usePosition';
 
 // props
 type Props = {
@@ -30,14 +31,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 // composables
 const router = useRouter();
-const route = useRoute();
 const api = useApi();
 const {
   callApi,
 } = api;
 
 const { 
-  t,
   locale,
   availableLocales
 } = useI18n();
@@ -91,29 +90,34 @@ const searchInput = ref<HTMLInputElement | null>(null);
 const shoppingcartIcon = ref<HTMLDivElement | null>(null);
 const languageNavIcon = ref<HTMLDivElement | null>(null);
 
-const shoppingCartPosition = reactive({top: 0, right: 0});
-const languagePosition = reactive({top: 0, right: 0});
+const cartPosition = usePosition();
+const languagePosition = usePosition();
 
 const updateCartPosition = () => {
   if(shoppingcartIcon.value) {
-    const rect = shoppingcartIcon.value.getBoundingClientRect();
-    shoppingCartPosition.top = rect.top + 50;
-    shoppingCartPosition.right = rect.right - 300;
+    cartPosition.updatePosition(shoppingcartIcon.value, 50, 300);
   }
 }
 
 const updateLauguagePosition = () => {
   if(languageNavIcon.value) {
-    const rect = languageNavIcon.value.getBoundingClientRect();
-    languagePosition.top = rect.top + 40;
-    languagePosition.right = rect.right - 40;
+    languagePosition.updatePosition(languageNavIcon.value, 40, 40);
+  }
+}
+
+const updatePosition = () => {
+  if(isShowCart.value) {
+    updateCartPosition();
+  }
+  if(isShowLanguage.value) {
+    updateLauguagePosition();
   }
 }
 
 const clickCart = () => {
   isShowCart.value = true;
   isShowOverLay.value = true;
-  updateCartPosition();
+  updatePosition();
 }
 
 const clickLanguage = () => {
@@ -129,7 +133,7 @@ const clickCategory = () => {
 
 const clickSearch = () => {
   isShowSearchInput.value = true;
-  if(searchInput.value && isShowSearchInput.value) {
+  if(searchInput.value) {
     nextTick(() => {
       searchInput.value!.focus();
     })
@@ -174,7 +178,7 @@ const selectLanguage = (language: string) => {
 onMounted(async () => {
   await getCategoryNameList();
   await getCategoryList();
-  window.addEventListener('resize', debounce(updateCartPosition, 1000));
+  window.addEventListener('resize', debounce(updatePosition, 1000));
   const lang = navigator.language;
   if(lang === 'zh-TW') {
     locale.value = 'ch';
@@ -184,7 +188,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-    window.removeEventListener('resize', debounce(updateCartPosition, 1000));
+    window.removeEventListener('resize', debounce(updatePosition, 1000));
 });
 
 </script>
@@ -194,7 +198,6 @@ onUnmounted(() => {
     <div class="error">
       <ErrorCard v-for="error in errorList" :key="error.id" :errorObj="error" />
     </div>
-    
     <div class="overlay" @click="clickOverLay" v-show="isShowOverLay"></div>
     <div class="container desktopOnly" v-if="!isMobile">
       <div class="nav__row">
@@ -215,7 +218,7 @@ onUnmounted(() => {
             <div class="search">
               <searchIcon class="search__icon" />
             </div>
-            <input type="text" :placeholder="t('nav.search')" 
+            <input type="text" :placeholder="$t('nav.search')" 
               ref="searchInput"
               @blur="blurSearchInput"
               v-model.lazy="searchVal">
@@ -251,7 +254,7 @@ onUnmounted(() => {
       </div>
       <div class="nav__row">
         <div class="nav__row__item">
-          <span @click="clickCategory" class="navTitle">{{ t('nav.category') }}</span>
+          <span @click="clickCategory" class="navTitle">{{ $t('nav.category') }}</span>
         </div>
         <div v-show="isShowCategory" class="dropdown">
           <div v-for="item in categoryList"
@@ -262,7 +265,7 @@ onUnmounted(() => {
         </div>
       </div>
       <div v-show="isShowLanguage" class="language" 
-        :style="`top: ${languagePosition.top}px; left: ${languagePosition.right}px;`">
+        :style="`top: ${languagePosition.position.top}px; left: ${languagePosition.position.right}px;`">
         <div class="language__option" 
           v-for="locale in availableLocales" 
           @click="selectLanguage(locale)"
@@ -275,7 +278,7 @@ onUnmounted(() => {
         @clickPurchase="isShowCart = !isShowCart"
         class="nav__cart" 
         :cart-list="cart"
-        :style="`top: ${shoppingCartPosition.top}px; left: ${shoppingCartPosition.right}px; max-width: 370px`" />
+        :style="`top: ${cartPosition.position.top}px; left: ${cartPosition.position.right}px; max-width: 370px`" />
     </div>
     <div class="container mobileOnly" v-if="isMobile">
       <div class="menu" v-show="isShowMenu">
