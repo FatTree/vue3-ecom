@@ -157,7 +157,7 @@ onUnmounted(() => {
                     </div>
                 </div>
                 <div v-if="productCardList">
-                    <div class="productList">
+                    <div class="productList row">
                         <div class="productList__card" v-for="product in productCardList.products">
                             <ProductCard :product="product" />
                         </div>
@@ -238,25 +238,6 @@ onUnmounted(() => {
             &:hover {
                 background-color: $white-light;
             }
-        }
-    }
-}
-
-.productList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-left: -1rem;
-    margin-top: -1rem;
-
-    &__card {
-        width: 100%;
-        max-width: calc(25% - 1rem);
-        padding-left: 1rem;
-        padding-top: 1rem;
-
-        @include RWD(tablet) {
-            max-width: calc(50% - 1rem);
         }
     }
 }

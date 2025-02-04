@@ -15,12 +15,6 @@ declare module 'vue' {
     ComponentSample: typeof import('./src/components/ComponentSample.vue')['default']
     ErrorCard: typeof import('./src/components/ErrorCard.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
-    IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
-    IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
-    IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
-    IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']
     PageNav: typeof import('./src/components/PageNav.vue')['default']
     ProductCard: typeof import('./src/components/ProductCard.vue')['default']
@@ -28,7 +22,5 @@ declare module 'vue' {
     RatingStars: typeof import('./src/components/RatingStars.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
-    WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }

@@ -210,3 +210,21 @@ input.input {
         }
     }
 }
+
+
+.productList.row {
+    margin-top: -1rem;
+    margin-left: -1rem;
+    
+    > .productList__card {
+        width: 25%;
+        @include RWD(tablet) {
+            width: 50%;
+        }
+
+        > .prodCard {
+            margin-top: 1rem;
+            margin-left: 1rem;
+        }
+    }
+}

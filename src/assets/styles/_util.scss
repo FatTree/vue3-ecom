@@ -26,6 +26,12 @@
 }
 
 
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
 // flex
 .d-flex {
     display: flex;

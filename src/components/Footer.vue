@@ -136,9 +136,11 @@ const isServiceOpen = ref(false);
     display: flex;
 
     .title {
-      @include title-m;
       padding: .5rem 0;
       color: $violet-normal;
+      & {
+        @include title-m;
+      }
     }
 
     .content {

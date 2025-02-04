@@ -88,13 +88,13 @@ onUnmounted(() => {
       <div class="home__content__block">
         <div class="title">Category</div>
         <!-- {{ isProductCategoryLoading }}:HomeView.vue: 不能用“isProductCategoryLoading”會: Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'products') -->
-        <div class="products" v-if="productCardList">
-          <div class="products__card" v-for="prod in productCardList.products">
+        <div class="productList row" v-if="productCardList">
+          <div class="productList__card" v-for="prod in productCardList.products">
             <ProductCard :product="prod" />
           </div>
         </div>
-        <div class="products" v-else>
-          <div class="products__card" v-for="i in 4">
+        <div class="productList row" v-else>
+          <div class="productList__card" v-for="i in 4">
             <ProductCard :product="null" />
           </div>
         </div>
@@ -111,42 +111,11 @@ onUnmounted(() => {
     &__block {
       > .title {
         margin-top: 1rem;
-        @include title-l;
         text-align: center;
         line-height: 2em;
-      }
-
-      > .products {
-        display: flex;
-        justify-content: space-between;
-        padding: .3rem;
-
-        @include RWD(tablet) {
-          flex-wrap: wrap;    
-          justify-content: space-between;
-          margin-top: -1.5rem;
+        & {
+          @include title-l;
         }
-
-        > .products__card {
-          width: calc(25% - 1rem);
-          
-          &:not(:first-child) {
-            margin-left: 1rem;
-          }
-          
-          @include RWD(tablet) {
-            width: calc(50% - 1rem);
-            margin-top: 1.5rem;
-            &:not(:first-child) {
-              margin-left: 0;
-            }
-          }
-
-          @include RWD(mobile) {
-            width: calc(50% - .75rem);
-          }
-        }
-
       }
     }
   }
@@ -185,5 +154,4 @@ onUnmounted(() => {
     }
   }
 }
-
 </style>

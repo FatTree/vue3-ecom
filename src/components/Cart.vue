@@ -65,11 +65,11 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .shoppingCart {
-  background-color: $white;
   padding: 1rem;
   border-radius: .5rem;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   position: absolute;
+  background-color: $white;
 
   &::before {
     content: '';
@@ -111,10 +111,12 @@ onMounted(() => {
       width: 5rem;
     }
     > .title {
-      @include title-s;
       color: $white-dark;
       width: 13rem;
       line-height: 2rem;
+      & {
+        @include title-s;
+      }
     }
     > .btnDelete {
       width: 2rem;
