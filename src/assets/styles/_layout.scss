@@ -1,12 +1,5 @@
 $width: ("100": 100%, "75": 75%, "65": 65%, "50": 50%, "35": 35%, "25": 25%);
 
-@mixin productWidth {
-    width: 25%;
-    @include RWD(tablet) {
-        width: 50%;
-    }
-}
-
 @each $k, $v in $width {
     .width-#{$k}{
         width: $v;
