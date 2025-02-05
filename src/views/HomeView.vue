@@ -2,24 +2,36 @@
 import { computed, onBeforeMount, onMounted, onUnmounted, ref, type Ref } from 'vue';
 import ProductCard from '@/components/ProductCard.vue';
 import { useProductStore } from '@/stores/productStore';
+import { useCategoryStore } from '@/stores/categoryStore';
 import { storeToRefs } from 'pinia';
+import { throttle } from '@/utils/util';
 
 // stores
 const productStore = useProductStore();
 const {
-  getProductObg,
+  loadMoreProducts,
+  getProductObg
 } = productStore;
 const {
   productCardList,
+  homePageProductList
 } = storeToRefs(productStore);
+
+const categoryStore = useCategoryStore();
+const {
+  getCategoryNameList,
+} = categoryStore;
+const {
+  categoryNameList,
+} = storeToRefs(categoryStore);
 
 // Hero banner
 const images = ref([
-  'https://dummyjson.com/image/1200x400/008080/ffffff?text=Hello+World+NO+1',
-  'https://dummyjson.com/image/1200x400/ff9b9b/ffffff?text=Hello+Athem+NO+2',
-  'https://dummyjson.com/image/1200x400/ffe1b2/ffffff?text=Hello+World+NO+3',
-  'https://dummyjson.com/image/1200x400/95e5da/ffffff?text=Hello+Athem+NO+4',
-  'https://dummyjson.com/image/1200x400/bfc2ff/ffffff?text=Hello+World+NO+5',
+  `${import.meta.env.BASE_URL}/public/banner1.jpeg`,
+  `${import.meta.env.BASE_URL}/public/banner2.jpeg`,
+  `${import.meta.env.BASE_URL}/public/banner3.jpeg`,
+  `${import.meta.env.BASE_URL}/public/banner4.jpeg`,
+  `${import.meta.env.BASE_URL}/public/banner5.jpeg`,
 ]);
 
 const currentIndex: Ref<number> = ref(0);
@@ -53,22 +65,46 @@ const setWpWidth = () => {
   }
 }
 
+// load more products
+let cateIndex: number = 1;
+
+// // ====== product ======
+let throt_fun = throttle(async () => {
+    if (cateIndex >= categoryNameList.value.length) return;
+    await loadMoreProducts(categoryNameList.value[cateIndex]);
+    cateIndex++;
+}, 1000);
+
+const handleScrollAction = async () => {
+    // pageYOffset
+    const scrollTop = window.scrollY;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = window.innerHeight;
+
+    if (scrollTop + clientHeight >= scrollHeight) {
+        throt_fun();
+    }
+};
+
 onBeforeMount(() =>{
   startCarousel();
-})
+});
 
 onMounted(async() => {
-  await getProductObg('beauty', 4, 0);
-  // await getProductDetailApi('1');
-  setWpWidth()
+  await getCategoryNameList();
+  await loadMoreProducts('beauty');
+  setWpWidth();
   window.addEventListener('resize', setWpWidth);
-})
+  nextTick(() => {
+      window.addEventListener('scroll', handleScrollAction);
+  });
+});
 
 onUnmounted(() => {
   stopCarousel(); 
   window.removeEventListener('resize', setWpWidth);
-})
-
+  window.removeEventListener('scroll', handleScrollAction);
+});
 </script>
 
 <template>
@@ -85,15 +121,21 @@ onUnmounted(() => {
       </div>
     </div>
     <div class="home__content container">
-      <div class="home__content__block">
-        <div class="title">Category</div>
-        <!-- {{ isProductCategoryLoading }}:HomeView.vue: 不能用“isProductCategoryLoading”會: Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'products') -->
-        <div class="productList row" v-if="productCardList">
-          <div class="productList__card" v-for="prod in productCardList.products">
-            <ProductCard :product="prod" />
+      <div class="home__content__block" v-if="homePageProductList">
+        <div class="productGroup" v-for="(group) in homePageProductList">
+          <router-link class="title" :to="`/category/${group.category}`">
+            {{ group.category.replace(/^./, group.category[0].toUpperCase()) }} >
+          </router-link>
+          <div class="productList row">
+            <div class="productList__card" v-for="prod in group.productCardList">
+              <ProductCard :product="prod" />
+            </div>
           </div>
         </div>
-        <div class="productList row" v-else>
+      </div>
+      <div class="home__content__block" v-else>
+        <div class="title">...</div>
+        <div class="productList row">
           <div class="productList__card" v-for="i in 4">
             <ProductCard :product="null" />
           </div>
@@ -106,15 +148,23 @@ onUnmounted(() => {
 .home {
   &__header {
     background-color: $white;
+    &__content {
+      padding: 1rem 0;
+      @include RWD(tablet) {
+        padding: 0;
+      }
+    }
   }
   &__content {
     &__block {
-      > .title {
-        margin-top: 1rem;
-        text-align: center;
-        line-height: 2em;
-        & {
-          @include title-l;
+      > .productGroup {
+        padding: 1rem 0;
+
+        > .title {
+          @include title-m;
+          margin: 1rem 0;
+          line-height: 2em;
+          cursor: pointer;
         }
       }
     }
@@ -124,8 +174,13 @@ onUnmounted(() => {
   position: relative;
   overflow: hidden;
   max-width: 1200px;
+  height: 360px;
   width: 100%;
   margin: 0 auto;
+
+  @include RWD(tablet) {
+    height: 7.5rem;
+  }
 
   &__pic {
     display: flex;
@@ -141,12 +196,12 @@ onUnmounted(() => {
       overflow: hidden;
       position: relative;
 
-      @include RWD(tablet) {
-        height: 15rem;
-      }
+      // @include RWD(tablet) {
+      //   height: 8rem;
+      // }
 
       > img {
-        width: 100wh;
+        width: 100%;
         max-height: 100%;
         object-fit: cover;
         object-position: center;

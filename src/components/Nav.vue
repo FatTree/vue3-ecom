@@ -198,7 +198,7 @@ onUnmounted(() => {
       <ErrorCard v-for="error in errorList" :key="error.id" :errorObj="error" />
     </div>
     <div class="overlay" @click="clickOverLay" v-show="isShowOverLay"></div>
-    <div class="container desktopOnly" v-if="!isMobile">
+    <div class="container" v-if="!isMobile">
       <div class="nav__row">
         <div class="nav__row__item">
           <RouterLink to="/">
@@ -359,8 +359,13 @@ onUnmounted(() => {
 .nav {
   background-color: $white;
   padding-top: 1rem;
+  background-color: $violet-normal;
   @include RWD(tablet) {
     padding-top: .5rem;
+  }
+
+  > .container {
+    padding-bottom: 0;
   }
 
   > .error {
@@ -393,6 +398,9 @@ onUnmounted(() => {
 }
 
 .nav__row__item {
+  .title-l {
+    color: $yellow-normal;
+  }
   &__input {
     background-color: $white-hover;
     border-radius: 2rem;
@@ -406,7 +414,7 @@ onUnmounted(() => {
       margin-right: 1rem;
 
       &__icon {
-        fill: $white-dark;
+        fill: $yellow-normal;
       }
     }
 
@@ -437,15 +445,15 @@ onUnmounted(() => {
     cursor: pointer;
     border-radius: 50%;
     transition: background-color ease .5s;
-    color: $white-hover-active;
+    color: $violet-light-active;
     
     &:hover {
-      background-color: $white-hover;
+      background-color: $violet-light-hover;
     }
 
     &__svg {
       width: 1rem;
-      fill: $white-dark;
+      fill: $white;
     }
   }
 
@@ -453,13 +461,13 @@ onUnmounted(() => {
     @include text-l;
     padding: .5rem .5rem 0 0;
     line-height: 2rem;
-    color: $white-dark;
+    color: $white;
 
     &::after {
       content: '';
       display: block;
       height: 3px;
-      background-color: $violet-normal;
+      background-color: $yellow-normal;
       width: 0;
     }
 

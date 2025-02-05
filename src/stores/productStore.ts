@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { OrderByEnum, type ProductCardListViewModel, type ProductCardViewModel, type ProductDetailViewModel } from '@/models/viewModel';
+import { OrderByEnum, type MoreProductViewModel, type ProductCardListViewModel, type ProductCardViewModel, type ProductDetailViewModel } from '@/models/viewModel';
 import type { ProductModel, ProductObjModel } from '@/models/dataModel';
-import { formateBrandListToViewModel, formatProductCardListToViewModel, formatProductCardToViewModel, formatProductDetailToViewModel } from '@/utils/modelFormatter';
+import { formateBrandListToViewModel, formatProductCardListToViewModel, formatProductCardToHomePageGroup, formatProductCardToViewModel, formatProductDetailToViewModel } from '@/utils/modelFormatter';
 import useData from '@/composable/useData';
 
 export const useProductStore = defineStore('product', () => {
@@ -99,6 +99,17 @@ export const useProductStore = defineStore('product', () => {
     }
   }
 
+  const homePageProductList = ref<MoreProductViewModel[]>([]);
+
+  const loadMoreProducts = async (category: string) => { 
+    const _dataModel: ProductObjModel = await productObj.fetchedData(`/products/category/${category}?limit=4`);
+    const _isExist = homePageProductList.value.find( (item: MoreProductViewModel) => item.category === category)
+    if(!productObj.isError.value && !_isExist) {
+      const _productCards: ProductCardViewModel[] = _dataModel.products.map( (item: ProductModel) => formatProductCardToViewModel(item));
+      homePageProductList.value.push(formatProductCardToHomePageGroup(_productCards));
+    }
+  }
+
   return { 
     getProductObg,
     getProductDetail,
@@ -106,12 +117,14 @@ export const useProductStore = defineStore('product', () => {
     sortProduct,
     initProduct,
     clearSelectedBrands,
+    loadMoreProducts,
     productObj,
     productDetail,
     selectedBrands,
     brandList,
     productCardList,
     isDone,
-    isError
+    isError,
+    homePageProductList
   }
 })

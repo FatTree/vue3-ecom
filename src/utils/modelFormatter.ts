@@ -1,5 +1,5 @@
 import type { CategoryModel, ProductObjModel, ProductModel } from "@/models/dataModel";
-import type { CartProductViewModel, CategoryViewModel, ProductCardListViewModel, ProductCardViewModel, ProductDetailListViewModel, ProductDetailViewModel, PurchasSummaryViewModel } from "@/models/viewModel";
+import type { CartProductViewModel, CategoryViewModel, MoreProductViewModel, ProductCardListViewModel, ProductCardViewModel, ProductDetailListViewModel, ProductDetailViewModel, PurchasSummaryViewModel } from "@/models/viewModel";
 
 
 /**
@@ -46,6 +46,19 @@ export const formatProductCardToViewModel = (model: ProductModel): ProductCardVi
         thumbnail: model.thumbnail ?? '',
         brand: model.brand ?? '',
         id: model.id ?? 0
+    }
+    return viewModel;
+}
+
+/**
+ * Product Card
+ * @param model ProductModel
+ * @returns ProductCardViewModel
+ */
+export const formatProductCardToHomePageGroup = (cardList: ProductCardViewModel[]): MoreProductViewModel => {
+    const viewModel: MoreProductViewModel = {
+        category: cardList[0].category,
+        productCardList: cardList
     }
     return viewModel;
 }

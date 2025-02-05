@@ -40,6 +40,11 @@ export type ProductCardListViewModel = {
     limit: number
 }
 
+export type MoreProductViewModel = {
+    category: string
+    productCardList: ProductCardViewModel[]
+}
+
 export type CartProductViewModel = Pick<ProductDetailViewModel, 'id' | 'brand' | 'title' | 'price' | 'stock' | 'sku'> & {
     thumbnail: string
     quantity: number
