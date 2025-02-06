@@ -40,7 +40,7 @@ export const useProductStore = defineStore('product', () => {
   
   const getProductCardPageObj = async (category: string, limit=0, skip=0) => {
     isReadyProductCard.value = false;
-    const _dataModel: ProductObjModel = await productObj.fetchedData(`/products/category/${category}?limit=${limit}&skip=${skip}`);
+    const _dataModel: ProductObjModel = await productObj.fetchedData(`/products/category/${category}`);
     _productData.value = _dataModel;
     if(!productObj.isError.value) {
       _productCardList.value = formatProductCardListToViewModel(_dataModel);
@@ -89,6 +89,7 @@ export const useProductStore = defineStore('product', () => {
       productObj.isError.value = true;
       console.error(error);
     } finally {
+      console.log(productCardList.value);
       isReadyProductCard.value = true;
     }
   }

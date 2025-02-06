@@ -32,10 +32,13 @@ const cate = computed(() => {
     return _category.replace(/^./, _category[0].toUpperCase());
 });
 
+
+
 // list
 const range = 8;
 watch(cate, async(n) => {
     await getProductCardPageObj(cate.value, range, 0);
+    skip.value = 0;
 });
 
 // Pagination
@@ -46,16 +49,25 @@ watch(
         currentPage.value = parseInt(newPage as string) || 1;
     }
 )
+const skip = ref(0);
+
+const productCardCurrentList = computed(() => {
+    if (productCardList.value) {
+        return productCardList.value.products.slice(skip.value, skip.value+range);
+    }
+})
 
 const totalPages = computed(() => {
     if (productCardList.value) {
-        return Math.ceil(productCardList.value.total / range )
+        return Math.ceil(productCardList.value.products.length / range )
     }
+    return 1;
 });
 
 const getPageList = async (page: number) => {
-    let skip = page===1 ? 0 : range*(page-1)
-    await getProductCardPageObj(cate.value, range, skip);
+    skip.value = page===1 ? 0 : range*(page-1)
+    console.log(skip.value)
+    
     currentPage.value = page;
     router.push({query: {...route.query, currentPage: page}})
 }
@@ -157,7 +169,7 @@ onUnmounted(() => {
                 </div>
                 <div v-if="productCardList">
                     <div class="productList row">
-                        <div class="productList__card" v-for="product in productCardList.products">
+                        <div class="productList__card" v-for="product in productCardCurrentList">
                             <ProductCard :product="product" />
                         </div>
                     </div>
