@@ -7,12 +7,26 @@ import useData from '@/composable/useData';
 
 export const useProductStore = defineStore('product', () => {
   const productObj = useData<ProductObjModel>();
+  const {
+    isReady: productIsReady,
+  } = productObj;
+
   const productDetailComp = useData<ProductModel>();
+  const {
+    isReady: productDetailIsReady,
+  } = productDetailComp;
+  
+  const homePageLoadMoreProductCard = useData<ProductObjModel>();
+  const {
+    isReady: loadIsReady,
+  } = homePageLoadMoreProductCard;
 
   const _productData = ref<ProductObjModel>();
   const _productCardList = ref<ProductCardListViewModel>();
+
   const productCardList = ref<ProductCardListViewModel>();
   const productDetail = ref<ProductDetailViewModel>();
+  const homePageProductList = ref<MoreProductViewModel[]>([]);
 
   const brandList = computed<string[]>(() => {
     if(_productData.value) {
@@ -20,64 +34,25 @@ export const useProductStore = defineStore('product', () => {
     }
     return [];
   });
-
-  const isDone = ref<boolean>(true);
-  const isError = ref<boolean>(false);
-
-  const initProduct = () => {
-    if(_productData.value) {
-      productCardList.value = JSON.parse(JSON.stringify(_productCardList.value));
-    }
-  }
-
-  const getProductObg = async (category: string, limit=0, skip=0) => {
-    isDone.value = false;
+  
+  // Product Card List
+  const _initProduct = (): ProductCardListViewModel => (JSON.parse(JSON.stringify(_productCardList.value)))
+  
+  const getProductCardPageObj = async (category: string, limit=0, skip=0) => {
+    productIsReady.value = false;
     const _dataModel: ProductObjModel = await productObj.fetchedData(`/products/category/${category}?limit=${limit}&skip=${skip}`);
     _productData.value = _dataModel;
     if(!productObj.isError.value) {
       _productCardList.value = formatProductCardListToViewModel(_dataModel);
-      productCardList.value = JSON.parse(JSON.stringify(_productCardList.value));
+      productCardList.value = _initProduct();
     }
-    isDone.value = true;
+    productIsReady.value = true;
   }
 
-  const getProductDetail = async (id: string) => {
-    const _dataModel: ProductModel = await productDetailComp.fetchedData(`/products/${id}`);
-    productDetail.value = formatProductDetailToViewModel(_dataModel);
-  }
-
-  const filterProduct = (query: string[]) => {
-    try {
-      isDone.value = false;
-      const _list = JSON.parse(JSON.stringify(_productCardList.value));
-      if(query.length > 0 && _productCardList.value && productCardList.value) {
-        productCardList.value = {
-          ...productCardList.value,
-          products: _list.products.filter((product: ProductCardViewModel) => query.includes(product.brand))
-        }
-      } else {
-        productCardList.value = _list;
-      }
-    } catch (error) {
-      isError.value = true;
-      console.error(error);
-    } finally {
-      isDone.value = true;
-    }
-  }
-
-  const selectedBrands = ref<string[]>([]);
-
-  const clearSelectedBrands = () => {
-      if (selectedBrands.value.length) {
-          selectedBrands.value = [];
-          initProduct();
-      }
-  }
 
   const sortProduct = (order: OrderByEnum) => {
     try {
-      isDone.value = false;
+      productIsReady.value = false;
       if(productCardList.value) {
         let result = JSON.parse(JSON.stringify(_productCardList.value));
         if(order === OrderByEnum.ASC) {
@@ -89,42 +64,80 @@ export const useProductStore = defineStore('product', () => {
         } else {
           return productCardList.value.products;
         }
-        productCardList.value = result;
       }
     } catch (error) {
-      isError.value = true;
+      productObj.isError.value = true;
       console.error(error);
     } finally {
-      isDone.value = true;
+      productIsReady.value = true;
     }
   }
 
-  const homePageProductList = ref<MoreProductViewModel[]>([]);
+  const filterProduct = (query: string[]) => {
+    try {
+      productIsReady.value = false;
+      const _list = _initProduct();
+      if(query.length > 0 && _productCardList.value && productCardList.value) {
+        productCardList.value = {
+          ...productCardList.value,
+          products: _list.products.filter((product: ProductCardViewModel) => query.includes(product.brand))
+        }
+      } else {
+        productCardList.value = _list;
+      }
+    } catch (error) {
+      productObj.isError.value = true;
+      console.error(error);
+    } finally {
+      productIsReady.value = true;
+    }
+  }
 
+  const selectedBrands = ref<string[]>([]);
+
+  const clearSelectedBrands = () => {
+      if (selectedBrands.value.length) {
+          selectedBrands.value = [];
+          productCardList.value = _initProduct();
+      }
+  }
+
+
+  // Product Detail
+  const getProductDetail = async (id: string) => {
+    productDetailIsReady.value = false;
+    const _dataModel: ProductModel = await productDetailComp.fetchedData(`/products/${id}`);
+    productDetail.value = formatProductDetailToViewModel(_dataModel);
+    productDetailIsReady.value = true;
+  }
+
+
+  // homePage Load More Product Card
   const loadMoreProducts = async (category: string) => { 
-    const _dataModel: ProductObjModel = await productObj.fetchedData(`/products/category/${category}?limit=4`);
+    loadIsReady.value = false;
+    const _dataModel: ProductObjModel = await homePageLoadMoreProductCard.fetchedData(`/products/category/${category}?limit=4`);
     const _isExist = homePageProductList.value.find( (item: MoreProductViewModel) => item.category === category)
     if(!productObj.isError.value && !_isExist) {
       const _productCards: ProductCardViewModel[] = _dataModel.products.map( (item: ProductModel) => formatProductCardToViewModel(item));
       homePageProductList.value.push(formatProductCardToHomePageGroup(_productCards));
     }
+    loadIsReady.value = true;
   }
 
   return { 
-    getProductObg,
+    getProductCardPageObj,
     getProductDetail,
     filterProduct,
     sortProduct,
-    initProduct,
     clearSelectedBrands,
     loadMoreProducts,
     productObj,
     productDetail,
+    loadIsReady,
     selectedBrands,
+    homePageProductList,
     brandList,
     productCardList,
-    isDone,
-    isError,
-    homePageProductList
-  }
+    productIsReady,
+    productDetailIsReady}
 })

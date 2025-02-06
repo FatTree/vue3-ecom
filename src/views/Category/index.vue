@@ -13,7 +13,7 @@ const router = useRouter();
 const productStore = useProductStore();
 
 const {
-    getProductObg,
+    getProductCardPageObj,
     filterProduct,
     sortProduct,
     clearSelectedBrands,
@@ -36,7 +36,7 @@ const cate = computed(() => {
 // list
 const range = 8;
 watch(cate, async(n) => {
-    await getProductObg(cate.value, range, 0);
+    await getProductCardPageObj(cate.value, range, 0);
 });
 
 // Pagination
@@ -56,7 +56,7 @@ const totalPages = computed(() => {
 
 const getPageList = async (page: number) => {
     let skip = page===1 ? 0 : range*(page-1)
-    await getProductObg(cate.value, range, skip);
+    await getProductCardPageObj(cate.value, range, skip);
     currentPage.value = page;
     router.push({query: {...route.query, currentPage: page}})
 }
@@ -77,7 +77,7 @@ const brandHeight = computed(() => {
 })
 
 onMounted( async () => {
-    await getProductObg(cate.value, range, 0);
+    await getProductCardPageObj(cate.value, range, 0);
 
     if(sortDOM.value) {
         sortDOM.value.addEventListener('blur', () => {

@@ -91,8 +91,7 @@ export type CategoryViewModel = {
 
 export type UseDataViewModel<T> = {
     fetchedData: T
-    isLoading: Ref<boolean>
-    isDone: Ref<boolean>
+    isReady: Ref<boolean>
     isError: Ref<boolean>
 }
 

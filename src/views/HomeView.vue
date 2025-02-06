@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onMounted, onUnmounted, ref, type Ref } from 'vue';
+import { computed, onBeforeMount, onMounted, onUnmounted, ref, nextTick, type Ref } from 'vue';
 import ProductCard from '@/components/ProductCard.vue';
 import { useProductStore } from '@/stores/productStore';
 import { useCategoryStore } from '@/stores/categoryStore';
@@ -9,12 +9,12 @@ import { throttle } from '@/utils/util';
 // stores
 const productStore = useProductStore();
 const {
-  loadMoreProducts,
-  getProductObg
+  loadMoreProducts
 } = productStore;
 const {
+  loadIsReady,
   productCardList,
-  homePageProductList
+  homePageProductList,
 } = storeToRefs(productStore);
 
 const categoryStore = useCategoryStore();
@@ -86,13 +86,13 @@ const handleScrollAction = async () => {
     }
 };
 
-onBeforeMount(() =>{
+onBeforeMount(async() =>{
   startCarousel();
+  await getCategoryNameList();
+  await loadMoreProducts('beauty');
 });
 
 onMounted(async() => {
-  await getCategoryNameList();
-  await loadMoreProducts('beauty');
   setWpWidth();
   window.addEventListener('resize', setWpWidth);
   nextTick(() => {
@@ -132,6 +132,16 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
+        <div v-if="categoryNameList">
+          <div v-if="homePageProductList.length < categoryNameList.length">
+            <div class="btn-yellow" @click="throt_fun">
+              Load More...
+            </div>
+          </div>
+          <div v-else>
+            No more products...
+          </div>
+        </div>
       </div>
       <div class="home__content__block" v-else>
         <div class="title">...</div>
@@ -141,6 +151,7 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
+      
     </div>
   </div>
 </template>
@@ -161,10 +172,13 @@ onUnmounted(() => {
         padding: 1rem 0;
 
         > .title {
-          @include title-m;
           margin: 1rem 0;
-          line-height: 2em;
+          line-height: 3em;
           cursor: pointer;
+          color: $violet-normal;
+          & {
+            @include title-m;
+          }
         }
       }
     }
