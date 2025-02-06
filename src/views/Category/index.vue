@@ -23,8 +23,7 @@ const {
     productCardList,
     brandList,
     selectedBrands,
-    isDone,
-    isError
+    isReadyProductCard
 } = storeToRefs(productStore);
 
 
@@ -169,7 +168,7 @@ onUnmounted(() => {
                     </div>
                 </div>
                 <div v-else>
-                    <div class="productList">
+                    <div class="productList row">
                         <div class="productList__card" v-for="i in 4">
                             <ProductCard :product="null" />
                         </div>

@@ -8,17 +8,17 @@ import useData from '@/composable/useData';
 export const useProductStore = defineStore('product', () => {
   const productObj = useData<ProductObjModel>();
   const {
-    isReady: productIsReady,
+    isReady: isReadyProductCard,
   } = productObj;
 
   const productDetailComp = useData<ProductModel>();
   const {
-    isReady: productDetailIsReady,
+    isReady: isReadyProductDetail,
   } = productDetailComp;
   
   const homePageLoadMoreProductCard = useData<ProductObjModel>();
   const {
-    isReady: loadIsReady,
+    isReady: isReadyLoad,
   } = homePageLoadMoreProductCard;
 
   const _productData = ref<ProductObjModel>();
@@ -39,20 +39,20 @@ export const useProductStore = defineStore('product', () => {
   const _initProduct = (): ProductCardListViewModel => (JSON.parse(JSON.stringify(_productCardList.value)))
   
   const getProductCardPageObj = async (category: string, limit=0, skip=0) => {
-    productIsReady.value = false;
+    isReadyProductCard.value = false;
     const _dataModel: ProductObjModel = await productObj.fetchedData(`/products/category/${category}?limit=${limit}&skip=${skip}`);
     _productData.value = _dataModel;
     if(!productObj.isError.value) {
       _productCardList.value = formatProductCardListToViewModel(_dataModel);
       productCardList.value = _initProduct();
     }
-    productIsReady.value = true;
+    isReadyProductCard.value = true;
   }
 
 
   const sortProduct = (order: OrderByEnum) => {
     try {
-      productIsReady.value = false;
+      isReadyProductCard.value = false;
       if(productCardList.value) {
         let result = JSON.parse(JSON.stringify(_productCardList.value));
         if(order === OrderByEnum.ASC) {
@@ -69,13 +69,13 @@ export const useProductStore = defineStore('product', () => {
       productObj.isError.value = true;
       console.error(error);
     } finally {
-      productIsReady.value = true;
+      isReadyProductCard.value = true;
     }
   }
 
   const filterProduct = (query: string[]) => {
     try {
-      productIsReady.value = false;
+      isReadyProductCard.value = false;
       const _list = _initProduct();
       if(query.length > 0 && _productCardList.value && productCardList.value) {
         productCardList.value = {
@@ -89,7 +89,7 @@ export const useProductStore = defineStore('product', () => {
       productObj.isError.value = true;
       console.error(error);
     } finally {
-      productIsReady.value = true;
+      isReadyProductCard.value = true;
     }
   }
 
@@ -105,23 +105,23 @@ export const useProductStore = defineStore('product', () => {
 
   // Product Detail
   const getProductDetail = async (id: string) => {
-    productDetailIsReady.value = false;
+    isReadyProductDetail.value = false;
     const _dataModel: ProductModel = await productDetailComp.fetchedData(`/products/${id}`);
     productDetail.value = formatProductDetailToViewModel(_dataModel);
-    productDetailIsReady.value = true;
+    isReadyProductDetail.value = true;
   }
 
 
   // homePage Load More Product Card
   const loadMoreProducts = async (category: string) => { 
-    loadIsReady.value = false;
+    isReadyLoad.value = false;
     const _dataModel: ProductObjModel = await homePageLoadMoreProductCard.fetchedData(`/products/category/${category}?limit=4`);
     const _isExist = homePageProductList.value.find( (item: MoreProductViewModel) => item.category === category)
     if(!productObj.isError.value && !_isExist) {
       const _productCards: ProductCardViewModel[] = _dataModel.products.map( (item: ProductModel) => formatProductCardToViewModel(item));
       homePageProductList.value.push(formatProductCardToHomePageGroup(_productCards));
     }
-    loadIsReady.value = true;
+    isReadyLoad.value = true;
   }
 
   return { 
@@ -133,11 +133,12 @@ export const useProductStore = defineStore('product', () => {
     loadMoreProducts,
     productObj,
     productDetail,
-    loadIsReady,
     selectedBrands,
     homePageProductList,
     brandList,
     productCardList,
-    productIsReady,
-    productDetailIsReady}
+    isReadyLoad,
+    isReadyProductCard,
+    isReadyProductDetail
+  }
 })

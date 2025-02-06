@@ -12,7 +12,7 @@ const {
   loadMoreProducts
 } = productStore;
 const {
-  loadIsReady,
+  isReadyLoad,
   productCardList,
   homePageProductList,
 } = storeToRefs(productStore);
