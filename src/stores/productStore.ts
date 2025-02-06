@@ -54,7 +54,7 @@ export const useProductStore = defineStore('product', () => {
     try {
       isReadyProductCard.value = false;
       if(productCardList.value) {
-        let result = JSON.parse(JSON.stringify(_productCardList.value));
+        let result = _initProduct();
         if(order === OrderByEnum.ASC) {
           result.products = productCardList.value.products.sort((a: ProductCardViewModel, b: ProductCardViewModel) => a.price - b.price);
           return result;
@@ -83,7 +83,7 @@ export const useProductStore = defineStore('product', () => {
           products: _list.products.filter((product: ProductCardViewModel) => query.includes(product.brand))
         }
       } else {
-        productCardList.value = _list;
+        productCardList.value = _initProduct();
       }
     } catch (error) {
       productObj.isError.value = true;

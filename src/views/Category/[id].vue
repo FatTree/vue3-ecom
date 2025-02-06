@@ -106,7 +106,7 @@ onMounted(async() => {
                     background-color: $white;
                     border-radius: .5rem;
                     width: 100%;
-                    height: auto;
+                    height: 28rem;
                     max-width: 550px;
                     max-height: 500px;
                     display: flex;
