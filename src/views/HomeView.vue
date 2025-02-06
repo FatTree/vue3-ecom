@@ -27,11 +27,11 @@ const {
 
 // Hero banner
 const images = ref([
-  `${import.meta.env.BASE_URL}/public/banner1.jpeg`,
-  `${import.meta.env.BASE_URL}/public/banner2.jpeg`,
-  `${import.meta.env.BASE_URL}/public/banner3.jpeg`,
-  `${import.meta.env.BASE_URL}/public/banner4.jpeg`,
-  `${import.meta.env.BASE_URL}/public/banner5.jpeg`,
+  `${import.meta.env.BASE_URL}banner1.jpeg`,
+  `${import.meta.env.BASE_URL}banner2.jpeg`,
+  `${import.meta.env.BASE_URL}banner3.jpeg`,
+  `${import.meta.env.BASE_URL}banner4.jpeg`,
+  `${import.meta.env.BASE_URL}banner5.jpeg`,
 ]);
 
 const currentIndex: Ref<number> = ref(0);
