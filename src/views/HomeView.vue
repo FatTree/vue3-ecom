@@ -6,6 +6,12 @@ import { useCategoryStore } from '@/stores/categoryStore';
 import { storeToRefs } from 'pinia';
 import { throttle } from '@/utils/util';
 
+import bannerSrc1 from '@/assets/img/banner1.jpeg';
+import bannerSrc2 from '@/assets/img/banner2.jpeg';
+import bannerSrc3 from '@/assets/img/banner3.jpeg';
+import bannerSrc4 from '@/assets/img/banner4.jpeg';
+import bannerSrc5 from '@/assets/img/banner5.jpeg';
+
 // stores
 const productStore = useProductStore();
 const {
@@ -27,11 +33,11 @@ const {
 
 // Hero banner
 const images = ref([
-  `${import.meta.env.BASE_URL}banner1.jpeg`,
-  `${import.meta.env.BASE_URL}banner2.jpeg`,
-  `${import.meta.env.BASE_URL}banner3.jpeg`,
-  `${import.meta.env.BASE_URL}banner4.jpeg`,
-  `${import.meta.env.BASE_URL}banner5.jpeg`,
+  bannerSrc1,
+  bannerSrc2,
+  bannerSrc3,
+  bannerSrc4,
+  bannerSrc5
 ]);
 
 const currentIndex: Ref<number> = ref(0);
