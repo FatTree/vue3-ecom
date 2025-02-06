@@ -66,8 +66,6 @@ const totalPages = computed(() => {
 
 const getPageList = async (page: number) => {
     skip.value = page===1 ? 0 : range*(page-1)
-    console.log(skip.value)
-    
     currentPage.value = page;
     router.push({query: {...route.query, currentPage: page}})
 }

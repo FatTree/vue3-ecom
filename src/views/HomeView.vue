@@ -94,11 +94,11 @@ const handleScrollAction = async () => {
 
 onBeforeMount(async() =>{
   startCarousel();
-  await getCategoryNameList();
-  await loadMoreProducts('beauty');
 });
 
 onMounted(async() => {
+  await getCategoryNameList();
+  await loadMoreProducts('beauty');
   setWpWidth();
   window.addEventListener('resize', setWpWidth);
   nextTick(() => {

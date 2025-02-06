@@ -1,7 +1,7 @@
 import { debounce } from '@/utils/util';
 import { ref, onMounted, onUnmounted } from 'vue';
 
-export default function useApi() {
+export default function useRwd() {
     const isMobile = ref(window.innerWidth < 768);
 
     const updateIsMobile = () => {

@@ -47,7 +47,6 @@ export default function useData<T>() {
 
     return {
         fetchedData,
-        data,
         isReady,
         isError
     }

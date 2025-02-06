@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import useApi from '@/composable/useApi';
+import useData from '@/composable/useData';
 import { useErrorStore } from '@/stores/errorStore';
 
 
@@ -7,7 +7,7 @@ const {
     addToErrorList
 } = useErrorStore();
 
-const api = useApi();
+const api = useData();
 
 const {
     callApi,

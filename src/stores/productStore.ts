@@ -89,7 +89,6 @@ export const useProductStore = defineStore('product', () => {
       productObj.isError.value = true;
       console.error(error);
     } finally {
-      console.log(productCardList.value);
       isReadyProductCard.value = true;
     }
   }

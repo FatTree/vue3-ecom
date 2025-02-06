@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import useApi from '@/composable/useApi';
 import { useI18n } from 'vue-i18n';
 import { useCategoryStore } from '@/stores/categoryStore';
 import { storeToRefs } from 'pinia';
@@ -30,10 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // composables
 const router = useRouter();
-const api = useApi();
-const {
-  callApi,
-} = api;
+
 
 const { 
   locale,
@@ -64,16 +60,15 @@ const {
 } = storeToRefs(errorStore);
 
 const categroy: Ref<string> = ref('');
+
 watch(categroy, (n) => {
   router.push({ path: `/${n}`});
 })
 
-const searchVal: Ref<string> = ref('');
-watch(searchVal, async(n) => {
-  await callApi(`/products/search?q=${n}`);
-});
-
-
+// const searchVal: Ref<string> = ref('');
+// watch(searchVal, async(n) => {
+//   await callApi(`/products/search?q=${n}`);
+// });
 
 // UI Controller
 const { isMobile } = useRwd();
@@ -82,10 +77,10 @@ const isShowCart = ref<boolean>(false);
 const isShowCategory = ref<boolean>(false);
 const isShowMenu = ref<boolean>(false);
 const isShowMenuCatrgory = ref<boolean>(false);
-const isShowSearchInput = ref<boolean>(false);
+// const isShowSearchInput = ref<boolean>(false);
 const isShowLanguage = ref<boolean>(false);
 
-const searchInput = ref<HTMLInputElement | null>(null);
+// const searchInput = ref<HTMLInputElement | null>(null);
 const shoppingcartIcon = ref<HTMLDivElement | null>(null);
 const languageNavIcon = ref<HTMLDivElement | null>(null);
 
@@ -130,18 +125,18 @@ const clickCategory = () => {
   isShowOverLay.value = true;
 }
 
-const clickSearch = () => {
-  isShowSearchInput.value = true;
-  if(searchInput.value) {
-    nextTick(() => {
-      searchInput.value!.focus();
-    })
-  }
-}
+// const clickSearch = () => {
+//   isShowSearchInput.value = true;
+//   if(searchInput.value) {
+//     nextTick(() => {
+//       searchInput.value!.focus();
+//     })
+//   }
+// }
 
-const blurSearchInput = () => {
-  isShowSearchInput.value = false;
-}
+// const blurSearchInput = () => {
+//   isShowSearchInput.value = false;
+// }
 
 const clickOverLay = () => {
   isShowOverLay.value = false;
@@ -208,7 +203,7 @@ onUnmounted(() => {
           </RouterLink>
         </div>
         <div class="nav__row__item">
-          <div class="item" @click="clickSearch" v-show="!isShowSearchInput">
+          <!-- <div class="item" @click="clickSearch" v-show="!isShowSearchInput">
             <div class="icon">
               <searchIcon class="icon__svg" />
             </div>
@@ -221,7 +216,7 @@ onUnmounted(() => {
               ref="searchInput"
               @blur="blurSearchInput"
               v-model.lazy="searchVal">
-          </div>
+          </div> -->
           <div class="item" @click="clickCart" ref="shoppingcartIcon">
             <div class="icon">
               <cartIcon class="icon__svg" />
@@ -337,7 +332,7 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-      <div class="nav__row" v-show="isShowSearchInput">
+      <!-- <div class="nav__row" v-show="isShowSearchInput">
         <div class="nav__row__item">
           <div class="nav__row__item__input">
             <div class="search">
@@ -349,7 +344,7 @@ onUnmounted(() => {
               v-model.lazy="searchVal">
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
