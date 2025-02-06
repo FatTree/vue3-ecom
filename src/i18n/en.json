@@ -2,17 +2,22 @@
     "name": "Shin Fang",
     "uikit": {
         "addToCart": "Add to Cart",
-        "amount": "Quantity"
+        "amount": "Quantity",
+        "home": "Home"
     },
     "nav": {
         "category": "Product Categories",
-        "search": "Search Product Name"
+        "search": "Search Product Name",
+        "login": "Login",
+        "lang": "Language",
+        "member": "Member"
     },
     "category": {
         "brand": "Filter by Brand",
         "clean": "Clear Filters",
         "sorting": "Sort",
-        "noItem": "No brand"
+        "noItem": "No brand",
+        "clear": "Clear Conditions"
     },
     "product": {
         "price": "Discounted Price",

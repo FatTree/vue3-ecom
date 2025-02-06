@@ -165,6 +165,7 @@ const selectategory = (cate: string) => {
 
 const selectLanguage = (language: string) => {
   locale.value = language;
+  isShowMenu.value = false;
   isShowLanguage.value = false;
   isShowOverLay.value = false;
 }
@@ -188,7 +189,7 @@ onUnmounted(() => {
 </script>
 <template>
   <div class="nav">
-    <AdminPanel />
+    <!-- <AdminPanel /> -->
     <div class="error">
       <ErrorCard v-for="error in errorList" :key="error.id" :errorObj="error" />
     </div>
@@ -277,28 +278,50 @@ onUnmounted(() => {
     <div class="container mobileOnly" v-if="isMobile">
       <div class="menu" v-show="isShowMenu">
         <div class="menu__item">
-          <div class="menu__item__icon" v-if="isLogin">
+          <div class="menu__item__icon" v-if="!isLogin">
+            <div class="menu__item__icon">
+              <memberIcon class="menu__item__icon__svg" />
+            </div>
+            <span class="menu__item__span">{{ $t('nav.login') }}</span>
+          </div>
+        </div>
+        <div class="menu__item" v-if="isLogin">
+          <div class="menu__item__icon">
             <memberIcon class="menu__item__icon__svg" />
           </div>
-          <span class="menu__item__span">登入</span>
+          <RouterLink class="menu__item__span" :to="`/member`">
+            {{ $t('nav.member') }}
+          </RouterLink>
         </div>
-        <div class="menu__item">
-          <div class="menu__item__icon">
-            <languageIcon class="menu__item__icon__svg" />
+        <div class="menu__item space-between" @click="isShowLanguage = !isShowLanguage">
+          <div class="d-flex">
+            <div class="menu__item__icon">
+              <languageIcon class="menu__item__icon__svg" />
+            </div>
+            <span class="menu__item__span">{{ $t('nav.lang') }}</span>
           </div>
-          <span class="menu__item__span">語言</span>
+          <div class="menu__item__arrow">
+            <arrowIcon class="menu__item__arrow__svg" :class="isShowLanguage ? 'rotate' : ''" />
+          </div>
+        </div>
+        <div class="menu__language" :class="isShowLanguage? '' : 'collapse'">
+          <div class="menu__box__item"
+            v-for="locale in availableLocales"
+            @click="selectLanguage(locale)">
+            {{ locale }}
+          </div>
         </div>
         <div class="menu__item space-between" @click="clickMenuCategory">
-          <span class="menu__item__span">商品分類</span>
+          <span class="menu__item__span">{{ $t('nav.category') }}</span>
           <div class="menu__item__arrow">
             <arrowIcon class="menu__item__arrow__svg" :class="isShowMenuCatrgory ? 'rotate' : ''" />
           </div>
         </div>
         <div class="menu__box" :class="isShowMenuCatrgory ? '' : 'collapse'">
-          <div class="menu__box__item"
-            v-for="item in categoryNameList"
-            @click="selectategory(`${item}`)">
-            {{ item }}
+          <div class="menu__box__item" 
+          v-for="item in categoryList"
+            @click="selectategory(`${item.slug}`)">
+            {{ item.name }}
           </div>
         </div>
       </div>
@@ -547,6 +570,18 @@ onUnmounted(() => {
 
     &__span {
       line-height: 2em;
+    }
+  }
+
+  &__language {
+    height: 8rem;
+    overflow-y: scroll;
+    background-color: $white-light;
+    transition: height .3s;
+
+    &.collapse {
+      height: 0;
+      transition: height .3s;
     }
   }
 

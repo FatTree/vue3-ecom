@@ -2,17 +2,22 @@
     "name": "欣芳",
     "uikit": {
         "addToCart": "加入購物車",
-        "amount": "數量"
+        "amount": "數量",
+        "home": "首頁"
     },
     "nav": {
         "category": "商品分類",
-        "search": "搜尋產品名"
+        "search": "搜尋產品名",
+        "login": "登入",
+        "lang": "語言",
+        "member": "會員"
     },
     "category": {
         "brand": "品牌篩選",
         "clean": "清除篩選",
         "sorting": "排序",
-        "noItem": "沒有品牌"
+        "noItem": "沒有品牌",
+        "clear": "清除條件"
     },
     "product": {
         "price": "優惠價",

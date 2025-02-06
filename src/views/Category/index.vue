@@ -33,7 +33,6 @@ const cate = computed(() => {
 });
 
 
-
 // list
 const range = 8;
 watch(cate, async(n) => {
@@ -111,7 +110,7 @@ onUnmounted(() => {
                 <div class="filter__content" v-if="!brandList?.length || brandList?.length===1">
                     <span class="title-s">{{ $t('category.brand') }}</span>
                     <div>
-                        沒有品牌
+                        {{ $t('category.noItem') }}
                     </div>
                 </div>
                 <div class="filter__content" v-else>
@@ -144,12 +143,12 @@ onUnmounted(() => {
                 </div>
                 <div class="filter--mobile">
                     <div class="filter__content" v-if="!brandList?.length || brandList?.length===1">
-                        <span class="title-s">{{ $t('category.brand') }} 沒有品牌</span>
+                        <span class="title-s">{{ $t('category.noItem') }}</span>
                     </div>
                     <div class="filter__content" v-else>
                         <div class="filter__content__top"
                             @click="isFilterOpen = !isFilterOpen">
-                            <span class="title-s">品牌</span>
+                            <span class="title-s">{{ $t('category.brand') }}</span>
                             <arrowIcon class="icon" />
                         </div>
                         <div class="filter__content__list" 
@@ -161,7 +160,7 @@ onUnmounted(() => {
                                     <div class="checkbox__style"></div>
                                 </label>
                             </div>
-                            <div class="btn-yellow mt-1" @click="clearSelectedBrands">clear conditions</div>
+                            <div class="btn-yellow mt-1" @click="clearSelectedBrands">{{ $t('category.clear') }}</div>
                         </div>
                     </div>
                 </div>
