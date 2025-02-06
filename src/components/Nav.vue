@@ -339,11 +339,11 @@ onUnmounted(() => {
           </RouterLink>
         </div>
         <div class="nav__row__item">
-          <div class="item" @click="clickSearch">
+          <!-- <div class="item" @click="clickSearch">
             <div class="icon">
                 <searchIcon class="icon__svg" />
             </div>
-          </div>
+          </div> -->
           <div class="item" v-if="isLogin">
             <div class="icon">
               <RouterLink to="/purchase">
