@@ -39,7 +39,7 @@ export default function useData<T>() {
             isError.value = true;
             console.error('API Error:', (error as AxiosError).message);
             const AErr = error as AxiosError;
-            addToInfoList(InfoEnum.ERROR, AErr.message, AErr.status?.toString());
+            addToInfoList(InfoEnum.ERROR, 'oOps!!The website has some issues! We\'re working hard to fix it...', AErr.status?.toString());
         } finally {
             isReady.value = false;
             return data.value as T;

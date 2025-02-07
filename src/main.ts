@@ -36,8 +36,6 @@ const { addToInfoList } = infoStore;
 
 app.config.errorHandler = (err, vm, info) => {
     console.error('Error occurred:', err);
-    console.error('Component info:', vm);
-    console.error('Additional info:', info);
     addToInfoList(InfoEnum.ERROR ,`Error occurred: ${err}`, `system error`)
 }
 
