@@ -3,8 +3,12 @@ import { defineStore } from 'pinia'
 import { collection, getDoc, getFirestore, doc } from 'firebase/firestore';
 import { getCurrentUser, useDocument } from 'vuefire';
 import { firebaseApp } from '@/plugins/firebase';
+import { InfoEnum } from '@/models/viewModel';
 
-
+import { useInfoStore } from '@/stores/infoStore';
+const {
+    addToInfoList
+} = useInfoStore();
 
 
 export const useUserStore = defineStore('user', () => {
@@ -24,7 +28,7 @@ export const useUserStore = defineStore('user', () => {
                         console.error('No such document!');
                     }
                 } catch(err) {
-                    console.log(err);
+                    addToInfoList(InfoEnum.ERROR, String(err), 'STATUS');
                 }
         }
     }

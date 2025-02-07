@@ -1,6 +1,9 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { CartProductViewModel } from '@/models/viewModel';
+import { InfoEnum } from '@/models/viewModel';
+import { useInfoStore } from '@/stores/infoStore';
+
 const storeName = 'shoppingCart';
 export const useShoppingCartStore = defineStore(storeName, () => {
 
@@ -16,6 +19,10 @@ export const useShoppingCartStore = defineStore(storeName, () => {
         }
     }
 
+    const {
+        addToInfoList
+    } = useInfoStore();
+
 
     // 保存購物車數據到 localStorage
     const saveCart = () => {
@@ -27,7 +34,7 @@ export const useShoppingCartStore = defineStore(storeName, () => {
         const item = cart.value.find(i => i.id === product.id);
         if (item) {
             if(item.quantity + product.quantity >= product.stock) {
-                console.log('too much');
+                addToInfoList(InfoEnum.ERROR, 'You have reached the purchase limit', 'STATUS');
                 return;
             }
             item.quantity = Number(product.quantity) + Number(item.quantity);

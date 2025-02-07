@@ -15,6 +15,8 @@ import { useRouter } from 'vue-router';
 import { getDoc, getFirestore, doc } from 'firebase/firestore';
 import { firebaseApp } from '@/plugins/firebase';
 import { getCurrentUser } from 'vuefire';
+import { useInfoStore } from '@/stores/infoStore';
+import { InfoEnum } from '@/models/viewModel';
 
 
 
@@ -24,6 +26,10 @@ export const useAuthUser = () => {
 
     const db = getFirestore(firebaseApp);
     const userInfo = ref();
+
+    const {
+        addToInfoList
+    } = useInfoStore();
     
     const errorMsg = ref();
     const isLogin = ref(false);
@@ -45,10 +51,10 @@ export const useAuthUser = () => {
               if (userSnapshot.exists()) {
                 userInfo.value = userSnapshot.data(); // 將數據存入 userInfo
               } else {
-                console.error('No such document!');
+                addToInfoList(InfoEnum.ERROR, 'User information is incorrected!', 'STATUS');
               }
             } catch(err) {
-              console.log(err);
+              addToInfoList(InfoEnum.ERROR, 'An error occurred while retrieving user information!', 'STATUS');
             }
           }
       }
@@ -59,8 +65,8 @@ export const useAuthUser = () => {
                 const user = userCre.user;
                 routerAction();
             }).catch( (err: Error) => {
-                console.log(err)
                 errorMsg.value = err;
+                addToInfoList(InfoEnum.ERROR, err.message, 'STATUS');
             })
     }
 
@@ -72,37 +78,15 @@ export const useAuthUser = () => {
                 routerAction();
             })
             .catch((err) => {
-                console.log(err)
                 errorMsg.value = err;
+                addToInfoList(InfoEnum.ERROR, err.message, 'STATUS');
             });
     }
 
-    // const db = getFirestore(firebaseApp);
-    // const userInfo = ref();
-
-    const checkUser = () => {
+    const checkUser = async () => {
         onAuthStateChanged(auth, async(user) => {
             if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/auth.user
-                // try {
-                //     const userDoc = doc(db, 'UserInfo', user.uid); // 指定集合和 Document ID
-                //     const userSnapshot = await getDoc(userDoc);
-
-                //     if (userSnapshot.exists()) {
-                //         userInfo.value = userSnapshot.data(); // 將數據存入 userInfo
-                //         console.log('userInfo value');
-                        
-                //         console.log(userInfo.value);
-                        
-                //     } else {
-                //     console.error('No such document!');
-                //     }
-                // } catch(err) {
-                //     console.log(err);
-                // }
-            } else {
-                console.log('user is signout')
+                await getUserInfo()
             }
             isLogin.value = !!user;
         });
@@ -111,7 +95,7 @@ export const useAuthUser = () => {
     const userSignOut = async() => {
         await signOut(auth);
         routerAction();
-        console.log('signout');
+        addToInfoList(InfoEnum.INFO, 'Successfully logged out!', 'STATUS');
     }
 
     return {
