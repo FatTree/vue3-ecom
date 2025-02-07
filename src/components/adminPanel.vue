@@ -17,15 +17,17 @@ const cc = async() => {
 
 <template>
     <div class="panel">
-        <button @click="addToInfoList(InfoEnum.ERROR, 'error message', 'STATUS')">add error</button>
-        <button @click="cc()">404 error</button>
+        <button @click="cc()">create an error</button>
     </div>
 </template>
 
 <style lang="scss" scoped>
 .panel {
+    padding: 1rem;
+    background-color: #ddd;
+    z-index: 100;
     position: fixed;
-    bottom: 10rem;
-    left: 0;
+    bottom: 0;
+    right: 0;
 }
 </style>

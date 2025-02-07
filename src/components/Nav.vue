@@ -367,7 +367,7 @@ onUnmounted(() => {
                 <searchIcon class="icon__svg" />
             </div>
           </div> -->
-          <div class="item" v-if="isLogin">
+          <div class="item">
             <div class="icon">
               <RouterLink to="/purchase">
                 <div class="icon">
