@@ -21,14 +21,14 @@ const gotoProductDetail = () => {
 
 </script>
 <template>
-    <div v-if="product" class="prodCard" :class="product.stock ? '' : 'prodCard--soldout'" @click="gotoProductDetail">
+    <div v-if="props.product" class="prodCard" :class="props.product.stock ? '' : 'prodCard--soldout'" @click="gotoProductDetail">
         <div class="prodCard__content">
-            <p class="ellipsis">{{ product.brand }}</p>
-            <h3 class="prodCard__content__title ellipsis" @click="gotoProductDetail">{{ product.title }}</h3>
-            <RatingStars :rating="product.rating" />
-            <p>$ {{ product.price }}</p>
+            <p class="ellipsis">{{ props.product.brand }}</p>
+            <h3 class="prodCard__content__title ellipsis" @click="gotoProductDetail">{{ props.product.title }}</h3>
+            <RatingStars :rating="props.product.rating" />
+            <p>$ {{ props.product.price }}</p>
             <div class="prodCard__content__img">
-                <img :src="product.thumbnail" alt="">
+                <img :src="props.product.thumbnail" alt="">
             </div>
         </div>
     </div>

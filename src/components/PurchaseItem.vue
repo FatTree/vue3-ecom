@@ -23,12 +23,12 @@ const totalPrice = computed(() => props.cartItem.price * props.cartItem.quantity
 </script>
 <template>
     <div class="purchaseItem">
-        <img :src="cartItem.thumbnail" alt="">
-        <h3>{{ cartItem.title }}</h3>
-        <p>$ {{ cartItem.price }}</p>
-        <p>x {{ cartItem.quantity }}</p>
+        <img :src="prop.cartItem.thumbnail" alt="">
+        <h3>{{ prop.cartItem.title }}</h3>
+        <p>$ {{ prop.cartItem.price }}</p>
+        <p>x {{ prop.cartItem.quantity }}</p>
         <p>小計: {{ totalPrice}}</p>
-        <button @click="removeFromCart(cartItem.id.toString())">X</button>
+        <button @click="removeFromCart(prop.cartItem.id.toString())">X</button>
     </div>
 </template>
 
