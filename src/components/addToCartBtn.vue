@@ -45,6 +45,6 @@ onMounted (() => {
 <template>
     <div class="addToCart">
         <label v-if="isDisabled">已達到購買上限</label>
-        <div :class="btnClass" @click="addCartAction(props.cartProduct)">add to cart</div>
+        <div :class="btnClass" @click="addCartAction(cartProduct)">add to cart</div>
     </div>
 </template>

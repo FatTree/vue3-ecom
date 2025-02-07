@@ -35,8 +35,8 @@ onMounted(() => {
 <template>
     <div class="infoCard" :class="props.infoObj.type==='info' ? 'info' : 'error'" v-if="isShowInfo">
         <div class="infoCard__content">
-            <p>{{ props.infoObj.message }}</p>
-            <div class="close" @click="removeFromInfoList(props.infoObj.id)">
+            <p>{{ infoObj.message }}</p>
+            <div class="close" @click="removeFromInfoList(infoObj.id)">
                 <addIcon />
             </div>
         </div>

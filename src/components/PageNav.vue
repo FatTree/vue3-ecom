@@ -27,12 +27,12 @@ const clickLayer1 = () => {
         </div>
         <arrowIcon class="icon" />
         <div class="pageNav__item" @click="clickLayer1">
-            <span class="ellipsis" :class="props.layer2 ? 'link' : ''">{{ props.layer1 }}</span>
+            <span class="ellipsis" :class="layer2 ? 'link' : ''">{{ layer1 }}</span>
         </div>
-        <div v-if="props.layer2" class="d-flex align-item-center">
+        <div v-if="layer2" class="d-flex align-item-center">
             <arrowIcon class="icon" />
             <div class="pageNav__item">
-                <span class="ellipsis">{{ props.layer2 }}</span>
+                <span class="ellipsis">{{ layer2 }}</span>
             </div>
         </div>
         

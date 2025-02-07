@@ -189,7 +189,7 @@ onUnmounted(() => {
 </script>
 <template>
   <div class="nav">
-    <!-- <AdminPanel /> -->
+    <AdminPanel />
     <div class="error">
       <InfoCard v-for="info in infoList" :key="info.id" :infoObj="info" />
     </div>
@@ -223,21 +223,21 @@ onUnmounted(() => {
               <cartIcon class="icon__svg" />
             </div>
           </div>
-          <div class="item" v-if="props.isLogin">
+          <div class="item" v-if="isLogin">
             <RouterLink :to="`/member`">
               <div class="icon">
                 <memberIcon class="icon__svg" />
               </div>
             </RouterLink>
           </div>
-          <div class="item" v-if="props.isLogin">
+          <div class="item" v-if="isLogin">
             <RouterLink :to="`/purchase`">
               <div class="icon">
                 <purchaseIcon class="icon__svg" />
               </div>
             </RouterLink>
           </div>
-          <div class="item" v-if="!props.isLogin">
+          <div class="item" v-if="!isLogin">
             <RouterLink :to="`/login`">login</RouterLink>
           </div>
           <div class="item" ref="languageNavIcon" @click="clickLanguage">
@@ -278,14 +278,14 @@ onUnmounted(() => {
     <div class="container mobileOnly" v-if="isMobile">
       <div class="menu" v-show="isShowMenu">
         <div class="menu__item">
-          <div class="menu__item__icon" v-if="!props.isLogin">
+          <div class="menu__item__icon" v-if="!isLogin">
             <div class="menu__item__icon">
               <memberIcon class="menu__item__icon__svg" />
             </div>
             <span class="menu__item__span">{{ $t('nav.login') }}</span>
           </div>
         </div>
-        <div class="menu__item" v-if="props.isLogin">
+        <div class="menu__item" v-if="isLogin">
           <div class="menu__item__icon">
             <memberIcon class="menu__item__icon__svg" />
           </div>
@@ -344,7 +344,7 @@ onUnmounted(() => {
                 <searchIcon class="icon__svg" />
             </div>
           </div> -->
-          <div class="item" v-if="props.isLogin">
+          <div class="item" v-if="isLogin">
             <div class="icon">
               <RouterLink to="/purchase">
                 <div class="icon">

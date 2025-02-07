@@ -37,11 +37,11 @@ onMounted(() => {
     <div class="shoppingCart__title">
       <span class="title-m">{{ $t('cart.title') }}</span>
     </div>
-    <div v-if="props.cartList?.length===0">
+    <div v-if="cartList?.length===0">
       <p>{{ $t('cart.noItem') }}</p>
     </div>
     <div v-else class="shoppingCart__list">
-      <div class="item" v-for="item in props.cartList">
+      <div class="item" v-for="item in cartList">
         <div class="item__el">
           <img class="img" :src="item.thumbnail" alt="">
         </div>
