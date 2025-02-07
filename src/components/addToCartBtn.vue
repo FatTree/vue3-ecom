@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { CartProductViewModel } from '@/models/viewModel';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
+import { useInfoStore } from '@/stores/infoStore';
 import { onMounted, ref } from 'vue';
+import { InfoEnum } from '@/models/viewModel';
 
 type Props = {
     cartProduct: CartProductViewModel;
@@ -16,6 +18,10 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const shoppingCartStore = useShoppingCartStore();
+const infoStore = useInfoStore();
+const {
+    addToInfoList
+} = infoStore;
 
 const { 
     addToCart
@@ -25,10 +31,7 @@ const isAdding = ref<boolean>(false);
 
 const addCartAction = (cartProduct: CartProductViewModel) => {
     addToCart(cartProduct);
-    isAdding.value = true;
-    setTimeout(() => {
-        isAdding.value = false;
-    }, 1000);
+    addToInfoList(InfoEnum.INFO, '已加入購物車');
 }
 
 const btnClass = ref('btn-yellow');
@@ -45,7 +48,3 @@ onMounted (() => {
         <div :class="btnClass" @click="addCartAction(cartProduct)">add to cart</div>
     </div>
 </template>
-
-<style>
-
-</style>

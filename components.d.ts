@@ -15,6 +15,7 @@ declare module 'vue' {
     ComponentSample: typeof import('./src/components/ComponentSample.vue')['default']
     ErrorCard: typeof import('./src/components/ErrorCard.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
+    InfoCard: typeof import('./src/components/InfoCard.vue')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']
     PageNav: typeof import('./src/components/PageNav.vue')['default']
     ProductCard: typeof import('./src/components/ProductCard.vue')['default']

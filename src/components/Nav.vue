@@ -6,7 +6,7 @@ import { computed, nextTick, onBeforeMount, onMounted, onUnmounted, reactive, re
 import { useRouter } from 'vue-router';
 import Cart from '@/components/Cart.vue';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
-import { useErrorStore } from '@/stores/errorStore';
+import { useInfoStore } from '@/stores/infoStore';
 import searchIcon from '@/assets/icons/magnifying-glass-solid.svg';
 import cartIcon from '@/assets/icons/cart-shopping-solid.svg';
 import memberIcon from '@/assets/icons/user-solid.svg';
@@ -39,7 +39,7 @@ const {
 // stores
 const categoryStore = useCategoryStore();
 const shoppingCartStore = useShoppingCartStore();
-const errorStore = useErrorStore();
+const infoStore = useInfoStore();
 
 const {
   cart, 
@@ -56,8 +56,8 @@ const {
 } = useCategoryStore();
 
 const {
-  errorList
-} = storeToRefs(errorStore);
+  infoList
+} = storeToRefs(infoStore);
 
 const categroy: Ref<string> = ref('');
 
@@ -189,9 +189,9 @@ onUnmounted(() => {
 </script>
 <template>
   <div class="nav">
-    <!-- <AdminPanel /> -->
+    <AdminPanel />
     <div class="error">
-      <ErrorCard v-for="error in errorList" :key="error.id" :errorObj="error" />
+      <InfoCard v-for="info in infoList" :key="info.id" :infoObj="info" />
     </div>
     <div class="overlay" @click="clickOverLay" v-show="isShowOverLay"></div>
     <div class="container" v-if="!isMobile">
@@ -389,9 +389,9 @@ onUnmounted(() => {
   > .error {
     position: fixed;
     z-index: 100;
-    bottom: 3rem;
+    bottom: 5rem;
     left: 50%;
-    margin-left: -10rem;
+    margin-left: -11rem;
   }
 
   &__cart {

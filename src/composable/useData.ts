@@ -1,8 +1,9 @@
 import api from '@/utils/api';
 import { ref } from 'vue';
 import type { Ref } from 'vue';
-import { useErrorStore } from '@/stores/errorStore';
+import { useInfoStore } from '@/stores/infoStore';
 import { type AxiosError, type AxiosRequestConfig } from 'axios';
+import { InfoEnum } from '@/models/viewModel';
 
 export enum HttpMethod {
     GET = 'GET',
@@ -12,8 +13,8 @@ export enum HttpMethod {
 }
 
 export default function useData<T>() {
-    const errorStore = useErrorStore();
-    const { addToErrorList } = errorStore;
+    const infoStore = useInfoStore();
+    const { addToInfoList } = infoStore;
     const isReady: Ref<boolean> = ref(true);
     const isError: Ref<boolean> = ref(false);
     let data: Ref<T | undefined> = ref();
@@ -36,9 +37,9 @@ export default function useData<T>() {
             data.value = response;
         } catch (error) {
             isError.value = true;
-            console.error('API Error:', (error as AxiosError).message);console.log(error)
+            console.error('API Error:', (error as AxiosError).message);
             const AErr = error as AxiosError;
-            addToErrorList(AErr.message, AErr.status?.toString());
+            addToInfoList(InfoEnum.ERROR, AErr.message, AErr.status?.toString());
         } finally {
             isReady.value = false;
             return data.value as T;

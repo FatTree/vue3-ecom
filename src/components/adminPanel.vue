@@ -1,24 +1,16 @@
 <script lang="ts" setup>
-// import useData from '@/composable/useData';
-// import { useErrorStore } from '@/stores/errorStore';
+import { useInfoStore } from '@/stores/infoStore';
 
-
-// const {
-//     addToErrorList
-// } = useErrorStore();
-
-// const api = useData();
-
-// const cc = async() => {
-//     await api.fetchedData(`/api/products/ddd`);
-// }
+const {
+    addToInfoList
+} = useInfoStore();
 
 </script>
 
 <template>
     <div class="panel">
-        <!-- <button @click="addToErrorList('error message', 'STATUS')">add error</button>
-        <button @click="cc()">404 error</button> -->
+        <button @click="addToInfoList(InfoEnum.ERROR, 'error message', 'STATUS')">add error</button>
+        <!-- <button @click="cc()">404 error</button> -->
     </div>
 </template>
 
@@ -28,5 +20,4 @@
     bottom: 10rem;
     left: 0;
 }
-
 </style>

@@ -7,7 +7,8 @@ import router from './router'
 import { VueFire, VueFireAuth } from 'vuefire'
 import { firebaseApp } from './plugins/firebase'
 import { i18n } from './i18n';
-import { useErrorStore } from './stores/errorStore'
+import { useInfoStore } from './stores/infoStore'
+import { InfoEnum } from './models/viewModel'
 
 
 const app = createApp(App)
@@ -30,14 +31,14 @@ app.use(VueFire, {
 })
 app.use(i18n)
 
-const errorStore = useErrorStore();
-const { addToErrorList } = errorStore;
+const infoStore = useInfoStore();
+const { addToInfoList } = infoStore;
 
 app.config.errorHandler = (err, vm, info) => {
     console.error('Error occurred:', err);
     console.error('Component info:', vm);
     console.error('Additional info:', info);
-    addToErrorList(`Error occurred: ${err}`, `system error`)
+    addToInfoList(InfoEnum.ERROR ,`Error occurred: ${err}`, `system error`)
 }
 
 app.mount('#app')

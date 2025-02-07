@@ -77,8 +77,14 @@ export type MemberOrderViewModel = {
 
 export type ShippingInfoViewModel = Pick<MemberViewModel, 'name' | 'phone' | 'address'>
 
-export type ErrorViewModel = {
+export enum InfoEnum {
+    ERROR = 'error',
+    WARNING = 'warning',
+    INFO = 'info'
+}
+export type InfoViewModel = {
     id: string;
+    type: InfoEnum;
     message: string;
     code?: string;
 }
