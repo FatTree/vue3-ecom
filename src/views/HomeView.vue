@@ -178,8 +178,8 @@ onUnmounted(() => {
         padding: 1rem 0;
 
         > .title {
+          display: block;
           margin: 1rem 0;
-          line-height: 3em;
           cursor: pointer;
           color: $violet-normal;
           & {

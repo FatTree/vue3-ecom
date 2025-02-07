@@ -9,6 +9,7 @@
         "category": "Product Categories",
         "search": "Search Product Name",
         "login": "Login",
+        "logout": "Logout",
         "lang": "Language",
         "member": "Member"
     },

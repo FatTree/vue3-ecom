@@ -22,17 +22,19 @@ const psw = ref<string>('aaaa123');
 </script>
 <template>
   <div class="login">
-    <h1>Login page</h1>
-    <input type="email" v-model.lazy="email">
-    <input type="password" v-model.lazy="psw">
-    <div>
-      {{ errorMsg }}
+    <div class="login__box">
+      <h1 class="title-m">Login Page</h1>
+      <input type="email" v-model.lazy="email">
+      <input type="password" v-model.lazy="psw">
+      <div>
+        {{ errorMsg }}
+      </div>
+      <div class="btn-yellow mt-1" @click="signIn(email, psw)">login</div>
+      <a class="pointer"@click="goRegis">還不是會員? ></a>
     </div>
-    <button @click="signIn(email, psw)">login</button>
-    <a class="pointer"@click="goRegis">還不是會員</a>
   </div>
 </template>
 
-<style>
+<style lang="scss" scoped>
 
 </style>

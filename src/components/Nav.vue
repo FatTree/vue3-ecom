@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 import Cart from '@/components/Cart.vue';
 import { useShoppingCartStore } from '@/stores/useShoppingCartStore';
 import { useInfoStore } from '@/stores/infoStore';
+import { useAuthUser } from '@/composable/useAuthUser';
 import searchIcon from '@/assets/icons/magnifying-glass-solid.svg';
 import cartIcon from '@/assets/icons/cart-shopping-solid.svg';
 import memberIcon from '@/assets/icons/user-solid.svg';
@@ -14,6 +15,8 @@ import purchaseIcon from '@/assets/icons/cash-register-solid.svg';
 import languageIcon from '@/assets/icons/language-solid.svg';
 import MenuIcon from '@/assets/icons/bars-solid.svg';
 import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
+import loginIcon from '@/assets/icons/right-to-bracket-solid.svg';
+import logoutIcon from '@/assets/icons/right-from-bracket-solid.svg';
 import useRwd from '@/composable/useRwd';
 import { debounce } from '@/utils/util';
 import AdminPanel from './adminPanel.vue';
@@ -35,6 +38,11 @@ const {
   locale,
   availableLocales
 } = useI18n();
+
+const auth = useAuthUser()
+const {
+  userSignOut
+} = auth;
 
 // stores
 const categoryStore = useCategoryStore();
@@ -224,6 +232,25 @@ onUnmounted(() => {
             </div>
           </div>
           <div class="item" v-if="isLogin">
+            <RouterLink :to="`/purchase`">
+              <div class="icon">
+                <purchaseIcon class="icon__svg" />
+              </div>
+            </RouterLink>
+          </div>
+          <div class="item" ref="languageNavIcon" @click="clickLanguage">
+            <div class="icon iconLan">
+              <languageIcon class="icon__svg" />
+            </div>
+          </div>
+          <div class="item" v-if="!isLogin">
+            <RouterLink :to="`/login`">
+              <div class="icon">
+                <loginIcon class="icon__svg" />
+              </div>
+            </RouterLink>
+          </div>
+          <div class="item" v-if="isLogin">
             <RouterLink :to="`/member`">
               <div class="icon">
                 <memberIcon class="icon__svg" />
@@ -231,18 +258,8 @@ onUnmounted(() => {
             </RouterLink>
           </div>
           <div class="item" v-if="isLogin">
-            <RouterLink :to="`/purchase`">
-              <div class="icon">
-                <purchaseIcon class="icon__svg" />
-              </div>
-            </RouterLink>
-          </div>
-          <div class="item" v-if="!isLogin">
-            <RouterLink :to="`/login`">login</RouterLink>
-          </div>
-          <div class="item" ref="languageNavIcon" @click="clickLanguage">
-            <div class="icon iconLan">
-              <languageIcon class="icon__svg" />
+            <div class="icon" @click="userSignOut">
+              <logoutIcon class="icon__svg" />
             </div>
           </div>
         </div>
@@ -277,14 +294,12 @@ onUnmounted(() => {
     </div>
     <div class="container mobileOnly" v-if="isMobile">
       <div class="menu" v-show="isShowMenu">
-        <div class="menu__item">
-          <div class="menu__item__icon" v-if="!isLogin">
-            <div class="menu__item__icon">
-              <memberIcon class="menu__item__icon__svg" />
-            </div>
-            <span class="menu__item__span">{{ $t('nav.login') }}</span>
+        <router-link class="menu__item" to="/login" v-if="!isLogin">
+          <div class="menu__item__icon">
+            <memberIcon class="menu__item__icon__svg" />
           </div>
-        </div>
+          <span class="menu__item__span">{{ $t('nav.login') }}</span>
+        </router-link>
         <div class="menu__item" v-if="isLogin">
           <div class="menu__item__icon">
             <memberIcon class="menu__item__icon__svg" />
@@ -322,6 +337,14 @@ onUnmounted(() => {
           v-for="item in categoryList"
             @click="selectategory(`${item.slug}`)">
             {{ item.name }}
+          </div>
+        </div>
+        <div class="menu__item logout" v-if="isLogin" @click="userSignOut">
+          <div class="menu__item__icon">
+            <logoutIcon class="menu__item__icon__svg" />
+          </div>
+          <div class="menu__item__span">
+            {{ $t('nav.logout') }}
           </div>
         </div>
       </div>
@@ -451,6 +474,9 @@ onUnmounted(() => {
   }
 
   .item {
+    a {
+      color: $white;
+    }
     &:not(:first-child) {
       margin-left: .5rem;
     }
@@ -542,6 +568,11 @@ onUnmounted(() => {
     padding: .5rem 1rem;
     border-bottom: 1px solid $white-hover;
 
+    &.logout {
+      position: fixed;
+      bottom: 0;
+    }
+
     &__icon {
       @include center;
       padding-right: 1rem;
@@ -586,7 +617,7 @@ onUnmounted(() => {
   }
 
   &__box {
-    height: calc(100vh - 9rem);
+    height: calc(100vh - 13rem);
     overflow-y: scroll;
     background-color: $white-light;
     transition: height .3s;

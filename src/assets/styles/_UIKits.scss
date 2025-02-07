@@ -228,3 +228,45 @@ input.input {
         }
     }
 }
+
+.login {
+    height: 50vh;
+    @include center;
+  
+    .login__box {
+      @include RWD(mobile) {
+        width: 20rem;
+      }
+      > input {
+        border: none;
+        background-color: $white;
+        border: 1px solid $white-hover-active;
+        border-radius: .5rem;
+        height: 3em;
+        padding: 0 1rem;
+        display: block;
+        width: 20rem;
+        margin-top: 1rem;
+        font-size: 1rem;
+        @include RWD(mobile) {
+          width: calc(100% - 2rem);
+        }
+      }
+    
+      > .btn-yellow {
+        width: 21rem;
+        @include RWD(mobile) {
+          width: 100%;
+          width: calc(100% - 1rem);
+        }
+      }
+  
+      > .pointer {
+        display: block;
+        text-align: right;
+        text-decoration: underline;
+        color: $violet-normal;
+        margin-top: 1rem;
+      }
+    }
+  }
