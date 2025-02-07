@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useInfoStore } from '@/stores/infoStore';
+import { InfoEnum } from '@/models/viewModel';
 
 const {
     addToInfoList
