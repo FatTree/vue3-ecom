@@ -10,7 +10,8 @@
         "ismember": "is already a member? >",
         "register": "Register",
         "login": "Login",
-        "stock": "Stock"
+        "stock": "Stock",
+        "limit":"This item has reached the purchase limit"
     },
     "info": {
         "userInfoError": "User information is incorrected!",

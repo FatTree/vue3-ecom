@@ -77,7 +77,7 @@ onMounted(() => {
     </div>
     <div class="amount-title">{{ $t('uikit.amount') }}</div>
     <div class="remains">
-      {{ $t('uikit.st') }} {{ max }} 
+      {{ $t('uikit.stock') }} {{ max }} 
       <span class="remains__limit" v-show="amount === max">{{ $t('uikit.limit') }}</span>
     </div>
   </div>
