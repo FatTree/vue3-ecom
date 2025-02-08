@@ -116,6 +116,16 @@ const updatePosition = () => {
   }
 }
 
+const clickMobileItem = () => {
+  isShowMenu.value = false;
+  isShowOverLay.value = false;
+}
+
+const clickLogout = () => {
+  userSignOut();
+  clickMobileItem();
+}
+
 const clickCart = () => {
   isShowCart.value = true;
   isShowOverLay.value = true;
@@ -146,19 +156,19 @@ const clickCategory = () => {
 //   isShowSearchInput.value = false;
 // }
 
-const clickOverLay = () => {
-  isShowOverLay.value = false;
-  isShowCart.value = false;
-  isShowCategory.value = false;
-  isShowMenu.value = false;
-  isShowMenuCatrgory.value = false;
-  isShowLanguage.value = false;
-}
-
 const clickMenu = () => {
   isShowMenu.value = true;
   isShowOverLay.value = true;
 }
+
+const clickOverLay = () => {
+  clickMobileItem();
+  isShowCart.value = false;
+  isShowCategory.value = false;
+  isShowMenuCatrgory.value = false;
+  isShowLanguage.value = false;
+}
+
 
 const clickMenuCategory = () => {
   isShowMenuCatrgory.value = !isShowMenuCatrgory.value;
@@ -166,16 +176,14 @@ const clickMenuCategory = () => {
 
 const selectategory = (cate: string) => {
   isShowCategory.value = false;
-  isShowMenu.value = false;
-  isShowOverLay.value = false;
+  clickMobileItem();
   router.push(`/category/${cate}`)
 }
 
 const selectLanguage = (language: string) => {
   locale.value = language;
-  isShowMenu.value = false;
   isShowLanguage.value = false;
-  isShowOverLay.value = false;
+  clickMobileItem();
 }
 
 onMounted(async () => {
@@ -294,13 +302,13 @@ onUnmounted(() => {
     </div>
     <div class="container mobileOnly" v-if="isMobile">
       <div class="menu" v-show="isShowMenu">
-        <router-link class="menu__item" to="/login" v-if="!isLogin">
+        <router-link class="menu__item" to="/login" v-if="!isLogin" @click="clickMobileItem">
           <div class="menu__item__icon">
             <memberIcon class="menu__item__icon__svg" />
           </div>
           <span class="menu__item__span">{{ $t('nav.login') }}</span>
         </router-link>
-        <div class="menu__item" v-if="isLogin">
+        <div class="menu__item" v-if="isLogin" @click="clickMobileItem">
           <div class="menu__item__icon">
             <memberIcon class="menu__item__icon__svg" />
           </div>
@@ -339,7 +347,7 @@ onUnmounted(() => {
             {{ item.name }}
           </div>
         </div>
-        <div class="menu__item logout" v-if="isLogin" @click="userSignOut">
+        <div class="menu__item logout" v-if="isLogin" @click="clickLogout">
           <div class="menu__item__icon">
             <logoutIcon class="menu__item__icon__svg" />
           </div>
