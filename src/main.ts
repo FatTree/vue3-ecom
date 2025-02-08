@@ -36,7 +36,7 @@ const { addToInfoList } = infoStore;
 
 app.config.errorHandler = (err, vm, info) => {
     console.error('Error occurred:', err);
-    addToInfoList(InfoEnum.ERROR ,`Error occurred: ${err}`, `system error`)
+    addToInfoList(InfoEnum.ERROR ,`${err}`, `system error`)
 }
 
 app.mount('#app')

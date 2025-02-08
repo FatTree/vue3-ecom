@@ -3,7 +3,24 @@
     "uikit": {
         "addToCart": "加入購物車",
         "amount": "數量",
-        "home": "首頁"
+        "home": "首頁",
+        "loginPage": "登入頁",
+        "registerPage": "註冊頁",
+        "notmember": "還不是會員？ >",
+        "ismember": "已經是會員？ >",
+        "register": "註冊",
+        "login": "登入",
+        "stock": "庫存",
+        "limit":"已達到購買上限"
+    },
+    "info": {
+        "userInfoError": "資料不對喔!請再試一次",
+        "userLoginError": "讀取用戶資料時有問題，請再試一次!",
+        "userRegisterError": "註冊時發生錯誤，請再試一次!",
+        "error": "oOps!!網站有些小問題，我們正在努力修復中...",
+        "addToCart": "已加入購物車",
+        "cartLimit": "無法加入購物車喔！已達到購買限制",
+        "logout": "您已成功登出"
     },
     "nav": {
         "category": "商品分類",

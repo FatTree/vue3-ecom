@@ -62,10 +62,10 @@ const decreaseAmount = () => {
         <addIcon />
       </div>
     </div>
-    <div class="amount-title">數量</div>
+    <div class="amount-title">{{ $t('uikit.amount') }}</div>
     <div class="remains">
-      庫存 {{ props.max }}
-      <span class="remains__limit" v-show="isDisabled">已到達購買上限 !!!</span>
+      {{ $t('uikit.stock') }} {{ props.max }}
+      <span class="remains__limit" v-show="isDisabled">{{ $t('uikit.limit') }}</span>
     </div>
   </div>
 </template>

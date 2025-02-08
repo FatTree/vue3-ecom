@@ -17,6 +17,7 @@ import { firebaseApp } from '@/plugins/firebase';
 import { getCurrentUser } from 'vuefire';
 import { useInfoStore } from '@/stores/infoStore';
 import { InfoEnum } from '@/models/viewModel';
+import { useI18n } from 'vue-i18n';
 
 
 
@@ -26,6 +27,11 @@ export const useAuthUser = () => {
 
     const db = getFirestore(firebaseApp);
     const userInfo = ref();
+
+    const i18n = useI18n();
+    const {
+        t
+    } = i18n;
 
     const {
         addToInfoList
@@ -45,16 +51,16 @@ export const useAuthUser = () => {
         const user = await getCurrentUser();
           if(user) {
             try {
-              const userDoc = doc(db, 'UserInfo', user.uid); // 指定集合和 Document ID
+              const userDoc = doc(db, 'UserInfo', user.uid);
               const userSnapshot = await getDoc(userDoc);
       
               if (userSnapshot.exists()) {
-                userInfo.value = userSnapshot.data(); // 將數據存入 userInfo
+                userInfo.value = userSnapshot.data();
               } else {
-                addToInfoList(InfoEnum.ERROR, 'User information is incorrected!', 'STATUS');
+                addToInfoList(InfoEnum.ERROR, t('info.userInfoError'));
               }
             } catch(err) {
-              addToInfoList(InfoEnum.ERROR, 'An error occurred while retrieving user information!', 'STATUS');
+              addToInfoList(InfoEnum.ERROR, t('info.userLoginError'), 'STATUS');
             }
           }
       }
@@ -95,7 +101,7 @@ export const useAuthUser = () => {
     const userSignOut = async() => {
         await signOut(auth);
         routerAction();
-        addToInfoList(InfoEnum.INFO, 'Successfully logged out!', 'STATUS');
+        addToInfoList(InfoEnum.INFO, t('info.logout'), 'STATUS');
     }
 
     return {

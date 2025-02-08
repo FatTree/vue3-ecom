@@ -24,14 +24,14 @@ const psw = ref<string>('1234DFGHhjj');
 <template>
   <div class="login">
     <div class="login__box">
-      <h1 class="title-m">Registration Page</h1>
+      <h1 class="title-m">{{ $t('uikit.registerPage') }}</h1>
       <input type="email" v-model.lazy="email">
       <input type="password" v-model.lazy="psw">
       <div>
         {{ errorMsg }}
       </div>
-      <div class="btn-yellow mt-1" @click="signUp(email, psw)">sign up</div>
-      <a class="pointer"@click="goLogin">已是會員? ></a>
+      <div class="btn-yellow mt-1" @click="signUp(email, psw)">{{ $t('uikit.register') }}</div>
+      <a class="pointer"@click="goLogin">{{ $t('uikit.ismember') }}</a>
     </div>
   </div>
 </template>

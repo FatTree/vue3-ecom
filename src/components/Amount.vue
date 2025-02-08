@@ -75,10 +75,10 @@ onMounted(() => {
         <addIcon />
       </div>
     </div>
-    <div class="amount-title">數量</div>
+    <div class="amount-title">{{ $t('uikit.amount') }}</div>
     <div class="remains">
-      庫存 {{ max }} 
-      <span class="remains__limit" v-show="amount === max">已到達購買上限</span>
+      {{ $t('uikit.st') }} {{ max }} 
+      <span class="remains__limit" v-show="amount === max">{{ $t('uikit.limit') }}</span>
     </div>
   </div>
 </template>

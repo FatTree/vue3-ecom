@@ -3,7 +3,23 @@
     "uikit": {
         "addToCart": "Add to Cart",
         "amount": "Quantity",
-        "home": "Home"
+        "home": "Home",
+        "loginPage": "Login",
+        "registerPage": "Register",
+        "notmember": "Not a member yet? >",
+        "ismember": "is already a member? >",
+        "register": "Register",
+        "login": "Login",
+        "stock": "Stock"
+    },
+    "info": {
+        "userInfoError": "User information is incorrected!",
+        "userLoginError": "An error occurred while retrieving user information!",
+        "userRegisterError": "An error occurred while registering user information!",
+        "error": "oOps!!The website has some issues! We're working hard to fix it...",
+        "addToCart": "Added to Cart",
+        "cartLimit": "Can't add it to the cart, this item has reached the purchase limit",
+        "logout": "Successfully logged out!"
     },
     "nav": {
         "category": "Product Categories",

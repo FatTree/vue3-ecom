@@ -3,12 +3,15 @@ import { defineStore } from 'pinia'
 import type { CartProductViewModel } from '@/models/viewModel';
 import { InfoEnum } from '@/models/viewModel';
 import { useInfoStore } from '@/stores/infoStore';
+import { useI18n } from 'vue-i18n';
 
 const storeName = 'shoppingCart';
 export const useShoppingCartStore = defineStore(storeName, () => {
 
     // 使用 ref 定義購物車
     const cart = ref<CartProductViewModel[]>([]);
+    const i18n = useI18n();
+    const { t } = i18n;
 
     // 從 localStorage 加載購物車數據
     const loadCart = () => {
@@ -34,10 +37,10 @@ export const useShoppingCartStore = defineStore(storeName, () => {
         const item = cart.value.find(i => i.id === product.id);
         if (item) {
             if(item.quantity + product.quantity >= product.stock) {
-                addToInfoList(InfoEnum.ERROR, 'You have reached the purchase limit', 'STATUS');
+                addToInfoList(InfoEnum.ERROR, t('info.cartLimit'), 'STATUS');
                 return;
             } else {
-                addToInfoList(InfoEnum.INFO, '已加入購物車');
+                addToInfoList(InfoEnum.INFO, t('info.addToCart'));
             }
             item.quantity = Number(product.quantity) + Number(item.quantity);
         } else {

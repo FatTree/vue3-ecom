@@ -27,7 +27,7 @@ const totalPrice = computed(() => props.cartItem.price * props.cartItem.quantity
         <h3>{{ cartItem.title }}</h3>
         <p>$ {{ cartItem.price }}</p>
         <p>x {{ cartItem.quantity }}</p>
-        <p>小計: {{ totalPrice}}</p>
+        <p>{{ $t('purchase.Subtotal') }}: {{ totalPrice}}</p>
         <button @click="removeFromCart(cartItem.id.toString())">X</button>
     </div>
 </template>
