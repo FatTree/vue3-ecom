@@ -3,15 +3,14 @@ import { defineStore } from 'pinia'
 import type { CartProductViewModel } from '@/models/viewModel';
 import { InfoEnum } from '@/models/viewModel';
 import { useInfoStore } from '@/stores/infoStore';
-import { useI18n } from 'vue-i18n';
+import { i18n } from '@/i18n';
 
 const storeName = 'shoppingCart';
 export const useShoppingCartStore = defineStore(storeName, () => {
 
     // 使用 ref 定義購物車
     const cart = ref<CartProductViewModel[]>([]);
-    const i18n = useI18n();
-    const { t } = i18n;
+    const { t } = i18n.global;
 
     // 從 localStorage 加載購物車數據
     const loadCart = () => {

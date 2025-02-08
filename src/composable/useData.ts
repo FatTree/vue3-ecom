@@ -4,7 +4,7 @@ import type { Ref } from 'vue';
 import { useInfoStore } from '@/stores/infoStore';
 import { type AxiosError, type AxiosRequestConfig } from 'axios';
 import { InfoEnum } from '@/models/viewModel';
-import { useI18n } from 'vue-i18n';
+import { i18n } from '@/i18n';
 
 export enum HttpMethod {
     GET = 'GET',
@@ -19,8 +19,7 @@ export default function useData<T>() {
     const isReady: Ref<boolean> = ref(true);
     const isError: Ref<boolean> = ref(false);
     let data: Ref<T | undefined> = ref();
-    const i18n = useI18n();
-    const { t } = i18n;
+    const { t } = i18n.global;
 
     const fetchedData = async(
         url: string,

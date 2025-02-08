@@ -17,7 +17,7 @@ import { firebaseApp } from '@/plugins/firebase';
 import { getCurrentUser } from 'vuefire';
 import { useInfoStore } from '@/stores/infoStore';
 import { InfoEnum } from '@/models/viewModel';
-import { useI18n } from 'vue-i18n';
+import { i18n } from '@/i18n';
 
 
 
@@ -28,10 +28,9 @@ export const useAuthUser = () => {
     const db = getFirestore(firebaseApp);
     const userInfo = ref();
 
-    const i18n = useI18n();
     const {
         t
-    } = i18n;
+    } = i18n.global;
 
     const {
         addToInfoList
