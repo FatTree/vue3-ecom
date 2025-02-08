@@ -30,8 +30,8 @@ const {
 const isAdding = ref<boolean>(false);
 
 const addCartAction = (cartProduct: CartProductViewModel) => {
+    if(props.isDisabled) return;
     addToCart(cartProduct);
-    addToInfoList(InfoEnum.INFO, '已加入購物車');
 }
 
 const btnClass = ref('btn-yellow');

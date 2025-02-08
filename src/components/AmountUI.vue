@@ -7,17 +7,15 @@ import type { CartProductViewModel } from '@/models/viewModel';
 
 type Props = {
   max: number;
-  isDisabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   max: 1,
-  isDisabled: false,
 });
 
 const amount= ref(1);
 
-const emits = defineEmits(['updateAmount']);
+const emits = defineEmits(['updateAmount', 'updateDisabled']);
 
 const emitUpdateAmount = () => {
   emits('updateAmount', amount.value)
@@ -25,6 +23,7 @@ const emitUpdateAmount = () => {
 
 const isAdd = computed(() => (amount.value === props.max))
 const isMinus = computed(() => (amount.value === 1));
+const isDisabled = computed(() => amount.value === props.max);
 
 watch(amount, () => {
     if(amount.value > props.max) {
@@ -66,7 +65,7 @@ const decreaseAmount = () => {
     <div class="amount-title">數量</div>
     <div class="remains">
       庫存 {{ props.max }}
-      <span class="remains__limit" v-show="amount === props.max">已到達購買上限 !!!這邊無法更新??</span>
+      <span class="remains__limit" v-show="isDisabled">已到達購買上限 !!!</span>
     </div>
   </div>
 </template>

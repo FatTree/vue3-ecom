@@ -36,6 +36,8 @@ export const useShoppingCartStore = defineStore(storeName, () => {
             if(item.quantity + product.quantity >= product.stock) {
                 addToInfoList(InfoEnum.ERROR, 'You have reached the purchase limit', 'STATUS');
                 return;
+            } else {
+                addToInfoList(InfoEnum.INFO, '已加入購物車');
             }
             item.quantity = Number(product.quantity) + Number(item.quantity);
         } else {
