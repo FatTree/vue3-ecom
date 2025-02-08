@@ -36,7 +36,7 @@ export const useShoppingCartStore = defineStore(storeName, () => {
     const addToCart = (product: CartProductViewModel) => {
         const item = cart.value.find(i => i.id === product.id);
         if (item) {
-            if(item.quantity + product.quantity >= product.stock) {
+            if(item.quantity + product.quantity > product.stock) {
                 addToInfoList(InfoEnum.ERROR, t('info.cartLimit'), 'STATUS');
                 return;
             } else {
