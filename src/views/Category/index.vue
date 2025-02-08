@@ -156,7 +156,7 @@ onUnmounted(() => {
                             <div v-for="brand in brandList">
                                 <label class="checkbox">
                                     <span class="checkbox__span">{{ brand }}</span>
-                                    <input type="checkbox" :value="brand" v-model="selectedBrands" :key="brand" />
+                                    <input type="checkbox" :value="brand" v-model="selectedBrands" @change="filterProduct(selectedBrands)" :key="brand" />
                                     <div class="checkbox__style"></div>
                                 </label>
                             </div>
