@@ -70,7 +70,7 @@ onMounted(async() => {
 
 </script>
 <template>
-  <div class="purchase container">
+  <div class="purchase container" v-if="cart.length">
     <div class="purchase__step">
       <div class="purchase__step__content">
         <div class="step" :class="step>=1 ? 'done' : ''">
@@ -97,7 +97,7 @@ onMounted(async() => {
         </div>
       </div>
     </div>
-    <div class="purchase__content" v-if="cart.length">
+    <div class="purchase__content">
       <div class="purchase__content__step">
         <div v-show="step===1" class="purchaseStep">
           <p class="title-m pb-1 pt-1 text-center ">{{ $t('purchase.list') }}</p>
@@ -175,9 +175,6 @@ onMounted(async() => {
         </div>
       </div>
     </div>
-    <div v-else>
-      <h2>{{ $t('purchase.summary') }}</h2>
-    </div>
     <div class="summary--mobile" v-if="isMobile">
       <transition>
         <div class="summary__content" v-show="isShow">
@@ -199,6 +196,12 @@ onMounted(async() => {
       <div class="btn-yellow" :class="!isInfoOk ? 'disabled' : ''" @click="gotoStepPage(3, !isInfoOk)">{{ $t('purchase.purchase') }}</div>
     </div>
   </div>
+  <div class="noItem" v-else>
+    <div class="noItem__box">
+      <div class="title-m">{{ $t('purchase.step1') }}</div>
+      <p class="mt-1">{{ $t('purchase.noItem') }}</p>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -212,6 +215,19 @@ onMounted(async() => {
 
 .v-enter-to, .v-leave-from {
   height: 4em;
+}
+
+.noItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: $white-dark;
+
+  > .noItem__box {
+    padding-top: 2rem;
+    text-align: center;
+  }
 }
 
 .purchase__step {
