@@ -55,7 +55,7 @@ onMounted(async() => {
                         <RatingStars class="detail__content__rating" :rating="productDetail.rating" />
                         <p>{{ productDetail.description }}</p>
                         <p class="detail__content__price">{{ $t('product.price') }} $ {{ productDetail.price }}</p>
-                        <p>{{ productDetail.stock }} {{ $t('product.left') }}</p>
+                        <p>{{ $t('product.left') }} {{ productDetail.stock }}</p>
                     </div>
                     <AmountUI :max="productDetail.stock" @updateAmount="getAmount" />
                     <addToCartBtn 

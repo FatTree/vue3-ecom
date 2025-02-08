@@ -77,8 +77,9 @@ export const useAuthUser = () => {
 
     const signIn = (e: string, p: string) => {
         signInWithEmailAndPassword(auth, e, p)
-            .then((userCredential) => {
-                const username = userCredential.user?.displayName ? userCredential.user.displayName : userCredential.user?.email;
+            .then(async (userCredential) => {
+                await getUserInfo();
+                const username = userInfo.value.name ? userInfo.value.name : userCredential.user?.email;
                 addToInfoList(InfoEnum.INFO, `Hi! ( ^_^ ) ${username}`, 'STATUS');
                 routerAction();
             })

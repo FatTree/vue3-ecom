@@ -3,6 +3,7 @@ import arrowIcon from '@/assets/icons/chevron-right-solid.svg';
 import { useI18n } from 'vue-i18n';
 import { useAuthUser } from '@/composable/useAuthUser';
 import { onMounted, ref } from 'vue';
+import memberSr from '@/assets/img/head.webp'
 
 const authUser = useAuthUser()
 
@@ -94,7 +95,7 @@ onMounted(async() => {
       <div class="member__content__person">
         <div class="info" v-if="userInfo">
           <div class="info__img">
-            <img src="../assets/icons/face-smile-wink-solid.svg" alt="">
+            <img :src="memberSr" width="100" alt="">
           </div>
           <div class="info__member">
             <p>{{ t('member.name') }}: {{ userInfo.name }}</p>
@@ -186,8 +187,8 @@ onMounted(async() => {
     @include center;
   }
   &__img {
-    width: 6rem;
-    height: 6rem;
+    width: 7rem;
+    height: 7rem;
     margin-right: 1rem;
     border-radius: 50%;
     overflow: hidden;
