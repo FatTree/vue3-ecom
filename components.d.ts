@@ -13,7 +13,6 @@ declare module 'vue' {
     AmountUI: typeof import('./src/components/AmountUI.vue')['default']
     Cart: typeof import('./src/components/Cart.vue')['default']
     ComponentSample: typeof import('./src/components/ComponentSample.vue')['default']
-    ErrorCard: typeof import('./src/components/ErrorCard.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     InfoCard: typeof import('./src/components/InfoCard.vue')['default']
     Nav: typeof import('./src/components/Nav.vue')['default']
