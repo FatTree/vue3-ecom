@@ -3,6 +3,7 @@ import type { ProductCardViewModel } from '@/models/viewModel';
 import { useRoute, useRouter } from 'vue-router';
 import RatingStars from './RatingStars.vue';
 import ImgIcon from '@/assets/icons/image-solid.svg';
+import { onMounted, ref } from 'vue';
 type Props = {
     product: ProductCardViewModel | null;
 }
@@ -12,27 +13,41 @@ const props = withDefaults(defineProps<Props>(), {
 
 const router = useRouter();
 const route = useRoute();
+const isImgDone = ref<boolean>(false);
 
 const gotoProductDetail = () => {
     if(props.product && props.product.stock) {
         router.push(`/category/${props.product.category}/${props.product.id}`)
     }
 }
+const loadImg = () => {
+    const img = new Image();
+    if(props.product) {
+        img.src = props.product.thumbnail;
+        img.onload = () => isImgDone.value = true;
+    }
+}
+
+onMounted(() => {
+    loadImg();
+})
 
 </script>
 <template>
-    <div v-if="product" class="prodCard" :class="product.stock ? '' : 'prodCard--soldout'" @click="gotoProductDetail">
-        <div class="prodCard__content">
-            <p class="ellipsis">{{ product.brand }}</p>
-            <h3 class="prodCard__content__title ellipsis" @click="gotoProductDetail">{{ product.title }}</h3>
-            <RatingStars :rating="product.rating" />
-            <p>$ {{ product.price }}</p>
-            <div class="prodCard__content__img">
-                <img :src="product.thumbnail" alt="">
+    <transition name="fade">
+        <div v-if="product" class="prodCard" :class="product.stock ? '' : 'prodCard--soldout'" @click="gotoProductDetail">
+            <div class="prodCard__content">
+                <p class="ellipsis">{{ product.brand }}</p>
+                <h3 class="prodCard__content__title ellipsis" @click="gotoProductDetail">{{ product.title }}</h3>
+                <RatingStars :rating="product.rating" />
+                <p>$ {{ product.price }}</p>
+                <div class="prodCard__content__img">
+                    <img v-if="isImgDone" :src="product.thumbnail" alt="">
+                </div>
             </div>
         </div>
-    </div>
-    <div v-else class="prodCard--null">
+    </transition>
+    <div v-if="!product" class="prodCard--null">
         <div class="prodCard__content">
             <p class="brand w-70pc"></p>
             <h3 class="brand w-100pc"></h3>
@@ -46,7 +61,7 @@ const gotoProductDetail = () => {
 </template>
 
 <style lang="scss" scoped>
-.prodCard {
+.prodCard, .prodCard--null {
     background-color: $white;
     border-radius: .5rem;
     padding: 1rem;
@@ -62,11 +77,16 @@ const gotoProductDetail = () => {
             color: $white-hover-active;
         }
     }
-
+    
     > .prodCard__content {
 
         > .prodCard__content__title {
             @include title-s;
+        }
+        > .brand {
+            height: 1rem;
+            margin-bottom: .3rem;
+            @include loadingBgc;
         }
     
         > .prodCard__content__img {
@@ -85,32 +105,6 @@ const gotoProductDetail = () => {
                 object-fit: cover;
                 display: block;
             }
-        }
-    }
-}
-
-.prodCard--null {
-    background-color: $white;
-    border-radius: .5rem;
-    padding: 1rem;
-    max-width: 350px; 
-    cursor: pointer;
-    @include shadow;
-
-    > .prodCard__content {
-        > .brand {
-            height: 1rem;
-            margin-bottom: .3rem;
-            @include loadingBgc;
-        }
-    
-        > .prodCard__content__img {
-            position: relative;
-            width: 100%;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            @include loadingBgc;
-
             > svg {
                 fill: $white-hover-active;
                 padding: 2rem;
@@ -118,4 +112,38 @@ const gotoProductDetail = () => {
         }
     }
 }
+
+.prodCard--null > .prodCard__content > .prodCard__content__img {
+    padding-top: 0;
+}
+
+// .prodCard--null {
+//     background-color: $white;
+//     border-radius: .5rem;
+//     padding: 1rem;
+//     max-width: 350px; 
+//     cursor: pointer;
+//     @include shadow;
+
+//     > .prodCard__content {
+//         > .brand {
+//             height: 1rem;
+//             margin-bottom: .3rem;
+//             @include loadingBgc;
+//         }
+    
+//         > .prodCard__content__img {
+//             position: relative;
+//             width: 100%;
+//             border-radius: 0.5rem;
+//             overflow: hidden;
+//             @include loadingBgc;
+
+//             > svg {
+//                 fill: $white-hover-active;
+//                 padding: 2rem;
+//             }
+//         }
+//     }
+// }
 </style>

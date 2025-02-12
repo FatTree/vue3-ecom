@@ -3,8 +3,9 @@ import { useProductStore } from '@/stores/productStore';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import addToCartBtn from '@/components/addToCartBtn.vue'
-import { formatCartProductToViewModel } from '@/utils/modelFormatter'
+import addToCartBtn from '@/components/addToCartBtn.vue';
+import { formatCartProductToViewModel } from '@/utils/modelFormatter';
+import ImgIcon from '@/assets/icons/image-solid.svg';
 
 const route = useRoute();
 const cate = ref('');
@@ -23,12 +24,23 @@ const getAmount = (am: number) => {
     amount.value = am;
 }
 
+const isImgDone = ref<boolean>(false);
+
+const loadImg = () => {
+    const img = new Image();
+    if(productDetail.value) {
+        img.src = productDetail.value.images[0];
+        img.onload = () => isImgDone.value = true;
+    }
+}
+
 // ui
 const imgIdx = ref(0);
 
 onMounted(async() => {
     await getProductDetail(route.params.id as string);
     cate.value = route.params.category as string;
+    loadImg();
 })
 
 </script>
@@ -39,7 +51,12 @@ onMounted(async() => {
             <div class="productDetail__container__content">
                 <div class="imgGroup">
                     <div class="bigImg">
-                        <img :src="productDetail.images[imgIdx]" alt="">
+                        <transition name="fade">
+                            <img v-if="isImgDone" :src="productDetail.images[imgIdx]" alt="">
+                        </transition>
+                        <div v-if="!isImgDone" class="bigImg__loading">
+                            <ImgIcon />
+                        </div>
                     </div>
                     <div class="smallImgs">
                         <div class="img" :class="i === imgIdx ? 'selected' : ''"
@@ -116,6 +133,14 @@ onMounted(async() => {
                         max-width: 100%;
                         max-height: 100%;
                         object-fit: contain;
+                    }
+
+                    > .bigImg__loading {
+                        width: 80%;
+                        @include center;
+                        > svg {
+                            fill: $white-hover;
+                        }
                     }
                 }
 

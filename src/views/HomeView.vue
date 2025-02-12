@@ -138,7 +138,7 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <div v-if="categoryNameList">
+        <div v-if="categoryNameList.length">
           <div v-if="homePageProductList.length < categoryNameList.length">
             <div class="btn-yellow" @click="throt_fun">
               Load More...
@@ -148,12 +148,14 @@ onUnmounted(() => {
             No more products...
           </div>
         </div>
-      </div>
-      <div class="home__content__block" v-else>
-        <div class="title">...</div>
-        <div class="productList row">
-          <div class="productList__card" v-for="i in 4">
-            <ProductCard :product="null" />
+        <div v-else class="productGroup">
+          <div class="home__content__block">
+            <div class="title title-m pb-1">Loading</div>
+            <div class="productList row">
+              <div class="productList__card" v-for="i in 4">
+                <ProductCard :product="null" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
